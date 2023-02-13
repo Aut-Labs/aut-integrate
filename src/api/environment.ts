@@ -15,7 +15,11 @@ export const swEnvVariables = {
 
   // NFT storage
   nftStorageKey: "REACT_APP_NFT_STORAGE_KEY",
-  nftStorageUrl: "REACT_APP_IPFS_URL"
+  nftStorageUrl: "REACT_APP_IPFS_URL",
+
+  // Twitter
+  twitterClientId: "REACT_APP_TWITTER_CLIENT_ID",
+  twitterApi: "REACT_APP_TWITTER_AUTH_URL"
 };
 
 export const environment: typeof swEnvVariables =
