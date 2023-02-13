@@ -50,41 +50,23 @@ const FormStackWrapper = styled("div")(({ theme }) => ({
   }
 }));
 
-const getSocialLink = (socials: AutSocial[]) => {
-  const social = socials.find((s) => s.type === "twitter");
-  return social?.link.replace(socialUrls[social.type].prefix, "");
-};
-
 const CommunityInfoStep = (props: StepperChildProps) => {
   const dispatch = useAppDispatch();
-  const [openVerify, setOpenVerify] = useState(false);
-  const [verified, setVerified] = useState(false);
-  const { name, image, description, socials } = useSelector(IntegrateCommunity);
+  const { name, image, description } = useSelector(IntegrateCommunity);
   const { control, handleSubmit, getValues, watch, formState } = useForm({
     mode: "onChange",
     defaultValues: {
       name,
       image,
-      description,
-      tweetHandle: getSocialLink(socials)
+      description
     }
   });
 
   const values = watch();
 
   const updateState = () => {
-    const { tweetHandle, ...rest } = getValues();
-    return dispatch(
-      integrateUpdateCommunity({
-        ...rest,
-        socials: JSON.parse(JSON.stringify(socials)).map((s) => {
-          if (s.type === "twitter") {
-            s.link = `${socialUrls[s.type].prefix}${tweetHandle}`;
-          }
-          return s;
-        })
-      })
-    );
+    const values = getValues();
+    return dispatch(integrateUpdateCommunity(values));
   };
 
   const onSubmit = async () => {
@@ -94,15 +76,6 @@ const CommunityInfoStep = (props: StepperChildProps) => {
 
   return (
     <StepWrapper autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      {openVerify && (
-        <VerifySignature
-          onClose={(ver) => {
-            setVerified(ver);
-            setOpenVerify(false);
-          }}
-          open={openVerify}
-        />
-      )}
       <FormStackWrapper>
         <Controller
           name="image"
@@ -193,8 +166,7 @@ const CommunityInfoStep = (props: StepperChildProps) => {
                   xs: "100%",
                   sm: "400px",
                   xxl: "800px"
-                },
-                mb: pxToRem(45)
+                }
               }}
               placeholder="Introduce your community to the world. It can be a one-liner, common values, goals, or even the story behind it!"
               helperText={
@@ -211,42 +183,6 @@ const CommunityInfoStep = (props: StepperChildProps) => {
           );
         }}
       />
-
-      <FormStackWrapper>
-        <Controller
-          name="tweetHandle"
-          control={control}
-          render={({ field: { name, value, onChange } }) => {
-            return (
-              <AutTextField
-                variant="standard"
-                color="offWhite"
-                name={name}
-                value={value || ""}
-                sx={{
-                  flex: 1
-                }}
-                onChange={onChange}
-                placeholder="Add Twitter"
-              />
-            );
-          }}
-        />
-        <Button
-          onClick={() => setOpenVerify(true)}
-          sx={{
-            width: pxToRem(140),
-            height: pxToRem(48)
-          }}
-          type="button"
-          size="square"
-          color="offWhite"
-          disabled={!values.tweetHandle}
-          variant="outlined"
-        >
-          Verify
-        </Button>
-      </FormStackWrapper>
       <StepperButton
         label="Next"
         disabled={!formState.isValid || !values.image}
