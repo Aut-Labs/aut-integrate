@@ -4,7 +4,6 @@ import { AutButton } from "@components/buttons";
 import AFileUpload from "@components/FileUpload";
 import { StepperButton } from "@components/Stepper";
 import { StepperChildProps } from "@components/Stepper/model";
-import VerifySignature from "@components/VerifySignature";
 import { Button, styled } from "@mui/material";
 import {
   IntegrateCommunity,
