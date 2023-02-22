@@ -7,13 +7,14 @@ import {
   SelectedWalletType,
   setNetwork,
   setProviderIsOpen,
-  setSigner
+  setSigner,
+  updateWalletProviderState
 } from "@store/WalletProvider/WalletProvider";
 import { useSelector } from "react-redux";
 import { Typography, styled } from "@mui/material";
 import DialogWrapper from "@components/Dialog/DialogWrapper";
 import AppTitle from "@components/AppTitle";
-import { useEthers, useConnector } from "@usedapp/core";
+import { useEthers, useConnector, Connector } from "@usedapp/core";
 import AutLoading from "@components/AutLoading";
 import ConnectorBtn from "./ConnectorBtn";
 import { NetworkSelectors } from "./NetworkSelectors";
@@ -71,6 +72,36 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
       !!wallet
     );
   }, [chainId, currentChainId, connector, active, wallet]);
+
+  const activateNetwork = async (
+    network: NetworkConfig,
+    conn: Connector,
+    wallet?: string
+  ) => {
+    setIsLoadingNetwork(true);
+    try {
+      await activate(conn);
+      await switchNetwork(+network.chainId);
+    } catch (error) {
+      console.log(error, "error");
+    }
+    const signer = conn?.provider?.getSigner();
+    const itemsToUpdate = {
+      sdkInitialized: true,
+      selectedWalletType: wallet,
+      selectedNetwork: network.network,
+      signer
+    };
+    if (!wallet) {
+      delete itemsToUpdate.selectedWalletType;
+    }
+    await dispatch(updateWalletProviderState(itemsToUpdate));
+    await initialiseSDK(network, signer as ethers.providers.JsonRpcSigner);
+    setCurrentChainId(+network.chainId);
+    setIsLoadingNetwork(false);
+  };
+
+  console.log(account, chainId, wallet, active, "account");
 
   const isAllowListed = async (signer: ethers.providers.JsonRpcSigner) => {
     const contract = Web3AllowListProvider(
@@ -165,7 +196,7 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
             <AutLoading />
           </div>
         )}
-        {allowListedComplete && !allowListed && (
+        {allowListedComplete && !allowListed && account && (
           <Typography
             mb="12px"
             textAlign="center"
@@ -175,7 +206,21 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
             Aw shucks, it looks like you’re not on the Allowlist for this round.
           </Typography>
         )}
-        {!loadingNetwork && (
+
+        {!account && (
+          <Typography
+            mb={{
+              xs: "8px"
+            }}
+            mt={8}
+            color="white"
+            variant="subtitle1"
+          >
+            Connect to your metamask
+          </Typography>
+        )}
+
+        {!loadingNetwork && account && (
           <>
             {!wallet && (
               <Typography color="white" variant="subtitle1">
@@ -219,7 +264,6 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
                   />
                 </>
               )}
-
               {wallet && !isLoading && (
                 <NetworkSelectors
                   networks={networks}
@@ -228,8 +272,12 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
                       (n) => n.chainId?.toString() === foundChainId?.toString()
                     );
                     if (config) {
-                      await activate(connector.connector);
-                      switchNetwork(foundChainId);
+                      try {
+                        await activate(connector.connector);
+                        switchNetwork(foundChainId);
+                      } catch (error) {
+                        console.log(error, "error");
+                      }
                     }
                   }}
                 />

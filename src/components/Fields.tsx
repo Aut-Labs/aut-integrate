@@ -30,15 +30,15 @@ export function FormHelperText({
       ...(errorTypes || {})
     };
 
-    const message = types[type];
+    const message = types[type as any];
 
     return (
       <Typography
         whiteSpace="nowrap"
+        color="red"
         align="right"
-        color="error"
         component="span"
-        variant="caption"
+        variant="body2"
         className="auto-helper-error"
         sx={{
           width: "100%",
@@ -58,11 +58,10 @@ export function FormHelperText({
           position: "absolute",
           left: "0"
         }}
-        className="auto-helper-info"
+        className="auto-helper-info text-secondary"
         align="right"
         component="span"
-        color="offWhite.dark"
-        variant="caption"
+        variant="body2"
       >
         {children}
       </Typography>

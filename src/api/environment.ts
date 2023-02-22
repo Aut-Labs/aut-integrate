@@ -14,8 +14,7 @@ export const swEnvVariables = {
   networkEnv: "REACT_APP_NETWORK_ENV",
 
   // NFT storage
-  nftStorageKey: "REACT_APP_NFT_STORAGE_KEY",
-  nftStorageUrl: "REACT_APP_IPFS_URL"
+  nftStorageKey: "REACT_APP_NFT_STORAGE_KEY"
 };
 
 export const environment: typeof swEnvVariables =

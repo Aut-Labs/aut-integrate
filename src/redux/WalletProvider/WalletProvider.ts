@@ -29,6 +29,11 @@ export const walletProviderSlice = createSlice({
   name: "walletProvider",
   initialState,
   reducers: {
+    updateWalletProviderState(state, action) {
+      Object.keys(action.payload).forEach((key: string) => {
+        state[key] = action.payload[key];
+      });
+    },
     setSigner(state, action) {
       state.signer = action.payload;
     },
@@ -52,6 +57,7 @@ export const {
   setSigner,
   setWallet,
   setNetwork,
+  updateWalletProviderState,
   setNetworks,
   setProviderIsOpen
 } = walletProviderSlice.actions;

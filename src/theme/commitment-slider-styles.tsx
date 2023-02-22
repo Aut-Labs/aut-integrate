@@ -73,7 +73,7 @@ export const AutCommitmentSlider = ({
           name={name}
           errors={errors}
         >
-          <Typography color="white" variant="caption">
+          <Typography className="text-secondary" variant="caption">
             No worries, you’ll be able to change this later.
           </Typography>
         </FormHelperText>
@@ -105,11 +105,26 @@ export default (theme: Theme) =>
     styleOverrides: {
       root: {
         "&.MuiSlider-colorPrimary": generateColors(theme.palette.offWhite),
-        width: pxToRem(600),
-        height: pxToRem(65),
-        borderRadius: "0",
+        [theme.breakpoints.up("xxl")]: {
+          width: pxToRem(600),
+          height: pxToRem(65),
+          ".MuiSlider-thumb": {
+            width: "45px",
+            height: "45px"
+          }
+        },
+        [theme.breakpoints.up("md")]: {
+          width: pxToRem(550),
+          height: pxToRem(45),
+          ".MuiSlider-thumb": {
+            width: "30px",
+            height: "30px"
+          }
+        },
+        borderRadius: "8.5px",
         borderWidth: "2px",
         borderStyle: "solid",
+        borderColor: theme.palette.divider,
         padding: "0",
 
         'span[data-index="10"].MuiSlider-mark': {
@@ -118,10 +133,7 @@ export default (theme: Theme) =>
         'span[data-index="0"].MuiSlider-mark': {
           display: "none"
         },
-        ".MuiSlider-thumb": {
-          width: "45px",
-          height: "45px"
-        },
+
         ".MuiSlider-mark": {
           background: "transparent",
           width: "5px",

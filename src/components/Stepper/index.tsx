@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import StepWizard, { StepWizardChildProps } from "react-step-wizard";
 import { styled } from "@mui/system";
 import { Button, ButtonProps, Container } from "@mui/material";
-import { AutButton } from "@components/buttons";
 import { pxToRem } from "@utils/text-size";
 import StepperNav from "./StepperNav";
 import { StepperProps } from "./model";
@@ -163,7 +162,7 @@ export const StepperButton = ({
       type="submit"
       variant="outlined"
       size="normal"
-      color="offWhite"
+      color="primary"
       {...props}
     >
       {label}

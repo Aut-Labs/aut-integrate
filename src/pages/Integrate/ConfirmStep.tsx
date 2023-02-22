@@ -236,12 +236,7 @@ const ConfirmStep = () => {
               DAO Address
             </Typography>
 
-            <CopyAddress
-              textProps={{
-                variant: "body"
-              }}
-              address={data.daoAddr}
-            />
+            <CopyAddress address={data.daoAddr} />
           </div>
         </div>
       </div>

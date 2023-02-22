@@ -83,8 +83,8 @@ const IntegrateSuccess = () => {
           height: "60px",
           marginTop: "80px",
           padding: "0 20px",
-          borderTop: `1px solid ${theme.palette.offWhite.main}`,
-          borderBottom: `1px solid ${theme.palette.offWhite.main}`
+          borderTop: `1px solid ${theme.palette.divider}`,
+          borderBottom: `1px solid ${theme.palette.divider}`
         }}
       >
         <Typography
@@ -92,20 +92,11 @@ const IntegrateSuccess = () => {
           marginRight={pxToRem(100)}
           color="white"
           variant="body"
-          fontWeight="bold"
         >
           Your expanded DAO Contract {"—> "}
         </Typography>
 
-        <CopyAddress
-          textProps={{
-            variant: "body"
-          }}
-          iconStyles={{
-            width: pxToRem(50)
-          }}
-          address={params.address}
-        />
+        <CopyAddress variant="subtitle2" address={params.address} />
       </div>
       <Typography
         maxWidth={{
