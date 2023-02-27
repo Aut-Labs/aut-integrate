@@ -105,6 +105,9 @@ export default (theme: Theme) =>
     styleOverrides: {
       root: {
         "&.MuiSlider-colorPrimary": generateColors(theme.palette.offWhite),
+        width: "100%",
+        minWidth: pxToRem(320),
+        height: pxToRem(45),
         [theme.breakpoints.up("xxl")]: {
           width: pxToRem(600),
           height: pxToRem(65),

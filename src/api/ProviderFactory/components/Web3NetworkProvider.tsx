@@ -55,6 +55,10 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
     isLoading
   } = useEthers();
 
+  // const isLoading = useMemo(() => {
+  //   return chainId && loading;
+  // }, [loading, chainId]);
+
   const isActive = useMemo(() => {
     const config = networks.find(
       (n) => n.chainId?.toString() === chainId?.toString()
@@ -100,8 +104,6 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
     setCurrentChainId(+network.chainId);
     setIsLoadingNetwork(false);
   };
-
-  console.log(account, chainId, wallet, active, "account");
 
   const isAllowListed = async (signer: ethers.providers.JsonRpcSigner) => {
     const contract = Web3AllowListProvider(
@@ -196,7 +198,7 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
             <AutLoading />
           </div>
         )}
-        {allowListedComplete && !allowListed && account && (
+        {allowListedComplete && !allowListed && (
           <Typography
             mb="12px"
             textAlign="center"
@@ -207,7 +209,7 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
           </Typography>
         )}
 
-        {!account && (
+        {/* {!isWAlletConnected && (
           <Typography
             mb={{
               xs: "8px"
@@ -218,9 +220,9 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
           >
             Connect to your metamask
           </Typography>
-        )}
+        )} */}
 
-        {!loadingNetwork && account && (
+        {!loadingNetwork && (
           <>
             {!wallet && (
               <Typography color="white" variant="subtitle1">
