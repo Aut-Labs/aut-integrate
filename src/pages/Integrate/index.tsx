@@ -4,13 +4,7 @@ import { Button, Toolbar } from "@mui/material";
 import { ReactComponent as AutLogo } from "@assets/aut/logo.svg";
 import { ReactComponent as BackIcon } from "@assets/aut/back.svg";
 import { pxToRem } from "@utils/text-size";
-import {
-  Route,
-  Switch,
-  useHistory,
-  useLocation,
-  useRouteMatch
-} from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import {
   integrateUpdateStatus,
   resetIntegrateState
@@ -31,19 +25,18 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 const Integrate = () => {
   const dispatch = useAppDispatch();
   const { active } = useEthers();
-  const { path } = useRouteMatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const networkConfig = useSelector(SelectedNetworkConfig);
   const [instance, setInstance] = useState<StepWizardChildProps>();
   const goBack = () => {
     if (instance?.currentStep === 1) {
-      history.push({
+      navigate({
         pathname: `/`,
         search: location.search
       });
     } else if (!instance) {
-      history.push({
+      navigate({
         pathname: "/integrate",
         search: location.search
       });
@@ -76,7 +69,7 @@ const Integrate = () => {
           justifyContent: "center"
         }}
       >
-        {!history.location.pathname.includes("success") && (
+        {!location.pathname.includes("success") && (
           <Button
             sx={{
               color: "white",
@@ -101,14 +94,10 @@ const Integrate = () => {
         )}
         <AppTitle variant="h2" />
       </Toolbar>
-      <Switch>
-        <Route
-          exact
-          path={path}
-          render={() => <IntegrateStepper instance={setInstance} />}
-        />
-        <Route path={`${path}/success/:address`} component={IntegrateSuccess} />
-      </Switch>
+      <Routes>
+        <Route index element={<IntegrateStepper instance={setInstance} />} />
+        <Route path="success/:address" element={<IntegrateSuccess />} />
+      </Routes>
     </>
   );
 };

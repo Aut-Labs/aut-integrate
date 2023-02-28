@@ -18,7 +18,7 @@ import { useAppDispatch } from "@store/store.model";
 import { MarketTemplates, CommitmentMessages } from "@utils/misc";
 import { pxToRem } from "@utils/text-size";
 import { useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const StepWrapper = styled("div")({
   textAlign: "center",
@@ -30,11 +30,11 @@ const StepWrapper = styled("div")({
 
 const ConfirmStep = () => {
   const dispatch = useAppDispatch();
-  const history = useHistory();
   const data = useSelector(IntegrateCommunity);
   const status = useSelector(IntegrateStatus);
   const errorMessage = useSelector(IntegrateErrorMessage);
   const location = useLocation();
+  const navigate = useNavigate();
   const theme = useTheme();
 
   const onSubmit = async () => {
@@ -66,8 +66,8 @@ const ConfirmStep = () => {
     );
 
     if (result.meta.requestStatus === "fulfilled") {
-      history.push({
-        pathname: `integrate/success/${result.payload}`,
+      navigate({
+        pathname: `success/${result.payload}`,
         search: location.search
       });
     }

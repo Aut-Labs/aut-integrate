@@ -1,5 +1,5 @@
 import { Box, Button, Container, styled, Typography } from "@mui/material";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@store/store.model";
 import {
   SelectedNetworkConfig,
@@ -9,14 +9,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ReactComponent as GenesisImage } from "@assets/genesis.svg";
 import AppTitle from "@components/AppTitle";
-import {
-  Mainnet,
-  DAppProvider,
-  useEtherBalance,
-  useEthers,
-  Config,
-  Goerli
-} from "@usedapp/core";
+import { useEthers } from "@usedapp/core";
 
 const Wrapper = styled(Container)({
   display: "flex",
@@ -52,7 +45,7 @@ const GetStarted = () => {
   const [canStartFromScratch, setCanStartFromScratch] = useState(false);
   const { active } = useEthers();
   const networkConfig = useSelector(SelectedNetworkConfig);
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -77,7 +70,7 @@ const GetStarted = () => {
   const start = (startFromScratch: boolean) => {
     const qParams = new URLSearchParams(location.search);
     qParams.set("startFromScratch", `${startFromScratch}`);
-    history.push({
+    navigate({
       pathname: "/integrate",
       search: qParams.toString()
     });
@@ -89,9 +82,9 @@ const GetStarted = () => {
       <Box
         maxWidth={{
           xs: "100%",
-          md: "600px",
-          lg: "700px",
-          xl: "800px",
+          sm: "620px",
+          // lg: "700px",
+          // xl: "800px",
           xxl: "900px"
         }}
       >
@@ -157,38 +150,41 @@ const GetStarted = () => {
         <Typography component="p" variant="subtitle2" color="white">
           There is no community like yours - create your own Standards. Opt Āut.
         </Typography>
-      </Box>
-      <Box
-        sx={{
-          gridGap: "30px",
-          display: "flex",
-          justifyContent: "center",
-          mt: {
-            xs: "20px",
-            lg: "35px",
-            xxl: "80px"
-          }
-        }}
-        className="right-box"
-      >
-        <Button
-          type="submit"
-          variant="outlined"
-          size="normal"
-          color="offWhite"
-          onClick={() => goToIntegrate()}
+
+        <Box
+          sx={{
+            gridGap: "30px",
+            display: "flex",
+            justifyContent: {
+              xs: "flex-start",
+              sm: "space-between"
+            },
+            mt: {
+              xs: "20px",
+              lg: "35px",
+              xxl: "80px"
+            }
+          }}
         >
-          Expand
-        </Button>
-        <Button
-          type="submit"
-          variant="outlined"
-          size="normal"
-          color="offWhite"
-          onClick={() => goToIntegrate(true)}
-        >
-          Start from scratch
-        </Button>
+          <Button
+            type="submit"
+            variant="outlined"
+            size="normal"
+            color="offWhite"
+            onClick={() => goToIntegrate()}
+          >
+            Expand
+          </Button>
+          <Button
+            type="submit"
+            variant="outlined"
+            size="normal"
+            color="offWhite"
+            onClick={() => goToIntegrate(true)}
+          >
+            Start from scratch
+          </Button>
+        </Box>
       </Box>
     </Wrapper>
   );

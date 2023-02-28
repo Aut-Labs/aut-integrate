@@ -1,17 +1,15 @@
-import { withRouter, Switch, Route } from "react-router-dom";
+import { Route, Navigate, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
 import Web3NetworkProvider from "@api/ProviderFactory/components/Web3NetworkProvider";
-import NotFound from "@components/NotFound";
 import { environment } from "@api/environment";
 import AutSDK from "@aut-labs-private/sdk";
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { useAppDispatch } from "@store/store.model";
 import { setNetworks } from "@store/WalletProvider/WalletProvider";
 import AutLoading from "@components/AutLoading";
 import SWSnackbar from "./components/snackbar";
 import GetStarted from "./pages/GetStarted/GetStarted";
-import Integrate from "./pages/Integrate";
-import "./App.scss";
+
 import { getAppConfig } from "@api/aut.api";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
@@ -21,6 +19,9 @@ import { WalletConnectConnector } from "@usedapp/wallet-connect-connector";
 
 import { Network } from "@ethersproject/networks";
 import { NetworkConfig } from "@api/ProviderFactory/network.config";
+import "./App.scss";
+
+const Integrate = lazy(() => import("./pages/Integrate"));
 
 const generateConfig = (networks: NetworkConfig[]): Config => {
   const readOnlyUrls = networks.reduce((prev, curr) => {
@@ -96,11 +97,16 @@ function App() {
               height: `100%`
             }}
           >
-            <Switch>
-              <Route exact component={GetStarted} path="/" />
-              <Route path="/integrate" component={Integrate} />
-              <Route component={NotFound} />
-            </Switch>
+            <Suspense fallback={<AutLoading />}>
+              <Routes>
+                <Route index element={<GetStarted />} />
+                <Route path="/integrate" element={<Integrate />} />
+                <Route
+                  path="*"
+                  element={<Navigate to="/" state={{ from: location }} />}
+                />
+              </Routes>
+            </Suspense>
           </Box>
         </DAppProvider>
       )}
@@ -108,4 +114,4 @@ function App() {
   );
 }
 
-export default withRouter(App);
+export default App;

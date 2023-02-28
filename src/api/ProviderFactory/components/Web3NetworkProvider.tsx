@@ -275,6 +275,7 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
                     );
                     if (config) {
                       try {
+                        setNetworkChanged(true);
                         await activate(connector.connector);
                         switchNetwork(foundChainId);
                       } catch (error) {
