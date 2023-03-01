@@ -219,25 +219,27 @@ const ConfirmStep = () => {
               {data.commitment} ( {CommitmentMessages(data.commitment)} )
             </Typography>
           </div>
-          <div
-            style={{
-              display: "flex",
-              textAlign: "left",
-              marginBottom: pxToRem(15)
-            }}
-          >
-            <Typography
-              sx={{
-                width: pxToRem(220)
+          {!!data.daoAddr && (
+            <div
+              style={{
+                display: "flex",
+                textAlign: "left",
+                marginBottom: pxToRem(15)
               }}
-              variant="body"
-              color="white"
             >
-              DAO Address
-            </Typography>
+              <Typography
+                sx={{
+                  width: pxToRem(220)
+                }}
+                variant="body"
+                color="white"
+              >
+                DAO Address
+              </Typography>
 
-            <CopyAddress address={data.daoAddr} />
-          </div>
+              <CopyAddress address={data.daoAddr} />
+            </div>
+          )}
         </div>
       </div>
       <StepperButton type="button" label="Confirm" onClick={onSubmit} />

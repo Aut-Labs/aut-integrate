@@ -4,14 +4,7 @@ import LoadingDialog from "@components/Dialog/LoadingPopup";
 import { FormHelperText } from "@components/Fields";
 import { StepperButton } from "@components/Stepper";
 import { StepperChildProps } from "@components/Stepper/model";
-import {
-  Link,
-  MenuItem,
-  Select,
-  styled,
-  TextField,
-  Typography
-} from "@mui/material";
+import { Link, MenuItem, styled } from "@mui/material";
 import {
   IntegrateCommunity,
   IntegrateErrorMessage,

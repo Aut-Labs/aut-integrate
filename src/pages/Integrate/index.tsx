@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { StepWizardChildProps } from "react-step-wizard";
 import { Button, Toolbar } from "@mui/material";
-import { ReactComponent as AutLogo } from "@assets/aut/logo.svg";
-import { ReactComponent as BackIcon } from "@assets/aut/back.svg";
 import { pxToRem } from "@utils/text-size";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate
+} from "react-router-dom";
 import {
   integrateUpdateStatus,
   resetIntegrateState
@@ -97,6 +101,7 @@ const Integrate = () => {
       <Routes>
         <Route index element={<IntegrateStepper instance={setInstance} />} />
         <Route path="success/:address" element={<IntegrateSuccess />} />
+        <Route path="*" element={<Navigate to="/integrate" />} />
       </Routes>
     </>
   );

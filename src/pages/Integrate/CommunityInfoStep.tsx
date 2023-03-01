@@ -1,10 +1,9 @@
 /* eslint-disable max-len */
 import { FormHelperText } from "@components/Fields";
-import { AutButton } from "@components/buttons";
 import AFileUpload from "@components/FileUpload";
 import { StepperButton } from "@components/Stepper";
 import { StepperChildProps } from "@components/Stepper/model";
-import { Button, styled } from "@mui/material";
+import { styled } from "@mui/material";
 import {
   IntegrateCommunity,
   integrateUpdateCommunity
@@ -12,12 +11,9 @@ import {
 import { useAppDispatch } from "@store/store.model";
 import { AutTextField } from "@theme/field-text-styles";
 import { countWords } from "@utils/helpers";
-import { pxToRem } from "@utils/text-size";
 import { toBase64 } from "@utils/to-base-64";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { AutSocial, socialUrls } from "@api/social.model";
 
 const errorTypes = {
   maxWords: `Words cannot be more than 3`,

@@ -3,14 +3,11 @@ import { StepperButton } from "@components/Stepper";
 import { StepperChildProps } from "@components/Stepper/model";
 import {
   Box,
-  Button,
   Card,
   CardActionArea,
   CardContent,
   CardHeader,
   Grid,
-  Link,
-  Stack,
   alpha,
   styled,
   Typography,
@@ -153,132 +150,12 @@ const SelectMarketStep = (props: StepperChildProps) => {
                       </CardContent>
                     </CardActionArea>
                   </GridCard>
-                  // <AutCard
-                  //   sx={{
-                  //     height: {
-                  //       xs: "100%",
-                  //       md: "235px",
-                  //       lg: "250px",
-                  //       xxl: "350px"
-                  //     },
-                  //     width: {
-                  //       xs: "100%",
-                  //       md: "280px",
-                  //       lg: "290px",
-                  //       xxl: "335px"
-                  //     }
-                  //   }}
-                  //   square
-                  //   color="offWhite"
-                  //   onClick={() => onChange(value === market ? null : market)}
-                  //   className={value === market ? "active" : ""}
-                  // >
-                  //   <CardContent
-                  //     sx={{
-                  //       flex: 1,
-                  //       display: "flex",
-                  //       padding: {
-                  //         xs: "20px",
-                  //         md: "28px",
-                  //         lg: "30px",
-                  //         xxl: "50px"
-                  //       },
-                  //       flexDirection: "column"
-                  //     }}
-                  //   >
-                  //     <Typography mb={2} color="white" variant="subtitle1">
-                  //       {title}
-                  //     </Typography>
-                  //     <Typography
-                  //       textAlign="left"
-                  //       color="white"
-                  //       variant="body1"
-                  //     >
-                  //       {description}
-                  //     </Typography>
-                  //   </CardContent>
-                  // </AutCard>
                 );
               }}
             />
           </Grid>
         ))}
       </GridBox>
-      {/* <Grid
-        container
-        justifyContent="space-around"
-        alignItems="center"
-        spacing={{
-          xs: "20px",
-          md: "22px",
-          xxl: "75px"
-        }}
-      >
-        {MarketTemplates.map(({ title, market, description }, index) => (
-          <Grid item key={index}>
-            <Controller
-              name="market"
-              key={market}
-              control={control}
-              rules={{
-                validate: {
-                  selected: (v) => !!v
-                }
-              }}
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <AutCard
-                    sx={{
-                      height: {
-                        xs: "100%",
-                        md: "235px",
-                        lg: "250px",
-                        xxl: "350px"
-                      },
-                      width: {
-                        xs: "100%",
-                        md: "280px",
-                        lg: "290px",
-                        xxl: "335px"
-                      }
-                    }}
-                    square
-                    color="offWhite"
-                    onClick={() => onChange(value === market ? null : market)}
-                    className={value === market ? "active" : ""}
-                  >
-                    <CardContent
-                      sx={{
-                        flex: 1,
-                        display: "flex",
-                        padding: {
-                          xs: "20px",
-                          md: "28px",
-                          lg: "30px",
-                          xxl: "50px"
-                        },
-                        flexDirection: "column"
-                      }}
-                    >
-                      <Typography mb={2} color="white" variant="subtitle1">
-                        {title}
-                      </Typography>
-                      <Typography
-                        textAlign="left"
-                        color="white"
-                        variant="body1"
-                      >
-                        {description}
-                      </Typography>
-                    </CardContent>
-                  </AutCard>
-                );
-              }}
-            />
-          </Grid>
-        ))}
-      </Grid> */}
-
       <StepperButton label="Next" disabled={!formState.isValid} />
     </StepWrapper>
   );

@@ -99,12 +99,9 @@ function App() {
           >
             <Suspense fallback={<AutLoading />}>
               <Routes>
-                <Route index element={<GetStarted />} />
-                <Route path="/integrate" element={<Integrate />} />
-                <Route
-                  path="*"
-                  element={<Navigate to="/" state={{ from: location }} />}
-                />
+                <Route path="/" element={<GetStarted />} />
+                <Route path="/integrate/*" element={<Integrate />} />
+                <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Suspense>
           </Box>
