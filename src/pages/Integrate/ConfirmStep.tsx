@@ -15,6 +15,7 @@ import {
 } from "@store/Integrate/integrate";
 import { ResultState } from "@store/result-status";
 import { useAppDispatch } from "@store/store.model";
+import { useEthers } from "@usedapp/core";
 import { MarketTemplates, CommitmentMessages } from "@utils/misc";
 import { pxToRem } from "@utils/text-size";
 import { useSelector } from "react-redux";
@@ -36,6 +37,7 @@ const ConfirmStep = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
+  const { account } = useEthers();
 
   const onSubmit = async () => {
     const state = { ...data };
@@ -44,6 +46,7 @@ const ConfirmStep = () => {
     // }
     const result = await dispatch(
       createCommunity({
+        userAddress: account,
         contractType: state.contractType,
         daoAddr: state.daoAddr,
         metadata: new Community({
