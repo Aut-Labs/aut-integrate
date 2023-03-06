@@ -64,7 +64,7 @@ export const createCommunity = createAsyncThunk(
       try {
         await updateCache({
           address: requestBody.userAddress,
-          daoAddress: requestBody.daoAddr,
+          daoAddress: response.data,
           list: [
             {
               phase: 1,
