@@ -11,10 +11,10 @@ interface CacheModel {
   list: any[];
 }
 
-export const getCache = async (userAddress: string): Promise<CacheModel> => {
+export const getCache = async (cacheKey: string): Promise<CacheModel> => {
   const token = localStorage.getItem(AUTH_TOKEN_KEY);
   const res = await axios.get(
-    `${environment.apiUrl}/autID/cache/getCache/${userAddress}`,
+    `${environment.apiUrl}/autID/cache/getCache/${cacheKey}`,
     {
       headers: {
         Authorization: token
@@ -29,7 +29,7 @@ export const updateCache = async (
 ): Promise<CacheModel> => {
   const token = localStorage.getItem(AUTH_TOKEN_KEY);
   const res = await axios.post(
-    `${environment.apiUrl}/autID/cache/addOrUpdateCache`,
+    `${environment.apiUrl}/autID/cache/addOrUpdateCache/${cache.cacheKey}`,
     cache,
     {
       headers: {
@@ -40,10 +40,10 @@ export const updateCache = async (
   return res?.data || null;
 };
 
-export const deleteCache = async (cache: CacheModel): Promise<void> => {
+export const deleteCache = async (cacheKey: string): Promise<void> => {
   const token = localStorage.getItem(AUTH_TOKEN_KEY);
   const res = await axios.delete(
-    `${environment.apiUrl}/autID/cache/deleteCache/${cache.address}`,
+    `${environment.apiUrl}/autID/cache/deleteCache/${cacheKey}`,
     {
       headers: {
         Authorization: token

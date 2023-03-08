@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import Web3DautConnect from "@api/ProviderFactory/components/Web3NetworkProvider";
 import { environment } from "@api/environment";
 import AutSDK from "@aut-labs-private/sdk";
-import { Suspense, lazy, useEffect, useMemo, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { useAppDispatch } from "@store/store.model";
 import {
   IsAuthorised,
@@ -73,14 +73,6 @@ function App() {
   const [config, setConfig] = useState<Config>(null);
   const location = useLocation();
 
-  const returnUrl = useMemo(() => {
-    if (!isAuthorised) return "/";
-    const shouldGoToDashboard = location.pathname === "/";
-    const goTo = shouldGoToDashboard ? "/integrate" : location.pathname;
-    const url = location.state?.from;
-    return url || goTo;
-  }, [isAuthorised]);
-
   useEffect(() => {
     getAppConfig().then(async (res) => {
       dispatch(setNetworks(res));
@@ -129,7 +121,7 @@ function App() {
                     <Route path="/integrate/*" element={<Integrate />} />
                     <Route
                       path="*"
-                      element={<Navigate to={returnUrl} replace />}
+                      element={<Navigate to="/integrate" replace />}
                     />
                   </>
                 )}

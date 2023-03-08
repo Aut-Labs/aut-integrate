@@ -15,6 +15,7 @@ export interface WalletProviderState {
   isOpen: boolean;
   wallets: any;
   isAuthorised: boolean;
+  startFromScratch: boolean;
 }
 
 const initialState: WalletProviderState = {
@@ -24,7 +25,8 @@ const initialState: WalletProviderState = {
   isOpen: false,
   isAuthorised: false,
   networksConfig: [],
-  wallets: {}
+  wallets: {},
+  startFromScratch: false
 };
 
 export const walletProviderSlice = createSlice({
@@ -66,6 +68,9 @@ export const {
 
 export const IsAuthorised = (state: any) =>
   state.walletProvider.isAuthorised as boolean;
+
+export const StartFromScratch = (state: any) =>
+  state.walletProvider.startFromScratch as boolean;
 
 export const NetworkSelectorIsOpen = (state: any) =>
   state.walletProvider.isOpen as boolean;

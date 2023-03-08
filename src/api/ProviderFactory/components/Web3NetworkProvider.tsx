@@ -110,7 +110,6 @@ function Web3DautConnect() {
         setAllowListed(false);
       }
     } catch (error) {
-      debugger;
       console.error(error?.message, "error");
     } finally {
       setAllowListedComplete(true);

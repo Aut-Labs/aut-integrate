@@ -3,13 +3,29 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@store/store.model";
 import {
   IsAuthorised,
-  setProviderIsOpen
+  updateWalletProviderState
 } from "@store/WalletProvider/WalletProvider";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ReactComponent as GenesisImage } from "@assets/genesis.svg";
 import AppTitle from "@components/AppTitle";
-import { useEthers } from "@usedapp/core";
+import bubble from "@assets/bubble.png";
+
+const BottomLeftBubble = styled("img")({
+  position: "fixed",
+  width: "700px",
+  height: "700px",
+  left: "-350px",
+  bottom: "-350px"
+});
+
+const TopRightBubble = styled("img")({
+  position: "fixed",
+  width: "700px",
+  height: "700px",
+  top: "-350px",
+  right: "-350px"
+});
 
 const Wrapper = styled(Container)({
   display: "flex",
@@ -42,41 +58,35 @@ const GenesisImageWrapper = styled(GenesisImage)(({ theme }) => ({
 const GetStarted = () => {
   const dispatch = useAppDispatch();
   const [connectInitiated, setConnectInitiated] = useState(false);
-  const [canStartFromScratch, setCanStartFromScratch] = useState(false);
   const isAuthorised = useSelector(IsAuthorised);
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     if (!connectInitiated) {
       return;
     }
     if (isAuthorised) {
-      start(canStartFromScratch);
+      navigate("/integrate");
     }
-  }, [isAuthorised, canStartFromScratch]);
+  }, [isAuthorised]);
 
   const goToIntegrate = (startFromScratch = false) => {
     setConnectInitiated(true);
-    setCanStartFromScratch(startFromScratch);
     if (!isAuthorised) {
-      dispatch(setProviderIsOpen(true));
+      const itemsToUpdate = {
+        startFromScratch,
+        isOpen: true
+      };
+      dispatch(updateWalletProviderState(itemsToUpdate));
     } else {
-      start(startFromScratch);
+      navigate("/integrate");
     }
-  };
-
-  const start = (startFromScratch: boolean) => {
-    const qParams = new URLSearchParams(location.search);
-    qParams.set("startFromScratch", `${startFromScratch}`);
-    navigate({
-      pathname: "/integrate",
-      search: qParams.toString()
-    });
   };
 
   return (
     <Wrapper>
+      <BottomLeftBubble loading="lazy" src={bubble} />
+      <TopRightBubble loading="lazy" src={bubble} />
       <GenesisImageWrapper />
       <Box
         maxWidth={{

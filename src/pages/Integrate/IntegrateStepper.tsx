@@ -8,7 +8,8 @@ import SelectMarketStep from "./SelectMarketStep";
 import RoleStep from "./RoleStep";
 import CommitmentStep from "./CommitmentStep";
 import ConfirmStep from "./ConfirmStep";
-import { useLocation } from "react-router-dom";
+import { StartFromScratch } from "@store/WalletProvider/WalletProvider";
+import { useSelector } from "react-redux";
 
 const defaultSteps: Step[] = [
   {
@@ -77,7 +78,7 @@ const defaultSteps: Step[] = [
 ];
 
 const IntegrateStepper = (props) => {
-  const location = useLocation();
+  const startFromScratch = useSelector(StartFromScratch);
   const [instance, setInstance] = useState<StepWizardChildProps & any>();
   const [steps, setSteps] = useState([]);
 
@@ -86,9 +87,7 @@ const IntegrateStepper = (props) => {
   }, [instance]);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const startFromScratch = params.get("startFromScratch");
-    if (startFromScratch === "true") {
+    if (startFromScratch) {
       setSteps(defaultSteps.slice(1));
     } else {
       setSteps(defaultSteps);

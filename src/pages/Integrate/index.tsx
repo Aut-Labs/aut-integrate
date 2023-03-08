@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StepWizardChildProps } from "react-step-wizard";
-import { Button, Toolbar } from "@mui/material";
+import { Button, Toolbar, styled } from "@mui/material";
 import { pxToRem } from "@utils/text-size";
 import {
   Navigate,
@@ -20,6 +20,24 @@ import IntegrateSuccess from "./IntegrateSuccess";
 import IntegrateStepper from "./IntegrateStepper";
 import AppTitle from "@components/AppTitle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+
+import bubble from "@assets/bubble.png";
+
+const BottomLeftBubble = styled("img")({
+  position: "fixed",
+  width: "700px",
+  height: "700px",
+  left: "-350px",
+  bottom: "-350px"
+});
+
+const TopRightBubble = styled("img")({
+  position: "fixed",
+  width: "700px",
+  height: "700px",
+  top: "-350px",
+  right: "-350px"
+});
 
 const Integrate = () => {
   const dispatch = useAppDispatch();
@@ -60,6 +78,8 @@ const Integrate = () => {
 
   return (
     <>
+      <BottomLeftBubble loading="lazy" src={bubble} />
+      <TopRightBubble loading="lazy" src={bubble} />
       <Toolbar
         sx={{
           p: "0px !important",
