@@ -1,8 +1,7 @@
 import AutSDK, { SDKContractGenericResponse } from "@aut-labs-private/sdk";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Community } from "./community.model";
-import axios from "axios";
-import { environment } from "./environment";
+import { updateCache } from "./cache.api";
 
 export const isMemberOfDao = createAsyncThunk(
   "membership-checker/is-member",
@@ -21,14 +20,6 @@ export const isMemberOfDao = createAsyncThunk(
     return rejectWithValue(response?.errorMessage);
   }
 );
-
-export const updateCache = async (cache: any): Promise<any> => {
-  const res = await axios.post(
-    `${environment.apiUrl}/autID/cache/addOrUpdateCache`,
-    cache
-  );
-  return res?.data || null;
-};
 
 export const createCommunity = createAsyncThunk(
   "integrate/create/community",
@@ -63,6 +54,7 @@ export const createCommunity = createAsyncThunk(
     if (response?.isSuccess) {
       try {
         await updateCache({
+          cacheKey: "UserPhases",
           address: requestBody.userAddress,
           daoAddress: response.data,
           list: [

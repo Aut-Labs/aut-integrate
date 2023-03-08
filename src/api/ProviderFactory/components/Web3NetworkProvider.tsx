@@ -3,27 +3,25 @@ import {
   ConnectorTypes,
   NetworksConfig,
   NetworkSelectorIsOpen,
-  SelectedNetworkConfig,
   SelectedWalletType,
-  setNetwork,
-  setProviderIsOpen,
-  setSigner,
   updateWalletProviderState
 } from "@store/WalletProvider/WalletProvider";
 import { useSelector } from "react-redux";
 import { Typography, styled } from "@mui/material";
 import DialogWrapper from "@components/Dialog/DialogWrapper";
 import AppTitle from "@components/AppTitle";
-import { useEthers, useConnector, Connector } from "@usedapp/core";
+import { useEthers, useConnector, Connector, Config } from "@usedapp/core";
 import AutLoading from "@components/AutLoading";
 import ConnectorBtn from "./ConnectorBtn";
 import { NetworkSelectors } from "./NetworkSelectors";
 import { ethers } from "ethers";
 import AutSDK from "@aut-labs-private/sdk";
 import { SDKBiconomyWrapper } from "@aut-labs-private/sdk-biconomy";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { NetworkConfig } from "../network.config";
 import { Web3AllowListProvider } from "@aut-labs-private/abi-types";
+import { EnableAndChangeNetwork } from "../web3.network";
+import { authoriseWithWeb3 } from "@api/auth.api";
 
 const DialogInnerContent = styled("div")({
   display: "flex",
@@ -34,76 +32,17 @@ const DialogInnerContent = styled("div")({
   gridGap: "30px"
 });
 
-const Web3NetworkProvider = ({ fullScreen = false }: any) => {
+function Web3DautConnect() {
   const dispatch = useAppDispatch();
   const isOpen = useSelector(NetworkSelectorIsOpen);
   const wallet = useSelector(SelectedWalletType);
   const networks = useSelector(NetworksConfig);
-  const networkConfig = useSelector(SelectedNetworkConfig);
-  const [currentChainId, setCurrentChainId] = useState(null);
-  const [networkChanged, setNetworkChanged] = useState(false);
-  const [loadingNetwork, setIsLoadingNetwork] = useState(false);
-  const [allowListed, setAllowListed] = useState(false);
   const [allowListedComplete, setAllowListedComplete] = useState(false);
+  const [allowListed, setAllowListed] = useState(false);
   const { connector, activate } = useConnector();
-  const {
-    activateBrowserWallet,
-    account,
-    switchNetwork,
-    chainId,
-    active,
-    isLoading
-  } = useEthers();
-
-  // const isLoading = useMemo(() => {
-  //   return chainId && loading;
-  // }, [loading, chainId]);
-
-  const isActive = useMemo(() => {
-    const config = networks.find(
-      (n) => n.chainId?.toString() === chainId?.toString()
-    );
-    if (chainId && chainId !== currentChainId) {
-      setCurrentChainId(chainId);
-      setNetworkChanged(true);
-      return !!active && !!config;
-    }
-    return (
-      chainId === currentChainId &&
-      !!active &&
-      !!config &&
-      !!connector?.connector &&
-      !!wallet
-    );
-  }, [chainId, currentChainId, connector, active, wallet]);
-
-  const activateNetwork = async (
-    network: NetworkConfig,
-    conn: Connector,
-    wallet?: string
-  ) => {
-    setIsLoadingNetwork(true);
-    try {
-      await activate(conn);
-      await switchNetwork(+network.chainId);
-    } catch (error) {
-      console.log(error, "error");
-    }
-    const signer = conn?.provider?.getSigner();
-    const itemsToUpdate = {
-      sdkInitialized: true,
-      selectedWalletType: wallet,
-      selectedNetwork: network.network,
-      signer
-    };
-    if (!wallet) {
-      delete itemsToUpdate.selectedWalletType;
-    }
-    await dispatch(updateWalletProviderState(itemsToUpdate));
-    await initialiseSDK(network, signer as ethers.providers.JsonRpcSigner);
-    setCurrentChainId(+network.chainId);
-    setIsLoadingNetwork(false);
-  };
+  const { activateBrowserWallet, account, switchNetwork, chainId, isLoading } =
+    useEthers();
+  const [isSigning, setIsSigning] = useState(false);
 
   const isAllowListed = async (signer: ethers.providers.JsonRpcSigner) => {
     const contract = Web3AllowListProvider(
@@ -115,44 +54,68 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
     return contract.isAllowed(account);
   };
 
-  useEffect(() => {
-    if (isActive && networkChanged) {
-      const signer = connector?.connector?.provider?.getSigner();
-      const config = networks.find(
-        (n) => n.chainId?.toString() === chainId?.toString()
-      );
-      (async () => {
-        try {
-          setAllowListedComplete(false);
-          setIsLoadingNetwork(true);
-          const isAllowed = await isAllowListed(signer);
-          if (isAllowed) {
-            initialiseSDK(config, signer as ethers.providers.JsonRpcSigner);
-            dispatch(setNetwork(config.network));
-            dispatch(setSigner(signer));
-            dispatch(setProviderIsOpen(false));
-            setAllowListed(true);
-          } else {
-            setAllowListed(false);
-            dispatch(setProviderIsOpen(true));
-          }
-        } catch (error) {
-          setAllowListed(false);
-          dispatch(setProviderIsOpen(true));
-        } finally {
-          setNetworkChanged(false);
-          setIsLoadingNetwork(false);
-          setAllowListedComplete(true);
-        }
-      })();
-    }
-    if (!isActive && networkChanged && networkConfig) {
-      dispatch(setProviderIsOpen(true));
-    }
-  }, [isActive, networkChanged]);
-
   const changeConnector = async (connectorType: string) => {
     activateBrowserWallet({ type: connectorType });
+    const config = networks.find(
+      (n) => n.chainId?.toString() === chainId?.toString()
+    );
+    if (config && connector.connector) {
+      await activateNetwork(config, connector.connector);
+    }
+  };
+
+  const activateNetwork = async (network: NetworkConfig, conn: Connector) => {
+    try {
+      setIsSigning(true);
+      setAllowListedComplete(false);
+      await activate(conn);
+      await switchNetwork(+network.chainId);
+      // @ts-ignore
+      const provider = conn.provider.provider;
+      await EnableAndChangeNetwork(provider, network);
+      const signer = conn?.provider?.getSigner();
+      const isAllowed = await isAllowListed(signer);
+      if (isAllowed) {
+        setAllowListed(true);
+        const isAuthorised = await authoriseWithWeb3(provider);
+        if (isAuthorised) {
+          const itemsToUpdate = {
+            isAuthorised,
+            sdkInitialized: true,
+            selectedWalletType: wallet,
+            isOpen: false,
+            selectedNetwork: network.network,
+            signer
+          };
+          if (!wallet) {
+            delete itemsToUpdate.selectedWalletType;
+          }
+          await dispatch(updateWalletProviderState(itemsToUpdate));
+          await initialiseSDK(
+            network,
+            signer as ethers.providers.JsonRpcSigner
+          );
+        } else {
+          const itemsToUpdate = {
+            isAuthorised: false,
+            sdkInitialized: false,
+            selectedWalletType: null,
+            isOpen: false,
+            selectedNetwork: null,
+            signer: null
+          };
+          await dispatch(updateWalletProviderState(itemsToUpdate));
+        }
+      } else {
+        setAllowListed(false);
+      }
+    } catch (error) {
+      debugger;
+      console.error(error?.message, "error");
+    } finally {
+      setAllowListedComplete(true);
+      setIsSigning(false);
+    }
   };
 
   const initialiseSDK = async (
@@ -183,7 +146,7 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
   };
 
   return (
-    <DialogWrapper open={isOpen} fullScreen={fullScreen}>
+    <DialogWrapper open={isOpen}>
       <>
         <AppTitle
           mb={{
@@ -193,7 +156,7 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
           }}
           variant="h2"
         />
-        {loadingNetwork && (
+        {(isLoading || isSigning) && (
           <div style={{ position: "relative", flex: 1 }}>
             <AutLoading />
           </div>
@@ -209,20 +172,7 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
           </Typography>
         )}
 
-        {/* {!isWAlletConnected && (
-          <Typography
-            mb={{
-              xs: "8px"
-            }}
-            mt={8}
-            color="white"
-            variant="subtitle1"
-          >
-            Connect to your metamask
-          </Typography>
-        )} */}
-
-        {!loadingNetwork && (
+        {!isLoading && !isSigning && (
           <>
             {!wallet && (
               <Typography color="white" variant="subtitle1">
@@ -269,15 +219,13 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
               {wallet && !isLoading && (
                 <NetworkSelectors
                   networks={networks}
-                  onSelect={async (foundChainId: number) => {
-                    const config = networks.find(
-                      (n) => n.chainId?.toString() === foundChainId?.toString()
-                    );
-                    if (config) {
+                  onSelect={async (selectedNetwork: NetworkConfig) => {
+                    if (selectedNetwork) {
                       try {
-                        setNetworkChanged(true);
-                        await activate(connector.connector);
-                        switchNetwork(foundChainId);
+                        await activateNetwork(
+                          selectedNetwork,
+                          connector.connector
+                        );
                       } catch (error) {
                         console.log(error, "error");
                       }
@@ -291,6 +239,6 @@ const Web3NetworkProvider = ({ fullScreen = false }: any) => {
       </>
     </DialogWrapper>
   );
-};
+}
 
-export default Web3NetworkProvider;
+export default Web3DautConnect;

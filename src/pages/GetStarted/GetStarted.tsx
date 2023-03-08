@@ -2,7 +2,7 @@ import { Box, Button, Container, styled, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@store/store.model";
 import {
-  SelectedNetworkConfig,
+  IsAuthorised,
   setProviderIsOpen
 } from "@store/WalletProvider/WalletProvider";
 import { useEffect, useState } from "react";
@@ -43,8 +43,7 @@ const GetStarted = () => {
   const dispatch = useAppDispatch();
   const [connectInitiated, setConnectInitiated] = useState(false);
   const [canStartFromScratch, setCanStartFromScratch] = useState(false);
-  const { active } = useEthers();
-  const networkConfig = useSelector(SelectedNetworkConfig);
+  const isAuthorised = useSelector(IsAuthorised);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -52,15 +51,15 @@ const GetStarted = () => {
     if (!connectInitiated) {
       return;
     }
-    if (active && networkConfig) {
+    if (isAuthorised) {
       start(canStartFromScratch);
     }
-  }, [active, networkConfig, canStartFromScratch]);
+  }, [isAuthorised, canStartFromScratch]);
 
   const goToIntegrate = (startFromScratch = false) => {
     setConnectInitiated(true);
     setCanStartFromScratch(startFromScratch);
-    if (!active || !networkConfig) {
+    if (!isAuthorised) {
       dispatch(setProviderIsOpen(true));
     } else {
       start(startFromScratch);

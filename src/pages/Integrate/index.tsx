@@ -15,26 +15,28 @@ import {
 } from "@store/Integrate/integrate";
 import { ResultState } from "@store/result-status";
 import { useAppDispatch } from "@store/store.model";
-import {
-  SelectedNetworkConfig,
-  setProviderIsOpen
-} from "@store/WalletProvider/WalletProvider";
-import { useSelector } from "react-redux";
+import { updateWalletProviderState } from "@store/WalletProvider/WalletProvider";
 import IntegrateSuccess from "./IntegrateSuccess";
 import IntegrateStepper from "./IntegrateStepper";
-import { useEthers } from "@usedapp/core";
 import AppTitle from "@components/AppTitle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 const Integrate = () => {
   const dispatch = useAppDispatch();
-  const { active } = useEthers();
   const navigate = useNavigate();
   const location = useLocation();
-  const networkConfig = useSelector(SelectedNetworkConfig);
   const [instance, setInstance] = useState<StepWizardChildProps>();
-  const goBack = () => {
+  const goBack = async () => {
     if (instance?.currentStep === 1) {
+      const itemsToUpdate = {
+        isAuthorised: false,
+        sdkInitialized: false,
+        selectedWalletType: null,
+        isOpen: false,
+        selectedNetwork: null,
+        signer: null
+      };
+      await dispatch(updateWalletProviderState(itemsToUpdate));
       navigate({
         pathname: `/`,
         search: location.search
@@ -55,12 +57,6 @@ const Integrate = () => {
       dispatch(resetIntegrateState());
     };
   }, []);
-
-  useEffect(() => {
-    if (!active && !networkConfig) {
-      dispatch(setProviderIsOpen(true));
-    }
-  }, [active, networkConfig]);
 
   return (
     <>

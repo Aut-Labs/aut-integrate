@@ -9,7 +9,7 @@ export const NetworkSelectors = ({ onSelect, networks }) => {
           <Button
             key={`key-${index}`}
             onClick={() => {
-              onSelect(network.chainId, network.network.trim());
+              onSelect(network);
             }}
             variant="outlined"
             size="normal"
