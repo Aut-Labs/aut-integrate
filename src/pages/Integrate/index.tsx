@@ -20,8 +20,8 @@ import IntegrateSuccess from "./IntegrateSuccess";
 import IntegrateStepper from "./IntegrateStepper";
 import AppTitle from "@components/AppTitle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-
-import bubble from "@assets/bubble.png";
+import BubbleBottomLeft from "@assets/bubble_bottom_left.png";
+import BubbleTopRight from "@assets/bubble_top_right.png";
 
 const BottomLeftBubble = styled("img")({
   position: "fixed",
@@ -78,8 +78,8 @@ const Integrate = () => {
 
   return (
     <>
-      <BottomLeftBubble loading="lazy" src={bubble} />
-      <TopRightBubble loading="lazy" src={bubble} />
+      <BottomLeftBubble loading="lazy" src={BubbleBottomLeft} />
+      <TopRightBubble loading="lazy" src={BubbleTopRight} />
       <Toolbar
         sx={{
           p: "0px !important",

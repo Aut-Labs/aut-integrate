@@ -10,14 +10,14 @@ import { useSelector } from "react-redux";
 import { Typography, styled } from "@mui/material";
 import DialogWrapper from "@components/Dialog/DialogWrapper";
 import AppTitle from "@components/AppTitle";
-import { useEthers, useConnector, Connector, Config } from "@usedapp/core";
+import { useEthers, useConnector, Connector } from "@usedapp/core";
 import AutLoading from "@components/AutLoading";
 import ConnectorBtn from "./ConnectorBtn";
 import { NetworkSelectors } from "./NetworkSelectors";
 import { ethers } from "ethers";
 import AutSDK from "@aut-labs-private/sdk";
 import { SDKBiconomyWrapper } from "@aut-labs-private/sdk-biconomy";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NetworkConfig } from "../network.config";
 import { Web3AllowListProvider } from "@aut-labs-private/abi-types";
 import { EnableAndChangeNetwork } from "../web3.network";
@@ -38,10 +38,17 @@ function Web3DautConnect() {
   const wallet = useSelector(SelectedWalletType);
   const networks = useSelector(NetworksConfig);
   const [allowListedComplete, setAllowListedComplete] = useState(false);
+  const [tryEagerConnect, setTryEagerConnect] = useState(false);
   const [allowListed, setAllowListed] = useState(false);
   const { connector, activate } = useConnector();
-  const { activateBrowserWallet, account, switchNetwork, chainId, isLoading } =
-    useEthers();
+  const {
+    activateBrowserWallet,
+    account,
+    deactivate,
+    switchNetwork,
+    chainId,
+    isLoading
+  } = useEthers();
   const [isSigning, setIsSigning] = useState(false);
 
   const isAllowListed = async (signer: ethers.providers.JsonRpcSigner) => {
@@ -54,14 +61,34 @@ function Web3DautConnect() {
     return contract.isAllowed(account);
   };
 
+  const canConnectEagerly = useMemo(() => {
+    return !!tryEagerConnect && !!connector?.connector && account && isOpen;
+  }, [connector, tryEagerConnect, account, isOpen]);
+
+  useEffect(() => {
+    deactivate();
+  }, []);
+
+  useEffect(() => {
+    const tryConnect = async () => {
+      const config = networks.find(
+        (n) => n.chainId?.toString() === chainId?.toString()
+      );
+      if (config && connector?.connector) {
+        await activateNetwork(config, connector.connector);
+      } else {
+        setTryEagerConnect(false);
+      }
+    };
+
+    if (canConnectEagerly) {
+      tryConnect();
+    }
+  }, [canConnectEagerly]);
+
   const changeConnector = async (connectorType: string) => {
     activateBrowserWallet({ type: connectorType });
-    const config = networks.find(
-      (n) => n.chainId?.toString() === chainId?.toString()
-    );
-    if (config && connector.connector) {
-      await activateNetwork(config, connector.connector);
-    }
+    setTryEagerConnect(true);
   };
 
   const activateNetwork = async (network: NetworkConfig, conn: Connector) => {
@@ -70,14 +97,17 @@ function Web3DautConnect() {
       setAllowListedComplete(false);
       await activate(conn);
       await switchNetwork(+network.chainId);
-      // @ts-ignore
-      const provider = conn.provider.provider;
-      await EnableAndChangeNetwork(provider, network);
+      if (conn.name === "metamask") {
+        // @ts-ignore
+        const provider = conn.provider.provider;
+        await EnableAndChangeNetwork(provider, network);
+      }
       const signer = conn?.provider?.getSigner();
       const isAllowed = await isAllowListed(signer);
       if (isAllowed) {
         setAllowListed(true);
-        const isAuthorised = await authoriseWithWeb3(provider);
+        setAllowListedComplete(true);
+        const isAuthorised = await authoriseWithWeb3(signer);
         if (isAuthorised) {
           const itemsToUpdate = {
             isAuthorised,
@@ -96,24 +126,17 @@ function Web3DautConnect() {
             signer as ethers.providers.JsonRpcSigner
           );
         } else {
-          const itemsToUpdate = {
-            isAuthorised: false,
-            sdkInitialized: false,
-            selectedWalletType: null,
-            isOpen: false,
-            selectedNetwork: null,
-            signer: null
-          };
-          await dispatch(updateWalletProviderState(itemsToUpdate));
+          closeAndDisconnect();
         }
       } else {
         setAllowListed(false);
+        setAllowListedComplete(true);
       }
     } catch (error) {
       console.error(error?.message, "error");
     } finally {
-      setAllowListedComplete(true);
       setIsSigning(false);
+      setTryEagerConnect(false);
     }
   };
 
@@ -144,8 +167,23 @@ function Web3DautConnect() {
     );
   };
 
+  const closeAndDisconnect = async () => {
+    deactivate();
+    setAllowListedComplete(false);
+    setAllowListed(false);
+    const itemsToUpdate = {
+      isAuthorised: false,
+      sdkInitialized: false,
+      selectedWalletType: null,
+      isOpen: false,
+      selectedNetwork: null,
+      signer: null
+    };
+    await dispatch(updateWalletProviderState(itemsToUpdate));
+  };
+
   return (
-    <DialogWrapper open={isOpen}>
+    <DialogWrapper open={isOpen} onClose={closeAndDisconnect}>
       <>
         <AppTitle
           mb={{
@@ -203,7 +241,7 @@ function Web3DautConnect() {
               </>
             )}
             <DialogInnerContent>
-              {!wallet && (
+              {(!wallet || !connector?.connector) && (
                 <>
                   <ConnectorBtn
                     setConnector={changeConnector}
@@ -215,7 +253,7 @@ function Web3DautConnect() {
                   />
                 </>
               )}
-              {wallet && !isLoading && (
+              {wallet && !isLoading && !!connector?.connector && (
                 <NetworkSelectors
                   networks={networks}
                   onSelect={async (selectedNetwork: NetworkConfig) => {

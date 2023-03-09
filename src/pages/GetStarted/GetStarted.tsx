@@ -1,5 +1,5 @@
 import { Box, Button, Container, styled, Typography } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@store/store.model";
 import {
   IsAuthorised,
@@ -7,9 +7,10 @@ import {
 } from "@store/WalletProvider/WalletProvider";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { ReactComponent as GenesisImage } from "@assets/genesis.svg";
 import AppTitle from "@components/AppTitle";
-import bubble from "@assets/bubble.png";
+import BubbleBottomLeft from "@assets/bubble_bottom_left.png";
+import BubbleTopRight from "@assets/bubble_top_right.png";
+import GenesisImage from "@assets/genesis.png";
 
 const BottomLeftBubble = styled("img")({
   position: "fixed",
@@ -35,7 +36,7 @@ const Wrapper = styled(Container)({
   height: "100%"
 });
 
-const GenesisImageWrapper = styled(GenesisImage)(({ theme }) => ({
+const GenesisImageWrapper = styled("img")(({ theme }) => ({
   width: "100%",
   zIndex: "-1",
   position: "absolute",
@@ -44,12 +45,12 @@ const GenesisImageWrapper = styled(GenesisImage)(({ theme }) => ({
   transform: "translateY(-50%)",
   [theme.breakpoints.up("md")]: {
     display: "inherit",
-    height: "662px",
+    height: "500px",
     maxWidth: "662px",
     right: "calc(662px / 2 * -1)"
   },
   [theme.breakpoints.up("xxl")]: {
-    height: "892px",
+    height: "720px",
     maxWidth: "892px",
     right: "calc(892px / 2 * -1)"
   }
@@ -85,9 +86,9 @@ const GetStarted = () => {
 
   return (
     <Wrapper>
-      <BottomLeftBubble loading="lazy" src={bubble} />
-      <TopRightBubble loading="lazy" src={bubble} />
-      <GenesisImageWrapper />
+      <BottomLeftBubble loading="lazy" src={BubbleBottomLeft} />
+      <TopRightBubble loading="lazy" src={BubbleTopRight} />
+      <GenesisImageWrapper loading="lazy" src={GenesisImage} />
       <Box
         maxWidth={{
           xs: "100%",

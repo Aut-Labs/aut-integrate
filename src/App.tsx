@@ -12,18 +12,16 @@ import {
 import AutLoading from "@components/AutLoading";
 import SWSnackbar from "./components/snackbar";
 import GetStarted from "./pages/GetStarted/GetStarted";
-
 import { getAppConfig } from "@api/aut.api";
 import PerfectScrollbar from "react-perfect-scrollbar";
-
 import { DAppProvider, Config, MetamaskConnector } from "@usedapp/core";
 import { ethers } from "ethers";
 import { WalletConnectConnector } from "@usedapp/wallet-connect-connector";
 
 import { Network } from "@ethersproject/networks";
 import { NetworkConfig } from "@api/ProviderFactory/network.config";
-import "./App.scss";
 import { useSelector } from "react-redux";
+import "./App.scss";
 
 const Integrate = lazy(() => import("./pages/Integrate"));
 
@@ -61,6 +59,11 @@ const generateConfig = (networks: NetworkConfig[]): Config => {
     connectors: {
       metamask: new MetamaskConnector(),
       walletConnect: new WalletConnectConnector({
+        rpc: networks.reduce((prev, curr) => {
+          // eslint-disable-next-line prefer-destructuring
+          prev[curr.chainId] = curr.rpcUrls[0];
+          return prev;
+        }, {}),
         infuraId: "d8df2cb7844e4a54ab0a782f608749dd"
       })
     }
