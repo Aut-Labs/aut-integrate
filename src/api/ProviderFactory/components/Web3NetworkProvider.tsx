@@ -19,7 +19,7 @@ import AutSDK from "@aut-labs-private/sdk";
 import { SDKBiconomyWrapper } from "@aut-labs-private/sdk-biconomy";
 import { useEffect, useMemo, useState } from "react";
 import { NetworkConfig } from "../network.config";
-import { Web3AllowListProvider } from "@aut-labs-private/abi-types";
+import { Web3AllowlistProvider } from "@aut-labs-private/abi-types";
 import { EnableAndChangeNetwork } from "../web3.network";
 import { authoriseWithWeb3 } from "@api/auth.api";
 
@@ -52,7 +52,7 @@ function Web3DautConnect() {
   const [isSigning, setIsSigning] = useState(false);
 
   const isAllowListed = async (signer: ethers.providers.JsonRpcSigner) => {
-    const contract = Web3AllowListProvider(
+    const contract = Web3AllowlistProvider(
       "0x3Aa3c3cd9361a39C651314261156bc7cdB52B618",
       {
         signer: () => signer
