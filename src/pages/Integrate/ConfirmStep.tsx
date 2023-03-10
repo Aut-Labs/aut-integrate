@@ -195,7 +195,7 @@ const ConfirmStep = () => {
                 variant="body"
                 color="white"
               >
-                Role Name
+                Role {index + 1}
               </Typography>
               <Typography variant="body" color="white">
                 {r.roleName}

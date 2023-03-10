@@ -47,6 +47,13 @@ declare module "@mui/material/Slider" {
   }
 }
 
+declare module "@mui/material/IconButton" {
+  interface IconButtonPropsColorOverrides {
+    offWhite?: true;
+    nightBlack?: true;
+  }
+}
+
 declare module "@mui/material/TextField" {
   interface TextFieldClasses {
     outlinedOffWhite?: true;

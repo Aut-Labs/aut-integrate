@@ -2,19 +2,27 @@
 import {
   Avatar,
   Box,
+  Button,
   Container,
+  IconButton,
   styled,
+  Tooltip,
   Typography,
   useTheme
 } from "@mui/material";
 import { pxToRem } from "@utils/text-size";
-import { AutButton } from "@components/buttons";
 import { useParams } from "react-router-dom";
 import CopyAddress from "@components/CopyAddress";
 import { AutShareDialog } from "@components/Share";
 import { useSelector } from "react-redux";
 import { IntegrateCommunity } from "@store/Integrate/integrate";
 import { useState } from "react";
+import ShareIcon from "@mui/icons-material/Share";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import {
+  BlockExplorerUrl,
+  SelectedNetworkConfig
+} from "@store/WalletProvider/WalletProvider";
 
 const StepWrapper = styled(Container)({
   textAlign: "center",
@@ -29,6 +37,8 @@ const IntegrateSuccess = () => {
   const community = useSelector(IntegrateCommunity);
   const params = useParams<{ address: string }>();
   const theme = useTheme();
+  const selectedNetworkConfig = useSelector(SelectedNetworkConfig);
+  const blockExplorer = useSelector(BlockExplorerUrl);
   const shareMessage = `Hey there! We've just deployed ${community?.name} on Aut - choose your Role in our Community, and let's build something great together!`;
   return (
     <StepWrapper
@@ -97,6 +107,17 @@ const IntegrateSuccess = () => {
         </Typography>
 
         <CopyAddress variant="subtitle2" address={params.address} />
+
+        <Tooltip title={`Explore in ${selectedNetworkConfig?.name}`}>
+          <IconButton
+            sx={{ p: 0, ml: 1 }}
+            href={`${blockExplorer}/address/${params.address}`}
+            target="_blank"
+            color="offWhite"
+          >
+            <OpenInNewIcon sx={{ cursor: "pointer", width: "20px" }} />
+          </IconButton>
+        </Tooltip>
       </div>
       <Typography
         maxWidth={{
@@ -132,23 +153,35 @@ const IntegrateSuccess = () => {
         sx={{ gridGap: "30px", display: "flex", justifyContent: "center" }}
         className="right-box"
       >
-        <AutButton
+        <Button
           variant="outlined"
-          size="normal"
+          size="medium"
           color="offWhite"
+          endIcon={<ShareIcon />}
           onClick={() => setOpen(true)}
         >
           Share
-        </AutButton>
-        <AutButton
+        </Button>
+        <Button
           variant="outlined"
-          size="normal"
+          size="medium"
           color="offWhite"
-          disabled
-          href="https://github.com/SkillWallet/web-component"
+          target="_blank"
+          endIcon={<OpenInNewIcon />}
+          href="https://showcase.aut.id"
         >
-          See Your Dashboard
-        </AutButton>
+          Nova Showcase
+        </Button>
+        <Button
+          variant="outlined"
+          size="medium"
+          color="offWhite"
+          target="_blank"
+          endIcon={<OpenInNewIcon />}
+          href="https://leaderboard.aut.id"
+        >
+          Leaderboard
+        </Button>
       </Box>
     </StepWrapper>
   );

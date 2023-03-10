@@ -66,7 +66,7 @@ const RoleStep = (props: StepperChildProps) => {
             return (
               <>
                 <AutTextField
-                  placeholder="Role Name"
+                  placeholder={`Role ${index + 1}`}
                   required
                   variant="standard"
                   color="offWhite"

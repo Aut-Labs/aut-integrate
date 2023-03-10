@@ -13,7 +13,6 @@ import AppTitle from "@components/AppTitle";
 import { useEthers, useConnector, Connector } from "@usedapp/core";
 import AutLoading from "@components/AutLoading";
 import ConnectorBtn from "./ConnectorBtn";
-import { NetworkSelectors } from "./NetworkSelectors";
 import { ethers } from "ethers";
 import AutSDK from "@aut-labs-private/sdk";
 import { SDKBiconomyWrapper } from "@aut-labs-private/sdk-biconomy";
@@ -71,9 +70,11 @@ function Web3DautConnect() {
 
   useEffect(() => {
     const tryConnect = async () => {
-      const config = networks.find(
-        (n) => n.chainId?.toString() === chainId?.toString()
-      );
+      const [config] = networks.filter((n) => !n.disabled);
+      // .find(
+      //   // (n) => n.chainId?.toString() === chainId?.toString()
+      //   (n) => n.chainId?.toString() === chainId?.toString()
+      // );
       if (config && connector?.connector) {
         await activateNetwork(config, connector.connector);
       } else {
@@ -193,7 +194,7 @@ function Web3DautConnect() {
           }}
           variant="h2"
         />
-        {(isLoading || isSigning) && (
+        {(isLoading || isSigning || tryEagerConnect) && (
           <div style={{ position: "relative", flex: 1 }}>
             <AutLoading />
           </div>
@@ -209,7 +210,7 @@ function Web3DautConnect() {
           </Typography>
         )}
 
-        {!isLoading && !isSigning && (
+        {!isLoading && !isSigning && !tryEagerConnect && (
           <>
             {!wallet && (
               <Typography color="white" variant="subtitle1">
@@ -253,7 +254,7 @@ function Web3DautConnect() {
                   />
                 </>
               )}
-              {wallet && !isLoading && !!connector?.connector && (
+              {/* {wallet && !isLoading && !!connector?.connector && (
                 <NetworkSelectors
                   networks={networks}
                   onSelect={async (selectedNetwork: NetworkConfig) => {
@@ -269,7 +270,7 @@ function Web3DautConnect() {
                     }
                   }}
                 />
-              )}
+              )} */}
             </DialogInnerContent>
           </>
         )}
