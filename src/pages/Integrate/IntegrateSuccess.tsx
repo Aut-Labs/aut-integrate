@@ -168,7 +168,7 @@ const IntegrateSuccess = () => {
           color="offWhite"
           target="_blank"
           endIcon={<OpenInNewIcon />}
-          href="https://showcase.aut.id"
+          href="http://176.34.149.248:4002"
         >
           Nova Showcase
         </Button>
@@ -178,7 +178,7 @@ const IntegrateSuccess = () => {
           color="offWhite"
           target="_blank"
           endIcon={<OpenInNewIcon />}
-          href="https://leaderboard.aut.id"
+          href="http://176.34.149.248:4001"
         >
           Leaderboard
         </Button>
