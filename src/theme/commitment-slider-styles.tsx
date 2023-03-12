@@ -106,6 +106,7 @@ export default (theme: Theme) =>
       root: {
         "&.MuiSlider-colorPrimary": generateColors(theme.palette.offWhite),
         width: "100%",
+        padding: "0 !important",
         minWidth: pxToRem(320),
         height: pxToRem(45),
         [theme.breakpoints.up("xxl")]: {
@@ -128,7 +129,6 @@ export default (theme: Theme) =>
         borderWidth: "2px",
         borderStyle: "solid",
         borderColor: theme.palette.divider,
-        padding: "0",
 
         'span[data-index="10"].MuiSlider-mark': {
           display: "none"

@@ -32,6 +32,23 @@ const StepWrapper = styled(Container)({
   flexDirection: "column"
 });
 
+const AddressWrapper = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  height: "60px",
+  marginTop: "80px",
+  padding: "0 20px",
+  borderTop: `1px solid ${theme.palette.divider}`,
+  borderBottom: `1px solid ${theme.palette.divider}`,
+  [theme.breakpoints.down("sm")]: {
+    padding: "20px",
+    height: "auto",
+    gridGap: "10px",
+    flexDirection: "column",
+    alignItems: "flex-start"
+  }
+}));
+
 const IntegrateSuccess = () => {
   const [open, setOpen] = useState(false);
   const community = useSelector(IntegrateCommunity);
@@ -86,39 +103,39 @@ const IntegrateSuccess = () => {
         You’ve now expanded your Community 🎉
       </Typography>
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          height: "60px",
-          marginTop: "80px",
-          padding: "0 20px",
-          borderTop: `1px solid ${theme.palette.divider}`,
-          borderBottom: `1px solid ${theme.palette.divider}`
-        }}
-      >
+      <AddressWrapper>
         <Typography
-          maxWidth="80%"
-          marginRight={pxToRem(100)}
+          maxWidth={{
+            sm: "80%"
+          }}
+          marginRight={{
+            sm: "100px"
+          }}
           color="white"
           variant="body"
         >
           Your expanded DAO Contract {"—> "}
         </Typography>
 
-        <CopyAddress variant="subtitle2" address={params.address} />
+        <Box
+          sx={{
+            display: "flex"
+          }}
+        >
+          <CopyAddress variant="subtitle2" address={params.address} />
 
-        <Tooltip title={`Explore in ${selectedNetworkConfig?.name}`}>
-          <IconButton
-            sx={{ p: 0, ml: 1 }}
-            href={`${blockExplorer}/address/${params.address}`}
-            target="_blank"
-            color="offWhite"
-          >
-            <OpenInNewIcon sx={{ cursor: "pointer", width: "20px" }} />
-          </IconButton>
-        </Tooltip>
-      </div>
+          <Tooltip title={`Explore in ${selectedNetworkConfig?.name}`}>
+            <IconButton
+              sx={{ p: 0, ml: 1 }}
+              href={`${blockExplorer}/address/${params.address}`}
+              target="_blank"
+              color="offWhite"
+            >
+              <OpenInNewIcon sx={{ cursor: "pointer", width: "20px" }} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </AddressWrapper>
       <Typography
         maxWidth={{
           xs: "100%",
@@ -150,7 +167,16 @@ const IntegrateSuccess = () => {
         know about it, or just head over to your Dashboard & get things started!
       </Typography>
       <Box
-        sx={{ gridGap: "30px", display: "flex", justifyContent: "center" }}
+        sx={{
+          gridGap: "30px",
+          mb: 4,
+          display: "flex",
+          flexDirection: {
+            xs: "column",
+            sm: "row"
+          },
+          justifyContent: "center"
+        }}
         className="right-box"
       >
         <Button

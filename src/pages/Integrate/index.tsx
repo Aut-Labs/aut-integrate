@@ -23,21 +23,33 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import BubbleBottomLeft from "@assets/bubble_bottom_left.png";
 import BubbleTopRight from "@assets/bubble_top_right.png";
 
-const BottomLeftBubble = styled("img")({
+const BottomLeftBubble = styled("img")(({ theme }) => ({
   position: "fixed",
-  width: "700px",
-  height: "700px",
-  left: "-350px",
-  bottom: "-350px"
-});
+  width: "400px",
+  height: "400px",
+  left: "-200px",
+  bottom: "-200px",
+  [theme.breakpoints.up("md")]: {
+    width: "700px",
+    height: "700px",
+    left: "-350px",
+    bottom: "-350px"
+  }
+}));
 
-const TopRightBubble = styled("img")({
+const TopRightBubble = styled("img")(({ theme }) => ({
   position: "fixed",
-  width: "700px",
-  height: "700px",
-  top: "-350px",
-  right: "-350px"
-});
+  width: "400px",
+  height: "400px",
+  top: "-200px",
+  right: "-200px",
+  [theme.breakpoints.up("md")]: {
+    width: "700px",
+    height: "700px",
+    top: "-350px",
+    right: "-350px"
+  }
+}));
 
 const Integrate = () => {
   const dispatch = useAppDispatch();
@@ -92,6 +104,10 @@ const Integrate = () => {
         {!location.pathname.includes("success") && (
           <Button
             sx={{
+              display: {
+                xs: "none",
+                sm: "inherit"
+              },
               color: "white",
               position: "absolute",
               left: pxToRem(140),
