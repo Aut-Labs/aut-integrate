@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Connector, useConfig, useConnector, useEthers } from "@usedapp/core";
 import { Web3Provider, JsonRpcProvider } from "@ethersproject/providers";
-import { authoriseWithWeb3 } from "@api/auth.api";
+import { authoriseWithWeb3, isAllowListed } from "@api/auth.api";
 
 type DeferredPromise<DeferType> = {
   resolve: (value: DeferType) => void;
@@ -61,8 +61,8 @@ export const useAutWalletConnect = () => {
       const { provider } = conn;
       const signer = provider.getSigner();
 
-      const isAuthorised = await authoriseWithWeb3(signer);
-
+      const isAllowed = await isAllowListed(signer);
+      const isAuthorised = isAllowed && (await authoriseWithWeb3(signer));
       deferredPromise.resolve({
         provider,
         connected: isAuthorised,
@@ -73,8 +73,8 @@ export const useAutWalletConnect = () => {
         setErrorMessage("User denied message signature");
         deferredPromise.reject("User denied message signature");
       } else {
-        setErrorMessage(error?.message);
-        deferredPromise.reject(error?.message);
+        setErrorMessage(error?.message || error);
+        deferredPromise.reject(error?.message || error);
       }
     } finally {
       setTryEagerConnect(false);

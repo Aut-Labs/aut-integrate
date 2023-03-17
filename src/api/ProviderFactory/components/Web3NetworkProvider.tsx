@@ -33,7 +33,8 @@ const ErrorWrapper = styled(Box)({
   padding: "20px",
   width: "80%",
   marginBottom: "12px",
-  borderRadius: "16px"
+  borderRadius: "16px",
+  textAlign: "center"
 });
 
 function Web3DautConnect() {
@@ -83,7 +84,8 @@ function Web3DautConnect() {
       const [network] = networks.filter((d) => !d.disabled);
       const { provider, connected, account } = await connect(connectorType);
 
-      if (!connected) throw new Error("not connected");
+      if (!connected) throw new Error("not connected!");
+
       const signer = provider.getSigner();
       const itemsToUpdate = {
         isAuthorised: connected,
@@ -101,7 +103,7 @@ function Web3DautConnect() {
       setIsLoading(false);
       return account;
     } catch (error) {
-      closeAndDisconnect(true);
+      setIsLoading(false);
     }
   };
 
@@ -130,25 +132,22 @@ function Web3DautConnect() {
           }}
           variant="h2"
         />
-        {(isLoading || waitingUserConfirmation || isConnecting) &&
-          !errorMessage && (
-            <div style={{ position: "relative", flex: 1 }}>
-              {waitingUserConfirmation && (
-                <Typography m="0" color="white" variant="subtitle1">
-                  Waiting confirmation...
-                </Typography>
-              )}
-              <AutLoading width="130px" height="130px" />
-            </div>
-          )}
-
-        {((!isLoading && !waitingUserConfirmation) || errorMessage) && (
-          <>
-            {!wallet && (
-              <Typography color="white" variant="subtitle1">
-                Connect your wallet
+        {(isLoading || waitingUserConfirmation || isConnecting) && (
+          <div style={{ position: "relative", flex: 1 }}>
+            {waitingUserConfirmation && (
+              <Typography m="0" color="white" variant="subtitle1">
+                Waiting confirmation...
               </Typography>
             )}
+            <AutLoading width="130px" height="130px" />
+          </div>
+        )}
+
+        {!isLoading && !waitingUserConfirmation && (
+          <>
+            <Typography color="white" variant="subtitle1">
+              Connect your wallet
+            </Typography>
             <DialogInnerContent>
               <ConnectorBtn
                 setConnector={changeConnector}
@@ -159,15 +158,15 @@ function Web3DautConnect() {
                 connectorType={ConnectorTypes.WalletConnect}
               />
             </DialogInnerContent>
-          </>
-        )}
 
-        {errorMessage && (
-          <ErrorWrapper>
-            <Typography textAlign="center" color="error" variant="body">
-              {errorMessage}
-            </Typography>
-          </ErrorWrapper>
+            {errorMessage && (
+              <ErrorWrapper>
+                <Typography textAlign="center" color="error" variant="body">
+                  {errorMessage}
+                </Typography>
+              </ErrorWrapper>
+            )}
+          </>
         )}
       </>
     </DialogWrapper>
