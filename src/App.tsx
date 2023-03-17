@@ -18,7 +18,6 @@ import { DAppProvider, Config, MetamaskConnector } from "@usedapp/core";
 import { ethers } from "ethers";
 import { WalletConnectConnector } from "@usedapp/wallet-connect-connector";
 
-import { Network } from "@ethersproject/networks";
 import { NetworkConfig } from "@api/ProviderFactory/network.config";
 import { useSelector } from "react-redux";
 import "./App.scss";
@@ -28,7 +27,7 @@ const Integrate = lazy(() => import("./pages/Integrate"));
 const generateConfig = (networks: NetworkConfig[]): Config => {
   const readOnlyUrls = networks.reduce((prev, curr) => {
     if (!curr.disabled) {
-      const network: Network = {
+      const network = {
         name: "mumbai",
         chainId: 80001,
         _defaultProvider: (providers) =>
@@ -42,28 +41,29 @@ const generateConfig = (networks: NetworkConfig[]): Config => {
 
   return {
     readOnlyUrls,
+    autoConnect: false,
+    // @ts-ignore
     networks: networks
       .filter((n) => !n.disabled)
-      .map(
-        (n) =>
-          ({
-            isLocalChain: false,
-            isTestChain: environment.networkEnv === "testing",
-            chainId: n.chainId,
-            chainName: n.network,
-            rpcUrl: n.rpcUrls[0],
-            nativeCurrency: n.nativeCurrency
-          } as any)
-      ),
+      .map((n) => ({
+        isLocalChain: false,
+        isTestChain: environment.networkEnv === "testing",
+        chainId: n.chainId,
+        chainName: n.network,
+        rpcUrl: n.rpcUrls[0],
+        nativeCurrency: n.nativeCurrency
+      })),
     gasLimitBufferPercentage: 50000,
     connectors: {
       metamask: new MetamaskConnector(),
       walletConnect: new WalletConnectConnector({
-        rpc: networks.reduce((prev, curr) => {
-          // eslint-disable-next-line prefer-destructuring
-          prev[curr.chainId] = curr.rpcUrls[0];
-          return prev;
-        }, {}),
+        rpc: networks
+          .filter((n) => !n.disabled)
+          .reduce((prev, curr) => {
+            // eslint-disable-next-line prefer-destructuring
+            prev[curr.chainId] = curr.rpcUrls[0];
+            return prev;
+          }, {}),
         infuraId: "d8df2cb7844e4a54ab0a782f608749dd"
       })
     }

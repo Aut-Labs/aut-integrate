@@ -7,20 +7,17 @@ import {
   updateWalletProviderState
 } from "@store/WalletProvider/WalletProvider";
 import { useSelector } from "react-redux";
-import { Typography, styled } from "@mui/material";
+import { Box, Typography, styled } from "@mui/material";
 import DialogWrapper from "@components/Dialog/DialogWrapper";
 import AppTitle from "@components/AppTitle";
-import { useEthers, useConnector, Connector } from "@usedapp/core";
 import AutLoading from "@components/AutLoading";
 import ConnectorBtn from "./ConnectorBtn";
 import { ethers } from "ethers";
 import AutSDK from "@aut-labs-private/sdk";
 import { SDKBiconomyWrapper } from "@aut-labs-private/sdk-biconomy";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { NetworkConfig } from "../network.config";
-import { Web3AllowlistProvider } from "@aut-labs-private/abi-types";
-import { EnableAndChangeNetwork } from "../web3.network";
-import { authoriseWithWeb3 } from "@api/auth.api";
+import { useAutWalletConnect } from "../use-aut-wallet-connect";
 
 const DialogInnerContent = styled("div")({
   display: "flex",
@@ -31,115 +28,27 @@ const DialogInnerContent = styled("div")({
   gridGap: "30px"
 });
 
+const ErrorWrapper = styled(Box)({
+  backgroundColor: "rgba(254, 202, 202, 0.16)",
+  padding: "20px",
+  width: "80%",
+  marginBottom: "12px",
+  borderRadius: "16px"
+});
+
 function Web3DautConnect() {
   const dispatch = useAppDispatch();
-  const isOpen = useSelector(NetworkSelectorIsOpen);
-  const wallet = useSelector(SelectedWalletType);
-  const networks = useSelector(NetworksConfig);
-  const [allowListedComplete, setAllowListedComplete] = useState(false);
-  const [tryEagerConnect, setTryEagerConnect] = useState(false);
-  const [allowListed, setAllowListed] = useState(false);
-  const { connector, activate } = useConnector();
   const {
-    activateBrowserWallet,
-    account,
-    deactivate,
-    switchNetwork,
-    chainId,
-    isLoading
-  } = useEthers();
-  const [isSigning, setIsSigning] = useState(false);
-
-  const isAllowListed = async (signer: ethers.providers.JsonRpcSigner) => {
-    const contract = Web3AllowlistProvider(
-      "0x3Aa3c3cd9361a39C651314261156bc7cdB52B618",
-      {
-        signer: () => signer
-      }
-    );
-    return contract.isAllowed(account);
-  };
-
-  const canConnectEagerly = useMemo(() => {
-    return !!tryEagerConnect && !!connector?.connector && account && isOpen;
-  }, [connector, tryEagerConnect, account, isOpen]);
-
-  useEffect(() => {
-    deactivate();
-  }, []);
-
-  useEffect(() => {
-    const tryConnect = async () => {
-      const [config] = networks.filter((n) => !n.disabled);
-      // .find(
-      //   // (n) => n.chainId?.toString() === chainId?.toString()
-      //   (n) => n.chainId?.toString() === chainId?.toString()
-      // );
-      if (config && connector?.connector) {
-        await activateNetwork(config, connector.connector);
-      } else {
-        setTryEagerConnect(false);
-      }
-    };
-
-    if (canConnectEagerly) {
-      tryConnect();
-    }
-  }, [canConnectEagerly]);
-
-  const changeConnector = async (connectorType: string) => {
-    activateBrowserWallet({ type: connectorType });
-    setTryEagerConnect(true);
-  };
-
-  const activateNetwork = async (network: NetworkConfig, conn: Connector) => {
-    try {
-      setIsSigning(true);
-      setAllowListedComplete(false);
-      await activate(conn);
-      await switchNetwork(+network.chainId);
-      if (conn.name === "metamask") {
-        // @ts-ignore
-        const provider = conn.provider.provider;
-        await EnableAndChangeNetwork(provider, network);
-      }
-      const signer = conn?.provider?.getSigner();
-      const isAllowed = await isAllowListed(signer);
-      if (isAllowed) {
-        setAllowListed(true);
-        setAllowListedComplete(true);
-        const isAuthorised = await authoriseWithWeb3(signer);
-        if (isAuthorised) {
-          const itemsToUpdate = {
-            isAuthorised,
-            sdkInitialized: true,
-            selectedWalletType: wallet,
-            isOpen: false,
-            selectedNetwork: network.network,
-            signer
-          };
-          if (!wallet) {
-            delete itemsToUpdate.selectedWalletType;
-          }
-          await dispatch(updateWalletProviderState(itemsToUpdate));
-          await initialiseSDK(
-            network,
-            signer as ethers.providers.JsonRpcSigner
-          );
-        } else {
-          closeAndDisconnect();
-        }
-      } else {
-        setAllowListed(false);
-        setAllowListedComplete(true);
-      }
-    } catch (error) {
-      console.error(error?.message, "error");
-    } finally {
-      setIsSigning(false);
-      setTryEagerConnect(false);
-    }
-  };
+    connect,
+    disconnect,
+    isLoading: isConnecting,
+    waitingUserConfirmation,
+    errorMessage
+  } = useAutWalletConnect();
+  const [isLoading, setIsLoading] = useState(false);
+  const isOpen = useSelector(NetworkSelectorIsOpen);
+  const networks = useSelector(NetworksConfig);
+  const wallet = useSelector(SelectedWalletType);
 
   const initialiseSDK = async (
     network: NetworkConfig,
@@ -168,18 +77,45 @@ function Web3DautConnect() {
     );
   };
 
-  const closeAndDisconnect = async () => {
-    deactivate();
-    setAllowListedComplete(false);
-    setAllowListed(false);
+  const changeConnector = async (connectorType: string) => {
+    try {
+      setIsLoading(true);
+      const [network] = networks.filter((d) => !d.disabled);
+      const { provider, connected, account } = await connect(connectorType);
+
+      if (!connected) throw new Error("not connected");
+      const signer = provider.getSigner();
+      const itemsToUpdate = {
+        isAuthorised: connected,
+        sdkInitialized: true,
+        selectedWalletType: wallet,
+        isOpen: false,
+        selectedNetwork: network,
+        signer
+      };
+      if (!wallet) {
+        delete itemsToUpdate.selectedWalletType;
+      }
+      await dispatch(updateWalletProviderState(itemsToUpdate));
+      await initialiseSDK(network, signer as ethers.providers.JsonRpcSigner);
+      setIsLoading(false);
+      return account;
+    } catch (error) {
+      closeAndDisconnect(true);
+    }
+  };
+
+  const closeAndDisconnect = async (isOpen = false) => {
     const itemsToUpdate = {
       isAuthorised: false,
       sdkInitialized: false,
       selectedWalletType: null,
-      isOpen: false,
+      isOpen: isOpen,
       selectedNetwork: null,
       signer: null
     };
+    setIsLoading(false);
+    disconnect();
     await dispatch(updateWalletProviderState(itemsToUpdate));
   };
 
@@ -194,85 +130,44 @@ function Web3DautConnect() {
           }}
           variant="h2"
         />
-        {(isLoading || isSigning || tryEagerConnect) && (
-          <div style={{ position: "relative", flex: 1 }}>
-            <AutLoading />
-          </div>
-        )}
-        {allowListedComplete && !allowListed && (
-          <Typography
-            mb="12px"
-            textAlign="center"
-            color="error"
-            variant="subtitle2"
-          >
-            Aw shucks, it looks like you’re not on the Allowlist for this round.
-          </Typography>
-        )}
+        {(isLoading || waitingUserConfirmation || isConnecting) &&
+          !errorMessage && (
+            <div style={{ position: "relative", flex: 1 }}>
+              {waitingUserConfirmation && (
+                <Typography m="0" color="white" variant="subtitle1">
+                  Waiting confirmation...
+                </Typography>
+              )}
+              <AutLoading width="130px" height="130px" />
+            </div>
+          )}
 
-        {!isLoading && !isSigning && !tryEagerConnect && (
+        {((!isLoading && !waitingUserConfirmation) || errorMessage) && (
           <>
             {!wallet && (
               <Typography color="white" variant="subtitle1">
                 Connect your wallet
               </Typography>
             )}
-            {wallet && (
-              <>
-                <Typography
-                  mb={{
-                    xs: "8px"
-                  }}
-                  color="white"
-                  variant="subtitle1"
-                >
-                  Change Network
-                </Typography>
-
-                {!allowListedComplete && (
-                  <Typography color="white" variant="body">
-                    You will need to switch your wallet’s network.
-                  </Typography>
-                )}
-                {allowListedComplete && !allowListed && (
-                  <Typography color="white" variant="body">
-                    Try on a different network.
-                  </Typography>
-                )}
-              </>
-            )}
             <DialogInnerContent>
-              {(!wallet || !connector?.connector) && (
-                <>
-                  <ConnectorBtn
-                    setConnector={changeConnector}
-                    connectorType={ConnectorTypes.Metamask}
-                  />
-                  <ConnectorBtn
-                    setConnector={changeConnector}
-                    connectorType={ConnectorTypes.WalletConnect}
-                  />
-                </>
-              )}
-              {/* {wallet && !isLoading && !!connector?.connector && (
-                <NetworkSelectors
-                  networks={networks}
-                  onSelect={async (selectedNetwork: NetworkConfig) => {
-                    if (selectedNetwork) {
-                      try {
-                        await activateNetwork(
-                          selectedNetwork,
-                          connector.connector
-                        );
-                      } catch (error) {
-                        console.log(error, "error");
-                      }
-                    }
-                  }}
-                />
-              )} */}
+              <ConnectorBtn
+                setConnector={changeConnector}
+                connectorType={ConnectorTypes.Metamask}
+              />
+              <ConnectorBtn
+                setConnector={changeConnector}
+                connectorType={ConnectorTypes.WalletConnect}
+              />
             </DialogInnerContent>
           </>
+        )}
+
+        {errorMessage && (
+          <ErrorWrapper>
+            <Typography textAlign="center" color="error" variant="body">
+              {errorMessage}
+            </Typography>
+          </ErrorWrapper>
         )}
       </>
     </DialogWrapper>
