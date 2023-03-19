@@ -6,7 +6,7 @@ jobs:
   deploy:
     name: Deployment
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: SSH & Deploy
         uses: appleboy/ssh-action@master
@@ -62,11 +62,11 @@ jobs:
 
             # If that's not the case, we pull the latest changes and we build a new image
 
-            sudo git pull origin dev;
+            sudo git pull origin main;
 
             # Docker
-            docker-compose -f docker-compose.prod.yml down
+            docker-compose -f docker-compose.yml down
             docker rmi $(docker images -f "dangling=true" -q)
-            docker-compose -f docker-compose.prod.yml up -d --build
+            docker-compose -f docker-compose.yml up -d --build
 
             exit 0;

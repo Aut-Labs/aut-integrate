@@ -1,7 +1,7 @@
 import AutSDK, { SDKContractGenericResponse } from "@aut-labs-private/sdk";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Community } from "./community.model";
-import { updateCache } from "./cache.api";
+import { getCache, updateCache } from "./cache.api";
 
 export const isMemberOfDao = createAsyncThunk(
   "membership-checker/is-member",
@@ -53,25 +53,31 @@ export const createCommunity = createAsyncThunk(
     }
     if (response?.isSuccess) {
       try {
-        await updateCache({
-          cacheKey: "UserPhases",
-          address: requestBody.userAddress,
-          daoAddress: response.data,
-          list: [
-            {
-              phase: 1,
-              status: 1
-            },
-            {
-              phase: 2,
-              status: 0
-            },
-            {
-              phase: 3,
-              status: 0
-            }
-          ]
-        });
+        const cache = await getCache("UserPhases");
+        if (cache) {
+          cache.list[0].status = 1;
+          await updateCache(cache);
+        } else {
+          await updateCache({
+            cacheKey: "UserPhases",
+            address: requestBody.userAddress,
+            daoAddress: response.data,
+            list: [
+              {
+                phase: 1,
+                status: 1
+              },
+              {
+                phase: 2,
+                status: 0
+              },
+              {
+                phase: 3,
+                status: 0
+              }
+            ]
+          });
+        }
       } catch (error) {
         // handle error
       }

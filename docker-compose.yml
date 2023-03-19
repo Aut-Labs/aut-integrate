@@ -1,8 +1,8 @@
 version: "3.7"
 
 services:
-  aut_expander_playground:
-    container_name: aut_expander_playground
+  aut_expander_dev:
+    container_name: aut_expander_dev
     build:
       context: .
       dockerfile: Dockerfile

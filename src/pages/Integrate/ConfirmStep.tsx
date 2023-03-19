@@ -85,7 +85,7 @@ const ConfirmStep = () => {
       <ErrorDialog
         handleClose={handleDialogClose}
         open={status === ResultState.Failed}
-        message={errorMessage}
+        message={errorMessage || "Transaction failed."}
       />
       <LoadingDialog
         handleClose={handleDialogClose}
