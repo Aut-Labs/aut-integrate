@@ -6,7 +6,7 @@ jobs:
   deploy:
     name: Deployment
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/dev'
     steps:
       - name: SSH & Deploy
         uses: appleboy/ssh-action@master
@@ -62,7 +62,7 @@ jobs:
 
             # If that's not the case, we pull the latest changes and we build a new image
 
-            sudo git pull origin main;
+            sudo git pull origin dev;
 
             # Docker
             docker-compose -f docker-compose.yml down
