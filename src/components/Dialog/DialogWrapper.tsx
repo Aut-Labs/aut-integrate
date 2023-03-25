@@ -20,6 +20,7 @@ export const DialogWrapper = ({
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isXXL = useMediaQuery(theme.breakpoints.up("xxl"));
   return (
     <Dialog
       open={open}
@@ -42,6 +43,7 @@ export const DialogWrapper = ({
       <DialogContent
         sx={{
           ...(!isMobile &&
+            !isXXL &&
             !fullScreen && {
               maxWidth: {
                 xs: "100%",
@@ -58,6 +60,25 @@ export const DialogWrapper = ({
               minHeight: {
                 xs: "100%",
                 sm: "450px"
+              }
+            }),
+          ...(isXXL &&
+            !fullScreen && {
+              maxWidth: {
+                xs: "100%",
+                sm: "650px"
+              },
+              minWidth: {
+                xs: "100%",
+                sm: "650px"
+              },
+              maxHeight: {
+                xs: "100%",
+                sm: "650px"
+              },
+              minHeight: {
+                xs: "100%",
+                sm: "650px"
               }
             }),
           padding: {

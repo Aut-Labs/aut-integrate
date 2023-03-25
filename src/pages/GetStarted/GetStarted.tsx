@@ -13,6 +13,7 @@ import BubbleTopRight from "@assets/bubble_top_right.png";
 import GenesisImage from "@assets/genesis.png";
 
 const BottomLeftBubble = styled("img")(({ theme }) => ({
+  zIndex: -1,
   position: "fixed",
   width: "400px",
   height: "400px",
@@ -27,6 +28,7 @@ const BottomLeftBubble = styled("img")(({ theme }) => ({
 }));
 
 const TopRightBubble = styled("img")(({ theme }) => ({
+  zIndex: -1,
   position: "fixed",
   width: "400px",
   height: "400px",
