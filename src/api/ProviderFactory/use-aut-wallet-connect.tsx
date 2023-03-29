@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Connector, useConfig, useConnector, useEthers } from "@usedapp/core";
 import { Web3Provider, JsonRpcProvider } from "@ethersproject/providers";
 import { authoriseWithWeb3, isAllowListed } from "@api/auth.api";
+import { getCache } from "@api/cache.api";
 
 type DeferredPromise<DeferType> = {
   resolve: (value: DeferType) => void;
@@ -63,6 +64,12 @@ export const useAutWalletConnect = () => {
 
       const isAllowed = await isAllowListed(signer);
       const isAuthorised = isAllowed && (await authoriseWithWeb3(signer));
+
+      const cache = await getCache("UserPhases");
+      if (!!cache) {
+        throw new Error("You have already expanded your DAO.");
+      }
+
       deferredPromise.resolve({
         provider,
         connected: isAuthorised,
