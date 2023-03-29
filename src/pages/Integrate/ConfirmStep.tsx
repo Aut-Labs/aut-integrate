@@ -2,6 +2,7 @@
 
 import { Community, CommunityProperties } from "@api/community.model";
 import { createCommunity } from "@api/registry.api";
+import { AutButton } from "@components/buttons";
 import CopyAddress from "@components/CopyAddress";
 import ErrorDialog from "@components/Dialog/ErrorPopup";
 import LoadingDialog from "@components/Dialog/LoadingPopup";
@@ -84,6 +85,9 @@ const ConfirmStep = () => {
     <StepWrapper>
       <ErrorDialog
         handleClose={handleDialogClose}
+        handleRetry={onSubmit}
+        hasRetry={true}
+        retryMessage={"The Biconomy transaction has failed. Please try again."}
         open={status === ResultState.Failed}
         message={errorMessage || "Transaction failed."}
       />
