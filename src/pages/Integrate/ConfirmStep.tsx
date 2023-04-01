@@ -40,13 +40,16 @@ const ConfirmStep = () => {
   const theme = useTheme();
   const { account } = useEthers();
 
-  const onSubmit = async () => {
+  const onSubmit = async (actionType: string = null) => {
     const state = { ...data };
     // if (state.image) {
     //   state.image = await base64toFile(state.image as string, 'community_image');
     // }
+
+    const skipBiconomy = actionType === "pay";
     const result = await dispatch(
       createCommunity({
+        skipBiconomy,
         userAddress: account,
         contractType: state.contractType,
         daoAddr: state.daoAddr,
@@ -86,10 +89,13 @@ const ConfirmStep = () => {
       <ErrorDialog
         handleClose={handleDialogClose}
         handleRetry={onSubmit}
-        hasRetry={true}
-        retryMessage={"The Biconomy transaction has failed. Please try again."}
+        hasRetry={!errorMessage}
+        message={
+          errorMessage
+            ? errorMessage
+            : "There has been an error processing your transaction. This can happen as we use meta-transactions to offer a gasless, no-cost experience. You can try again for free or pay some gas signing the transaction to ensure it passes."
+        }
         open={status === ResultState.Failed}
-        message={errorMessage || "Transaction failed."}
       />
       <LoadingDialog
         handleClose={handleDialogClose}
@@ -249,7 +255,7 @@ const ConfirmStep = () => {
           )}
         </div>
       </div>
-      <StepperButton type="button" label="Confirm" onClick={onSubmit} />
+      <StepperButton type="button" label="Confirm" onClick={() => onSubmit()} />
     </StepWrapper>
   );
 };

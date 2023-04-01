@@ -1,5 +1,4 @@
 import { Stack, Typography } from "@mui/material";
-import { pxToRem } from "@utils/text-size";
 import { AutButton } from "../buttons";
 import DialogWrapper from "./DialogWrapper";
 
@@ -7,31 +6,31 @@ const ErrorDialog = ({
   mode = "light",
   open,
   hasRetry = false,
-  retryMessage = null,
-  handleClose,
+  handleClose = null,
   handleRetry = null,
   subtitle,
   message,
   fullScreen = false
 }: any) => {
-  console.log(hasRetry, "HAS RETRY");
   return (
     <DialogWrapper
       open={open}
       fullScreen={fullScreen}
       actions={
-        <AutButton
-          onClick={() => handleClose("close")}
-          sx={{
-            width: "250px",
-            height: "50px"
-          }}
-          type="submit"
-          color="offWhite"
-          variant="outlined"
-        >
-          Dismiss
-        </AutButton>
+        !hasRetry && (
+          <AutButton
+            onClick={() => handleClose("close")}
+            sx={{
+              width: "250px",
+              height: "50px"
+            }}
+            type="submit"
+            color="offWhite"
+            variant="outlined"
+          >
+            Dismiss
+          </AutButton>
+        )
       }
     >
       <div
@@ -40,7 +39,7 @@ const ErrorDialog = ({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: hasRetry ? "flex-end" : "center",
+          justifyContent: "center",
           flex: 1
         }}
       >
@@ -66,34 +65,36 @@ const ErrorDialog = ({
         </div>
         {hasRetry && (
           <Stack
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "center"
-            }}
+            gap={1}
+            mt={2}
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
           >
-            <Typography
-              sx={{
-                textAlign: "center",
-                mt: 2,
-                mb: 2
-              }}
-              color="white"
-              variant="subtitle2"
-            >
-              {retryMessage}
-            </Typography>
             <AutButton
-              onClick={() => handleRetry()}
+              onClick={() => handleRetry("gasless")}
               sx={{
                 width: "250px",
                 height: "50px"
               }}
-              type="submit"
-              color="offWhite"
+              color="primary"
               variant="outlined"
             >
-              Retry
+              Gasless (Biconomy)
+            </AutButton>
+            <Typography variant="body" color="white">
+              or
+            </Typography>
+            <AutButton
+              onClick={() => handleRetry("pay")}
+              sx={{
+                width: "250px",
+                height: "50px"
+              }}
+              color="primary"
+              variant="outlined"
+            >
+              Pay gas
             </AutButton>
           </Stack>
         )}

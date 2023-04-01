@@ -25,6 +25,7 @@ export const createCommunity = createAsyncThunk(
   "integrate/create/community",
   async (
     requestBody: {
+      skipBiconomy: boolean;
       metadata: Community;
       contractType: number;
       daoAddr: string;
@@ -34,6 +35,9 @@ export const createCommunity = createAsyncThunk(
   ) => {
     const sdk = AutSDK.getInstance();
     let response: SDKContractGenericResponse<string>;
+
+    sdk.autDaoRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
+    sdk.daoExpanderRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
 
     if (requestBody.daoAddr) {
       response = await sdk.daoExpanderRegistry.deployDAOExpander(
