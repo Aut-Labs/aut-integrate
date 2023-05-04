@@ -20,8 +20,8 @@ import IntegrateSuccess from "./IntegrateSuccess";
 import IntegrateStepper from "./IntegrateStepper";
 import AppTitle from "@components/AppTitle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import BubbleBottomLeft from "@assets/bubble_bottom_left.png";
-import BubbleTopRight from "@assets/bubble_top_right.png";
+import BubbleBottomLeft from "@assets/bubble2.svg";
+import BubbleTopRight from "@assets/bubble.svg";
 
 const BottomLeftBubble = styled("img")(({ theme }) => ({
   position: "fixed",
@@ -29,6 +29,8 @@ const BottomLeftBubble = styled("img")(({ theme }) => ({
   height: "400px",
   left: "-200px",
   bottom: "-200px",
+  filter: "blur(50px)",
+  transform: "rotate(-50deg)",
   [theme.breakpoints.up("md")]: {
     width: "700px",
     height: "700px",
@@ -43,6 +45,7 @@ const TopRightBubble = styled("img")(({ theme }) => ({
   height: "400px",
   top: "-200px",
   right: "-200px",
+  filter: "blur(50px)",
   [theme.breakpoints.up("md")]: {
     width: "700px",
     height: "700px",
