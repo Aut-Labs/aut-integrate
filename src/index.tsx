@@ -18,7 +18,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 //   destination: `${process.env.REACT_APP_MARKER}`,
 //   reporter: {
 //     email: "frontend@aut.id",
-//     fullName: "Aut Integrate"
+//     fullName: "Āut Integrate"
 //   }
 // });
 

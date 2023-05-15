@@ -56,7 +56,7 @@ const IntegrateSuccess = () => {
   const theme = useTheme();
   const selectedNetworkConfig = useSelector(SelectedNetworkConfig);
   const blockExplorer = useSelector(BlockExplorerUrl);
-  const shareMessage = `Hey there! We've just deployed ${community?.name} on Aut - choose your Role in our Community, and let's build something great together!`;
+  const shareMessage = `Hey there! We've just deployed ${community?.name} on Āut - choose your Role in our Community, and let's build something great together!`;
   return (
     <StepWrapper
       sx={{
@@ -85,7 +85,7 @@ const IntegrateSuccess = () => {
         }
         twitterProps={{
           title: shareMessage,
-          hashtags: ["Aut", "DAO", "Blockchain"]
+          hashtags: ["Āut", "DAO", "Blockchain"]
         }}
         hideCloseBtn
         rightSide={
@@ -181,14 +181,14 @@ const IntegrateSuccess = () => {
       >
         <Button
           variant="outlined"
-          size="medium"
+          size="large"
           color="offWhite"
           endIcon={<ShareIcon />}
           onClick={() => setOpen(true)}
         >
           Share
         </Button>
-        <Button
+        {/* <Button
           variant="outlined"
           size="medium"
           color="offWhite"
@@ -197,8 +197,8 @@ const IntegrateSuccess = () => {
           href="http://176.34.149.248:4002"
         >
           Nova Showcase
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           variant="outlined"
           size="medium"
           color="offWhite"
@@ -207,7 +207,7 @@ const IntegrateSuccess = () => {
           href="http://176.34.149.248:4001"
         >
           Leaderboard
-        </Button>
+        </Button> */}
       </Box>
     </StepWrapper>
   );

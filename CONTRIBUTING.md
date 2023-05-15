@@ -1,4 +1,4 @@
-# Contributing to Aut Expander
+# Contributing to Āut Expander
 
 We would love for you to contribute to Āut Expander and help make it ever better!
 As a contributor, here are the guidelines we would like you to follow:
