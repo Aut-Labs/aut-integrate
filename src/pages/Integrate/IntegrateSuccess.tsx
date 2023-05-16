@@ -75,7 +75,7 @@ const IntegrateSuccess = () => {
           <>
             <Typography color="white" variant="body" mb="12px">
               {community?.name} 2.0 is now live on @opt_aut - with on-chain
-              Roles & Interactions for all our Members 🙌 <br />
+              Roles & Interactions for all our Contributors 🙌 <br />
             </Typography>
 
             <Typography color="white" variant="body" mb="12px">
@@ -148,7 +148,7 @@ const IntegrateSuccess = () => {
         variant="body"
       >
         This contract already knows about the Roles and Interactions of your
-        Community Members.
+        Community Contributors.
       </Typography>
 
       <Typography
