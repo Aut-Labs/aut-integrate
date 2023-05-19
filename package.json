@@ -30,7 +30,7 @@
     ]
   },
   "dependencies": {
-    "@aut-labs-private/abi-types": "^0.0.33",
+    "@aut-labs-private/abi-types": "^0.0.34",
     "@aut-labs-private/sdk": "^0.0.50",
     "@aut-labs-private/sdk-biconomy": "latest",
     "@emotion/react": "^11.10.5",
