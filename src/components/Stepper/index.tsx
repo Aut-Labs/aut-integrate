@@ -5,6 +5,8 @@ import { Button, ButtonProps, Container } from "@mui/material";
 import { pxToRem } from "@utils/text-size";
 import StepperNav from "./StepperNav";
 import { StepperProps } from "./model";
+import { useAppDispatch } from "@store/store.model";
+import { updateScrollState } from "@store/ui-reducer";
 
 const StepperWrapper = styled("div")`
   .animated {
@@ -173,6 +175,7 @@ export const StepperButton = ({
 export default (props: StepperProps) => {
   const [instance, setInstance] = useState<StepWizardChildProps & any>();
   const [actions, setActions] = useState<JSX.Element>();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     props.instance(() => instance);
@@ -198,6 +201,9 @@ export default (props: StepperProps) => {
             intro: `animated exitLeft`
           }}
           isLazyMount
+          onStepChange={() => {
+            dispatch(updateScrollState("scroll-top"));
+          }}
           nav={<StepperNav steps={props.steps} />}
           instance={setInstance}
         >

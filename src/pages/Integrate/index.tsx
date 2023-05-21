@@ -22,6 +22,7 @@ import AppTitle from "@components/AppTitle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import BubbleBottomLeft from "@assets/bubble2.svg";
 import BubbleTopRight from "@assets/bubble.svg";
+import { updateScrollState } from "@store/ui-reducer";
 
 const BottomLeftBubble = styled("img")(({ theme }) => ({
   position: "fixed",
@@ -82,6 +83,7 @@ const Integrate = () => {
     } else {
       instance?.previousStep();
     }
+    dispatch(updateScrollState("scroll-top"));
   };
 
   useEffect(() => {

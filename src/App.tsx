@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import Web3DautConnect from "@api/ProviderFactory/components/Web3NetworkProvider";
 import { environment } from "@api/environment";
 import AutSDK from "@aut-labs-private/sdk";
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "@store/store.model";
 import {
   IsAuthorised,
@@ -21,6 +21,7 @@ import { WalletConnectConnector } from "@usedapp/wallet-connect-connector";
 import { NetworkConfig } from "@api/ProviderFactory/network.config";
 import { useSelector } from "react-redux";
 import "./App.scss";
+import { ScrollRestorationState, updateScrollState } from "@store/ui-reducer";
 
 const Integrate = lazy(() => import("./pages/Integrate"));
 
@@ -75,6 +76,8 @@ function App() {
   const isAuthorised = useSelector(IsAuthorised);
   const [config, setConfig] = useState<Config>(null);
   const location = useLocation();
+  const ps = useRef<HTMLElement>();
+  const scrollRestorationState = useSelector(ScrollRestorationState);
 
   useEffect(() => {
     getAppConfig().then(async (res) => {
@@ -86,8 +89,26 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (ps?.current) {
+        ps.current.scrollTop = 0;
+      }
+    }, 0);
+  }, [location?.pathname]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (ps?.current && scrollRestorationState === "scroll-top") {
+        ps.current.scrollTop = 0;
+        dispatch(updateScrollState("initial"));
+      }
+    }, 0);
+  }, [scrollRestorationState]);
+
   return (
     <PerfectScrollbar
+      containerRef={(el) => (ps.current = el)}
       options={{
         suppressScrollX: true,
         useBothWheelAxes: false,
@@ -98,7 +119,7 @@ function App() {
       }}
     >
       {!config ? (
-        <AutLoading />
+        <AutLoading width="130px" height="130px" />
       ) : (
         <DAppProvider config={config}>
           <Web3DautConnect />
@@ -108,7 +129,7 @@ function App() {
               height: `100%`
             }}
           >
-            <Suspense fallback={<AutLoading />}>
+            <Suspense fallback={<AutLoading width="130px" height="130px" />}>
               <Routes>
                 {!isAuthorised && (
                   <>

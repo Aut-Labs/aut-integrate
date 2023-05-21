@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   snackbar: {
@@ -8,6 +8,7 @@ const initialState = {
     duration: 2000
   },
   logs: [],
+  restoreScrollState: "initial",
   previousRoute: "/",
   transactionState: null
 };
@@ -38,6 +39,9 @@ export const uiSlice = createSlice({
     updateTransactionState(state, action) {
       state.transactionState = action.payload;
     },
+    updateScrollState(state, action) {
+      state.restoreScrollState = action.payload;
+    },
     setPreviusRoute(state, action) {
       state.previousRoute = action.payload;
     },
@@ -50,7 +54,16 @@ export const {
   closeSnackbar,
   addLog,
   setPreviusRoute,
+  updateScrollState,
   updateTransactionState
 } = uiSlice.actions;
+
+export const scrollRestorationState = (state: any) =>
+  state.ui.restoreScrollState as "initial" | "scroll-top";
+
+export const ScrollRestorationState = createSelector(
+  scrollRestorationState,
+  (x1) => x1
+);
 
 export default uiSlice.reducer;

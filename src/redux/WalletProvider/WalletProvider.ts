@@ -83,11 +83,11 @@ export const NetworksConfig = (state: any) =>
 export const NetworkWalletConnectors = (state: any) =>
   state.walletProvider.wallets as any;
 export const SelectedNetwork = (state: any) =>
-  state.walletProvider.selectedNetwork as string;
+  state.walletProvider.selectedNetwork as NetworkConfig;
 export const SelectedNetworkConfig = createSelector(
   NetworksConfig,
   SelectedNetwork,
-  (networks, networkName) => networks.find((r) => r.network === networkName)
+  (networks, network) => networks.find((r) => r.network === network?.network)
 );
 export const BlockExplorerUrl = createSelector(
   SelectedNetworkConfig,
