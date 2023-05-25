@@ -209,7 +209,7 @@ const IntegrateSuccess = () => {
           to={"https://try-aut-internal-test.aut.id/"}
           target="_blank"
         >
-          Go to Try Aut
+          Go to Try Āut
         </ButtonWithPulse>
         <Button
           variant="outlined"
