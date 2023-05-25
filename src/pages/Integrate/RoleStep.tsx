@@ -13,7 +13,7 @@ import { StepperButton } from "@components/Stepper";
 import { AutTextField } from "@theme/field-text-styles";
 
 const errorTypes = {
-  maxLength: `Characters cannot be more than 280`
+  maxLength: `Characters cannot be more than 257`
 };
 
 const StepWrapper = styled("form")({

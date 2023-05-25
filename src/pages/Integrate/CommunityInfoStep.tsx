@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
 const errorTypes = {
   maxWords: `Words cannot be more than 3`,
   maxNameChars: `Characters cannot be more than 24`,
-  maxLength: `Characters cannot be more than 280`
+  maxLength: `Characters cannot be more than 257`
 };
 
 const StepWrapper = styled("form")({
@@ -145,7 +145,7 @@ const CommunityInfoStep = (props: StepperChildProps) => {
       <Controller
         name="description"
         control={control}
-        rules={{ maxLength: 280 }}
+        rules={{ maxLength: 257 }}
         render={({ field: { name, value, onChange } }) => {
           return (
             <AutTextField
@@ -171,7 +171,7 @@ const CommunityInfoStep = (props: StepperChildProps) => {
                   name={name}
                   errors={formState.errors}
                 >
-                  <span>{280 - (value?.length || 0)}/280 characters left</span>
+                  <span>{257 - (value?.length || 0)}/257 characters left</span>
                 </FormHelperText>
               }
             />
