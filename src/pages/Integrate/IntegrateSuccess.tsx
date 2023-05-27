@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   Button,
+  ButtonProps,
   Container,
   IconButton,
   styled,
@@ -11,7 +12,7 @@ import {
   useTheme
 } from "@mui/material";
 import { pxToRem } from "@utils/text-size";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CopyAddress from "@components/CopyAddress";
 import { AutShareDialog } from "@components/Share";
 import { useSelector } from "react-redux";
@@ -48,6 +49,25 @@ const AddressWrapper = styled("div")(({ theme }) => ({
     alignItems: "flex-start"
   }
 }));
+const ButtonWithPulse = styled<ButtonProps<any, any>>(Button)`
+  &:not(.Mui-disabled) {
+    box-shadow: 0 0 0 0 rgba(37, 107, 176, 1);
+    animation: pulse 1.5s infinite;
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 107, 176, 0.7);
+      }
+
+      70% {
+        box-shadow: 0 0 0 15px rgba(37, 107, 176, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 107, 176, 0);
+      }
+    }
+  }
+`;
 
 const IntegrateSuccess = () => {
   const [open, setOpen] = useState(false);
@@ -74,13 +94,15 @@ const IntegrateSuccess = () => {
         description={
           <>
             <Typography color="white" variant="body" mb="12px">
-              {community?.name} 2.0 is now live on @opt_aut - with on-chain
-              Roles & Interactions for all our Contributors 🙌 <br />
+              Hey there! We've just deployed {community?.name} on Āut - choose
+              your Role in our Community, and let's build something great
+              together!
+              <br />
             </Typography>
 
-            <Typography color="white" variant="body" mb="12px">
+            {/* <Typography color="white" variant="body" mb="12px">
               Let’s coordinate, change things - break things. Together 🫂
-            </Typography>
+            </Typography> */}
           </>
         }
         twitterProps={{
@@ -179,6 +201,16 @@ const IntegrateSuccess = () => {
         }}
         className="right-box"
       >
+        <ButtonWithPulse
+          variant="outlined"
+          size="large"
+          color="offWhite"
+          component={Link}
+          to={"https://try-aut-internal-test.aut.id/"}
+          target="_blank"
+        >
+          Go to Try Āut
+        </ButtonWithPulse>
         <Button
           variant="outlined"
           size="large"
@@ -188,6 +220,7 @@ const IntegrateSuccess = () => {
         >
           Share
         </Button>
+
         {/* <Button
           variant="outlined"
           size="medium"
