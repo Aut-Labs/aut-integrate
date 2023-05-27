@@ -66,6 +66,7 @@ export const createCommunity = createAsyncThunk(
             cacheKey: "UserPhases",
             address: requestBody.userAddress,
             daoAddress: response.data,
+            startDate: new Date().getTime(),
             list: [
               {
                 phase: 1,

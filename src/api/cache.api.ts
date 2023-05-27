@@ -8,6 +8,7 @@ interface CacheModel {
   daoAddress: string;
   onboardingPluginAddress: string;
   questId: number;
+  startDate: number;
   list: any[];
 }
 
