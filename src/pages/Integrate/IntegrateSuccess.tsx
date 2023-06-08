@@ -24,6 +24,7 @@ import {
   BlockExplorerUrl,
   SelectedNetworkConfig
 } from "@store/WalletProvider/WalletProvider";
+import { autUrls } from "@api/environment";
 
 const StepWrapper = styled(Container)({
   textAlign: "center",
@@ -77,6 +78,7 @@ const IntegrateSuccess = () => {
   const selectedNetworkConfig = useSelector(SelectedNetworkConfig);
   const blockExplorer = useSelector(BlockExplorerUrl);
   const shareMessage = `Hey there! We've just deployed ${community?.name} on Āut - choose your Role in our Community, and let's build something great together!`;
+  const urls = autUrls();
   return (
     <StepWrapper
       sx={{
@@ -206,7 +208,7 @@ const IntegrateSuccess = () => {
           size="large"
           color="offWhite"
           component={Link}
-          to={"https://try-aut-internal-test.aut.id/"}
+          to={urls.tryAut}
           target="_blank"
         >
           Go to Try Āut
