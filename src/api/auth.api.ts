@@ -30,15 +30,15 @@ export const authoriseWithWeb3 = async (
   return isAuthorised;
 };
 
-export const isAllowListed = async (signer: ethers.providers.JsonRpcSigner) => {
+export const isAllowListed = async (
+  signer: ethers.providers.JsonRpcSigner,
+  contractAddress: string
+) => {
   try {
     const account = await signer.getAddress();
-    const contract = Web3AllowlistProvider(
-      "0x3Aa3c3cd9361a39C651314261156bc7cdB52B618",
-      {
-        signer: () => signer
-      }
-    );
+    const contract = Web3AllowlistProvider(contractAddress, {
+      signer: () => signer
+    });
     const isAllowed = await contract.isAllowed(account);
     if (!isAllowed) {
       throw new Error(
