@@ -131,7 +131,7 @@ const ImportContractStep = (props: StepperChildProps) => {
                   <Link
                     variant="caption"
                     target="_blank"
-                    href="https://hackersdao.aut.id/"
+                    href={""}
                     sx={{
                       color: "offWhite.main"
                     }}

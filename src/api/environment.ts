@@ -36,8 +36,8 @@ export const autUrls = () => {
       novaDashboard: "https://nova.aut.id/",
       myAut: "https://my.aut.id/",
       showcase: "https://showcase.aut.id/",
-      leaderboard: "https://leaderboard-internal.aut.id/",
-      expander: "https://leaderboard.aut.id/"
+      leaderboard: "https://leaderboard.aut.id/",
+      expander: "https://expander.aut.id/"
     };
   }
 };
