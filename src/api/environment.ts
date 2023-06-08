@@ -30,14 +30,14 @@ export const autUrls = () => {
       leaderboard: "https://leaderboard-internal.aut.id/",
       expander: "https://expander-internal.aut.id/"
     };
-  } else if (environment.env === EnvMode.Production) {
-    return {
-      tryAut: "https://try.aut.id/",
-      novaDashboard: "https://nova.aut.id/",
-      myAut: "https://my.aut.id/",
-      showcase: "https://showcase.aut.id/",
-      leaderboard: "https://leaderboard.aut.id/",
-      expander: "https://expander.aut.id/"
-    };
   }
+
+  return {
+    tryAut: "https://try.aut.id/",
+    novaDashboard: "https://nova.aut.id/",
+    myAut: "https://my.aut.id/",
+    showcase: "https://showcase.aut.id/",
+    leaderboard: "https://leaderboard.aut.id/",
+    expander: "https://expander.aut.id/"
+  };
 };
