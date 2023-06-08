@@ -63,14 +63,14 @@ function Web3DautConnect() {
         apiKey: network.biconomyApiKey,
         contractAddresses: [
           network.contracts.daoExpanderRegistryAddress,
-          network.contracts.autDaoRegistryAddress
+          network.contracts.novaRegistryAddress
         ]
       });
     await sdk.init(
       signer,
       {
         daoTypesAddress: network.contracts.daoTypesAddress,
-        autDaoRegistryAddress: network.contracts.autDaoRegistryAddress,
+        novaRegistryAddress: network.contracts.novaRegistryAddress,
         autIDAddress: network.contracts.autIDAddress,
         daoExpanderRegistryAddress: network.contracts.daoExpanderRegistryAddress
       },

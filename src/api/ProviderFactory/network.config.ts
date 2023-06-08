@@ -7,8 +7,9 @@ export interface NetworkContracts {
   autIDAddress: string;
   daoExpanderRegistryAddress: string;
   daoExpanderFactoryAddress: string;
-  autDaoRegistryAddress: string;
-  autDaoFactoryAddress: string;
+  novaRegistryAddress: string;
+  allowListAddress: string;
+  novaFactoryAddress: string;
   hackerDaoAddress: string;
   daoTypesAddress: string;
 }

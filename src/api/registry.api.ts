@@ -36,7 +36,7 @@ export const createCommunity = createAsyncThunk(
     const sdk = AutSDK.getInstance();
     let response: SDKContractGenericResponse<string>;
 
-    sdk.autDaoRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
+    sdk.novaRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
     sdk.daoExpanderRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
 
     if (requestBody.daoAddr) {
@@ -49,7 +49,7 @@ export const createCommunity = createAsyncThunk(
       );
     } else {
       // start from scratch
-      response = await sdk.autDaoRegistry.deployAutDAO(
+      response = await sdk.novaRegistry.deployNova(
         requestBody.metadata.properties.market as number,
         requestBody.metadata.properties.commitment,
         requestBody.metadata

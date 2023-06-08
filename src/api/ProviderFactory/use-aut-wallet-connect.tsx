@@ -3,6 +3,8 @@ import { Connector, useConfig, useConnector, useEthers } from "@usedapp/core";
 import { Web3Provider, JsonRpcProvider } from "@ethersproject/providers";
 import { authoriseWithWeb3, isAllowListed } from "@api/auth.api";
 import { getCache } from "@api/cache.api";
+import { NetworksConfig } from "@store/WalletProvider/WalletProvider";
+import { useSelector } from "react-redux";
 
 type DeferredPromise<DeferType> = {
   resolve: (value: DeferType) => void;
@@ -35,6 +37,7 @@ export const useAutWalletConnect = () => {
   const [connectError, setErrorMessage] = useState("");
   const [tryEagerConnect, setTryEagerConnect] = useState(false);
   const { connector, activate } = useConnector();
+  const networks = useSelector(NetworksConfig);
   const config = useConfig();
   const {
     activateBrowserWallet,
@@ -48,6 +51,9 @@ export const useAutWalletConnect = () => {
   const activateNetwork = async (conn: Connector, deferredPromise) => {
     try {
       const network = config.networks[0];
+      const selectedNetwork = networks.find(
+        (n) => n.chainId === network.chainId
+      );
 
       setIsSigning(true);
       await activate(conn);
@@ -62,7 +68,10 @@ export const useAutWalletConnect = () => {
       const { provider } = conn;
       const signer = provider.getSigner();
 
-      const isAllowed = await isAllowListed(signer);
+      const isAllowed = await isAllowListed(
+        signer,
+        selectedNetwork.contracts.allowListAddress
+      );
       const isAuthorised = isAllowed && (await authoriseWithWeb3(signer));
 
       const cache = await getCache("UserPhases");
