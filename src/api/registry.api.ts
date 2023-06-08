@@ -37,9 +37,9 @@ export const createCommunity = createAsyncThunk(
     let response: SDKContractGenericResponse<string>;
 
     sdk.novaRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
-    sdk.daoExpanderRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
 
     if (requestBody.daoAddr) {
+      sdk.daoExpanderRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
       response = await sdk.daoExpanderRegistry.deployDAOExpander(
         requestBody.contractType,
         requestBody.daoAddr,
