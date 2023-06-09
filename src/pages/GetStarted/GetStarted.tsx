@@ -145,8 +145,8 @@ const GetStarted = () => {
           }}
           color="white"
         >
-          Āut is an expandable Community protocol, powering the next level of
-          collective coordination 🤝🫂
+          The Expander is an expandable Community protocol, powering Novas: the
+          next level of collective coordination.
         </Typography>
         <Typography
           component="p"
@@ -158,7 +158,7 @@ const GetStarted = () => {
           }}
           color="white"
         >
-          By integrating it, you can expand your DAO contract - adding the
+          By deploying your Nova, you can expand your DAO contract - adding the
           concepts of Members Roles & Interactions directly on-chain.
         </Typography>
         <Typography

@@ -152,10 +152,15 @@ const StepperNav = (props: StepperNavProps) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            mt: pxToRem(30),
-            mb: pxToRem(80),
+            mt: "30px",
+            mb: "50px",
             color: "offWhite.main",
-            maxWidth: "85%"
+            maxWidth: {
+              xs: "100%",
+              sm: "400px",
+              md: "600px",
+              xxl: "800px"
+            }
           }}
         >
           {props.steps[props.currentStep - 1].description}
