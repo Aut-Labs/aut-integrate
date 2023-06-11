@@ -40,6 +40,9 @@ const FormStackWrapper = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
     width: "400px"
   },
+  [theme.breakpoints.up("md")]: {
+    width: "600px"
+  },
   [theme.breakpoints.up("xxl")]: {
     width: "800px"
   }
@@ -130,10 +133,7 @@ const CommunityInfoStep = (props: StepperChildProps) => {
                     name={name}
                     errors={formState.errors}
                   >
-                    <span>
-                      {3 - countWords(value)}/3 words and{" "}
-                      {24 - (value?.length || 0)}/24 characters left
-                    </span>
+                    <span>{3 - countWords(value)} words left</span>
                   </FormHelperText>
                 }
               />
@@ -160,6 +160,7 @@ const CommunityInfoStep = (props: StepperChildProps) => {
                 width: {
                   xs: "100%",
                   sm: "400px",
+                  md: "600px",
                   xxl: "800px"
                 }
               }}
@@ -171,7 +172,7 @@ const CommunityInfoStep = (props: StepperChildProps) => {
                   name={name}
                   errors={formState.errors}
                 >
-                  <span>{257 - (value?.length || 0)}/257 characters left</span>
+                  <span>{257 - (value?.length || 0)} characters left</span>
                 </FormHelperText>
               }
             />

@@ -106,6 +106,7 @@ const ImportContractStep = (props: StepperChildProps) => {
                 width: {
                   xs: "100%",
                   sm: "400px",
+                  md: "600px",
                   xxl: "800px"
                 },
                 mb: pxToRem(45)
@@ -176,6 +177,7 @@ const ImportContractStep = (props: StepperChildProps) => {
                 width: {
                   xs: "100%",
                   sm: "400px",
+                  md: "600px",
                   xxl: "800px"
                 },
                 mb: pxToRem(45)

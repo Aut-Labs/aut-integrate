@@ -92,9 +92,7 @@ const RoleStep = (props: StepperChildProps) => {
                       name={name}
                       errors={errors}
                     >
-                      <span>
-                        {20 - (value?.length || 0)}/20 characters left
-                      </span>
+                      <span>{20 - (value?.length || 0)} characters left</span>
                     </FormHelperText>
                   }
                 />

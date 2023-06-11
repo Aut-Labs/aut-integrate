@@ -38,7 +38,7 @@ const AddressWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   height: "60px",
-  marginTop: "80px",
+  marginTop: "50px",
   padding: "0 20px",
   borderTop: `1px solid ${theme.palette.divider}`,
   borderBottom: `1px solid ${theme.palette.divider}`,
@@ -115,16 +115,16 @@ const IntegrateSuccess = () => {
         rightSide={
           <Avatar
             sx={{
-              height: pxToRem(165),
-              width: pxToRem(165)
+              height: "165px",
+              width: "165px"
             }}
             variant="square"
             src={community?.image as string}
           />
         }
       />
-      <Typography marginTop={pxToRem(50)} color="white" variant="subtitle1">
-        You’ve now expanded your Community 🎉
+      <Typography marginTop="50px" color="white" variant="subtitle1">
+        You’ve now launched your Nova 🎉
       </Typography>
 
       <AddressWrapper>
@@ -138,7 +138,7 @@ const IntegrateSuccess = () => {
           color="white"
           variant="body"
         >
-          Your expanded DAO Contract {"—> "}
+          Your Nova Contract {"—> "}
         </Typography>
 
         <Box
@@ -167,29 +167,23 @@ const IntegrateSuccess = () => {
           lg: "480px",
           xxl: "560px"
         }}
-        marginTop={pxToRem(40)}
+        marginTop="30px"
+        marginBottom="50px"
         color="white"
         variant="body"
       >
         This contract already knows about the Roles and Interactions of your
-        Community Contributors.
+        Community Members.
+        <br />
+        <br />
+        Whether it’s a new Community, or you’re expanding an existing one -
+        today is the day you joined the Coordination Renaissance!
+        <br />
+        <br />
+        Tweet to let everybody know about it, or just get back to Try Āut & get
+        things started!
       </Typography>
 
-      <Typography
-        marginTop={pxToRem(40)}
-        marginBottom={pxToRem(100)}
-        maxWidth={{
-          xs: "100%",
-          md: "400px",
-          lg: "480px",
-          xxl: "560px"
-        }}
-        variant="body"
-        color="white"
-      >
-        Today begins the 2nd life of your DAO. <br /> Tweet to let everybody
-        know about it, or just head over to your Dashboard & get things started!
-      </Typography>
       <Box
         sx={{
           gridGap: "30px",
@@ -211,7 +205,7 @@ const IntegrateSuccess = () => {
           to={urls.tryAut}
           target="_blank"
         >
-          Go to Try Āut
+          Back to Try Āut
         </ButtonWithPulse>
         <Button
           variant="outlined"
