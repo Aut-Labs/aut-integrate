@@ -77,7 +77,7 @@ const IntegrateSuccess = () => {
   const theme = useTheme();
   const selectedNetworkConfig = useSelector(SelectedNetworkConfig);
   const blockExplorer = useSelector(BlockExplorerUrl);
-  const shareMessage = `Hey there! We've just deployed ${community?.name} on Āut - choose your Role in our Community, and let's build something great together!`;
+  const shareMessage = `Hey there! We've just deployed ${community?.name} on Āut @opt_aut - choose your Role in our Community, and let's build something great together! #YoC23`;
   const urls = autUrls();
   return (
     <StepWrapper
@@ -91,14 +91,14 @@ const IntegrateSuccess = () => {
       <AutShareDialog
         open={open}
         onClose={() => setOpen(false)}
-        url="https://Aut.id/"
+        url={`${urls?.showcase}?daoAddress=${params?.address}`}
         title="Celebrate the new era of your DAO 🎉"
         description={
           <>
             <Typography color="white" variant="body" mb="12px">
-              Hey there! We've just deployed {community?.name} on Āut - choose
-              your Role in our Community, and let's build something great
-              together!
+              Hey there! We've just deployed {community?.name} on Āut @opt_aut -
+              choose your Role in our Community, and let's build something great
+              together! #YoC23
               <br />
             </Typography>
 
