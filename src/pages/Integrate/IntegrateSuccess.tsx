@@ -98,7 +98,7 @@ const IntegrateSuccess = () => {
             <Typography color="white" variant="body" mb="12px">
               Hey there! We've just deployed {community?.name} on Āut @opt_aut -
               choose your Role in our Community, and let's build something great
-              together! #YoC23
+              together!
               <br />
             </Typography>
 
@@ -109,7 +109,7 @@ const IntegrateSuccess = () => {
         }
         twitterProps={{
           title: shareMessage,
-          hashtags: ["Āut", "DAO", "Blockchain"]
+          hashtags: ["YoC23"]
         }}
         hideCloseBtn
         rightSide={
