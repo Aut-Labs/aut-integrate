@@ -2,7 +2,7 @@ import { Route, Navigate, Routes, useLocation } from "react-router-dom";
 import { Box } from "@mui/material";
 import Web3DautConnect from "@api/ProviderFactory/components/Web3NetworkProvider";
 import { environment } from "@api/environment";
-import AutSDK from "@aut-labs-private/sdk";
+import AutSDK from "@aut-labs/sdk";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "@store/store.model";
 import {

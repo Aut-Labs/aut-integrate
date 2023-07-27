@@ -1,4 +1,4 @@
-import AutSDK, { SDKContractGenericResponse } from "@aut-labs-private/sdk";
+import AutSDK, { SDKContractGenericResponse } from "@aut-labs/sdk";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Community } from "./community.model";
 import { getCache, updateCache } from "./cache.api";

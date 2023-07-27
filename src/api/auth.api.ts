@@ -1,7 +1,7 @@
 import axios from "axios";
 import { environment } from "./environment";
 import { ethers } from "ethers";
-import { Web3AllowlistProvider } from "@aut-labs-private/abi-types";
+import { Web3AllowlistProvider } from "@aut-labs/abi-types";
 
 export const AUTH_TOKEN_KEY = "user-access-token";
 
