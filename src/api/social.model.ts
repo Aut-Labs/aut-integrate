@@ -5,24 +5,11 @@ export interface AutSocial {
 
 export const socialUrls = {
   discord: {
-    hidePrefix: true,
-    placeholder: "name#1234",
-    prefix: "https://discord.com/users/"
-  },
-  github: {
-    prefix: "https://github.com/",
+    prefix: "",
     placeholder: ""
   },
-  telegram: {
-    prefix: "https://t.me/",
-    placeholder: ""
-  },
-  twitter: {
-    prefix: "https://twitter.com/",
-    placeholder: ""
-  },
-  lensfrens: {
-    prefix: "https://www.lensfrens.xyz/",
+  website: {
+    prefix: "",
     placeholder: ""
   }
 };
@@ -33,19 +20,7 @@ export const DefaultSocials: AutSocial[] = [
     link: ""
   },
   {
-    type: "github",
-    link: ""
-  },
-  {
-    type: "twitter",
-    link: ""
-  },
-  {
-    type: "telegram",
-    link: ""
-  },
-  {
-    type: "lensfrens",
+    type: "website",
     link: ""
   }
 ];
