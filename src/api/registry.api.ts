@@ -38,6 +38,8 @@ export const createCommunity = createAsyncThunk(
 
     sdk.novaRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
 
+    debugger;
+
     if (requestBody.daoAddr) {
       sdk.daoExpanderRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
       response = await sdk.daoExpanderRegistry.deployDAOExpander(
@@ -57,7 +59,7 @@ export const createCommunity = createAsyncThunk(
     }
     if (response?.isSuccess) {
       try {
-        const cache = await getCache("UserPhases");
+        const cache = await getCache("UserPhases", requestBody?.userAddress);
         if (cache) {
           cache.list[0].status = 1;
           await updateCache(cache);

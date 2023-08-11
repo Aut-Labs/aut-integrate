@@ -83,6 +83,7 @@ const GetStarted = () => {
     if (!connectInitiated) {
       return;
     }
+
     if (isAuthorised) {
       navigate("/integrate");
     }
@@ -90,13 +91,15 @@ const GetStarted = () => {
 
   const goToIntegrate = (startFromScratch = false) => {
     setConnectInitiated(true);
-    if (!isAuthorised) {
-      const itemsToUpdate = {
-        startFromScratch,
-        isOpen: true
-      };
-      dispatch(updateWalletProviderState(itemsToUpdate));
-    } else {
+
+    const itemsToUpdate = {
+      startFromScratch,
+      isOpen: !isAuthorised
+    };
+
+    dispatch(updateWalletProviderState(itemsToUpdate));
+
+    if (isAuthorised) {
       navigate("/integrate");
     }
   };

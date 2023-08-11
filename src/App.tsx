@@ -1,6 +1,7 @@
 import { Route, Navigate, Routes, useLocation } from "react-router-dom";
-import { Box } from "@mui/material";
-import Web3DautConnect from "@api/ProviderFactory/components/Web3NetworkProvider";
+import { Box, styled } from "@mui/material";
+import MuiAppBar from "@mui/material/AppBar";
+import Web3DautConnect from "@api/ProviderFactory/Web3NetworkProvider";
 import { environment } from "@api/environment";
 import AutSDK from "@aut-labs/sdk";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
@@ -14,67 +15,43 @@ import SWSnackbar from "./components/snackbar";
 import GetStarted from "./pages/GetStarted/GetStarted";
 import { getAppConfig } from "@api/aut.api";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { DAppProvider, Config, MetamaskConnector } from "@usedapp/core";
-import { ethers } from "ethers";
-import { WalletConnectConnector } from "@usedapp/wallet-connect-connector";
-
-import { NetworkConfig } from "@api/ProviderFactory/network.config";
 import { useSelector } from "react-redux";
 import "./App.scss";
 import { ScrollRestorationState, updateScrollState } from "@store/ui-reducer";
+import { WagmiConfig } from "wagmi";
+import { generateNetworkConfig } from "@api/ProviderFactory/setup.config";
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) =>
+    prop !== "open" && prop !== "drawerWidth" && prop !== "toolbarHeight"
+})<any>(({ theme, open, drawerWidth, toolbarHeight }) => ({
+  border: 0,
+  minHeight: `${toolbarHeight}px`,
+  ".MuiToolbar-root": {
+    minHeight: `${toolbarHeight}px`
+  },
+  [theme.breakpoints.up("md")]: {
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    }),
+    ...(open && {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: `${drawerWidth}px`,
+      transition: theme.transitions.create(["margin", "width"], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen
+      })
+    })
+  }
+}));
 
 const Integrate = lazy(() => import("./pages/Integrate"));
-
-const generateConfig = (networks: NetworkConfig[]): Config => {
-  const readOnlyUrls = networks.reduce((prev, curr) => {
-    if (!curr.disabled) {
-      const network = {
-        name: "mumbai",
-        chainId: 80001,
-        _defaultProvider: (providers) =>
-          new providers.JsonRpcProvider(curr.rpcUrls[0])
-      };
-      const provider = ethers.getDefaultProvider(network);
-      prev[curr.chainId] = provider;
-    }
-    return prev;
-  }, {});
-
-  return {
-    readOnlyUrls,
-    autoConnect: false,
-    // @ts-ignore
-    networks: networks
-      .filter((n) => !n.disabled)
-      .map((n) => ({
-        isLocalChain: false,
-        isTestChain: environment.networkEnv === "testing",
-        chainId: n.chainId,
-        chainName: n.network,
-        rpcUrl: n.rpcUrls[0],
-        nativeCurrency: n.nativeCurrency
-      })),
-    gasLimitBufferPercentage: 50000,
-    connectors: {
-      metamask: new MetamaskConnector(),
-      walletConnect: new WalletConnectConnector({
-        rpc: networks
-          .filter((n) => !n.disabled)
-          .reduce((prev, curr) => {
-            // eslint-disable-next-line prefer-destructuring
-            prev[curr.chainId] = curr.rpcUrls[0];
-            return prev;
-          }, {}),
-        infuraId: "d8df2cb7844e4a54ab0a782f608749dd"
-      })
-    }
-  };
-};
 
 function App() {
   const dispatch = useAppDispatch();
   const isAuthorised = useSelector(IsAuthorised);
-  const [config, setConfig] = useState<Config>(null);
+  const [config, setConfig] = useState(null);
   const location = useLocation();
   const ps = useRef<HTMLElement>();
   const scrollRestorationState = useSelector(ScrollRestorationState);
@@ -82,7 +59,8 @@ function App() {
   useEffect(() => {
     getAppConfig().then(async (res) => {
       dispatch(setNetworks(res));
-      setConfig(generateConfig(res));
+      const [network] = res.filter((d) => !d.disabled);
+      setConfig(generateNetworkConfig(network));
       const sdk = new AutSDK({
         nftStorageApiKey: environment.nftStorageKey
       });
@@ -121,19 +99,40 @@ function App() {
       {!config ? (
         <AutLoading width="130px" height="130px" />
       ) : (
-        <DAppProvider config={config}>
+        <WagmiConfig config={config}>
           <Web3DautConnect />
           <SWSnackbar />
           <Box
             sx={{
               height: `100%`
+              // marginTop: "50px"
             }}
           >
+            {/* <AppBar
+              sx={{
+                boxShadow: 2
+              }}
+              toolbarHeight="50"
+              drawerWidth="50"
+              position="fixed"
+              open={open}
+            >
+              <Toolbar
+                sx={{
+                  minHeight: "50px",
+                  backgroundColor: "transparent",
+                  border: 0
+                }}
+              >
+                Test
+              </Toolbar>
+            </AppBar> */}
             <Suspense fallback={<AutLoading width="130px" height="130px" />}>
               <Routes>
+                <Route path="/" element={<GetStarted />} />
                 {!isAuthorised && (
                   <>
-                    <Route path="/" element={<GetStarted />} />
+                    {/* <Route path="/" element={<GetStarted />} /> */}
                     <Route
                       path="*"
                       element={<Navigate to="/" state={{ from: location }} />}
@@ -142,17 +141,18 @@ function App() {
                 )}
                 {isAuthorised && (
                   <>
+                    {/* <Route path="/" element={<GetStarted />} /> */}
                     <Route path="/integrate/*" element={<Integrate />} />
-                    <Route
+                    {/* <Route
                       path="*"
                       element={<Navigate to="/integrate" replace />}
-                    />
+                    /> */}
                   </>
                 )}
               </Routes>
             </Suspense>
           </Box>
-        </DAppProvider>
+        </WagmiConfig>
       )}
     </PerfectScrollbar>
   );

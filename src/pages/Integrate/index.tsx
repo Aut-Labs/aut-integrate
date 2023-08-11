@@ -15,7 +15,6 @@ import {
 } from "@store/Integrate/integrate";
 import { ResultState } from "@store/result-status";
 import { useAppDispatch } from "@store/store.model";
-import { updateWalletProviderState } from "@store/WalletProvider/WalletProvider";
 import IntegrateSuccess from "./IntegrateSuccess";
 import IntegrateStepper from "./IntegrateStepper";
 import AppTitle from "@components/AppTitle";
@@ -62,15 +61,15 @@ const Integrate = () => {
   const [instance, setInstance] = useState<StepWizardChildProps>();
   const goBack = async () => {
     if (instance?.currentStep === 1) {
-      const itemsToUpdate = {
-        isAuthorised: false,
-        sdkInitialized: false,
-        selectedWalletType: null,
-        isOpen: false,
-        selectedNetwork: null,
-        signer: null
-      };
-      await dispatch(updateWalletProviderState(itemsToUpdate));
+      // const itemsToUpdate = {
+      //   isAuthorised: false,
+      //   sdkInitialized: false,
+      //   selectedWalletType: null,
+      //   isOpen: false,
+      //   selectedNetwork: null,
+      //   signer: null
+      // };
+      // await dispatch(updateWalletProviderState(itemsToUpdate));
       navigate({
         pathname: `/`,
         search: location.search

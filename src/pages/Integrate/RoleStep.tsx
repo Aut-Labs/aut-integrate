@@ -45,12 +45,12 @@ const RoleStep = (props: StepperChildProps) => {
     name: "roles"
   });
 
-  const updateState = () => {
-    return dispatch(integrateUpdateCommunity(getValues()));
+  const updateState = (data: any[]) => {
+    return dispatch(integrateUpdateCommunity(data));
   };
 
-  const onSubmit = async () => {
-    await updateState();
+  const onSubmit = async (data) => {
+    await updateState(data);
     props?.stepper?.nextStep();
   };
 
