@@ -19,6 +19,7 @@ import { useAccount, useChainId, useConnect } from "wagmi";
 import { ReactComponent as WalletConnectLogo } from "@assets/aut/wallet-connect.svg";
 import { ReactComponent as MetamaskLogo } from "@assets/aut/metamask.svg";
 import { isAllowListed } from "@api/auth.api";
+import { MultiSigner } from "@aut-labs/sdk/dist/models/models";
 
 const DialogInnerContent = styled("div")({
   display: "flex",
@@ -58,11 +59,11 @@ function Web3DautConnect() {
   const { connector, isReconnecting, isConnecting, isConnected } = useAccount();
   const { connectAsync, connectors, error, isLoading } = useConnect();
   const chainId = useChainId();
-  const signer = useEthersSigner({ chainId: chainId });
+  const multiSigner = useEthersSigner({ chainId: chainId });
 
   const initialiseSDK = async (
     network: NetworkConfig,
-    signer: ethers.providers.JsonRpcSigner
+    multiSigner: MultiSigner
   ) => {
     const sdk = AutSDK.getInstance();
     const biconomy =
@@ -76,7 +77,7 @@ function Web3DautConnect() {
         ]
       });
     await sdk.init(
-      signer,
+      multiSigner,
       {
         daoTypesAddress: network.contracts.daoTypesAddress,
         novaRegistryAddress: network.contracts.novaRegistryAddress,
@@ -95,14 +96,14 @@ function Web3DautConnect() {
   };
 
   useEffect(() => {
-    if (connector?.ready && isConnected && signer) {
+    if (connector?.ready && isConnected && multiSigner) {
       const start = async () => {
         setError("");
         const [network] = networks.filter((d) => !d.disabled);
         let isAllowed = false;
         try {
           isAllowed = await isAllowListed(
-            signer,
+            multiSigner.readOnlySigner as ethers.providers.JsonRpcSigner,
             network.contracts.allowListAddress
           );
         } catch (error) {
@@ -116,11 +117,11 @@ function Web3DautConnect() {
           isAllowed
         };
         await dispatch(updateWalletProviderState(itemsToUpdate));
-        await initialiseSDK(network, signer);
+        await initialiseSDK(network, multiSigner);
       };
       start();
     }
-  }, [isConnected, connector?.ready, signer]);
+  }, [isConnected, connector?.ready, multiSigner]);
 
   return (
     <DialogWrapper open={isOpen} onClose={closeAndDisconnect}>
