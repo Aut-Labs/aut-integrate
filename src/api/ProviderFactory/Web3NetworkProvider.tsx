@@ -82,7 +82,9 @@ function Web3DautConnect() {
         daoTypesAddress: network.contracts.daoTypesAddress,
         novaRegistryAddress: network.contracts.novaRegistryAddress,
         autIDAddress: network.contracts.autIDAddress,
-        daoExpanderRegistryAddress: network.contracts.daoExpanderRegistryAddress
+        daoExpanderRegistryAddress:
+          network.contracts.daoExpanderRegistryAddress,
+        allowListAddress: network.contracts.allowListAddress
       },
       biconomy
     );
