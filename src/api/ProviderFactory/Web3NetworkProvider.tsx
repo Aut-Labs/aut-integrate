@@ -85,8 +85,8 @@ function Web3DautConnect() {
         daoExpanderRegistryAddress:
           network.contracts.daoExpanderRegistryAddress,
         allowListAddress: network.contracts.allowListAddress
-      },
-      biconomy
+      }
+      // biconomy
     );
   };
 
