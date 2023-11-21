@@ -1,6 +1,6 @@
 import axios from "axios";
 import { environment } from "./environment";
-import { AUTH_TOKEN_KEY } from "./auth.api";
+import { _KEY } from "./auth.api";
 
 interface CacheModel {
   cacheKey: string;
