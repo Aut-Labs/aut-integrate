@@ -1,14 +1,24 @@
 export interface AutSocial {
   type: string;
   link: string;
+  metadata: any;
 }
 
 export const socialUrls = {
   discord: {
+    hidePrefix: true,
+    placeholder: "inviteLInk",
+    prefix: ""
+  },
+  ens: {
     prefix: "",
     placeholder: ""
   },
-  website: {
+  twitter: {
+    prefix: "",
+    placeholder: ""
+  },
+  github: {
     prefix: "",
     placeholder: ""
   }
@@ -17,10 +27,22 @@ export const socialUrls = {
 export const DefaultSocials: AutSocial[] = [
   {
     type: "discord",
-    link: ""
+    link: "",
+    metadata: {}
   },
   {
-    type: "website",
-    link: ""
+    type: "ens",
+    link: "",
+    metadata: {}
+  },
+  {
+    type: "twitter",
+    link: "",
+    metadata: {}
+  },
+  {
+    type: "github",
+    link: "",
+    metadata: {}
   }
 ];
