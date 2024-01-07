@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { ReactComponent as UploadIcon } from "@assets/aut/upload-icon.svg";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import AutCropper from "./Cropper";
 
 const UploadWrapper = styled("div")(({ theme, color }) => {
   return {
@@ -66,6 +67,7 @@ const AFileUpload = ({
 }) => {
   const [preview, setPreview] = useState(initialPreviewUrl);
   const [showAction, setShowAction] = useState(false);
+  const [showCropper, setShowCropper] = useState(false);
   const theme = useTheme();
   const { getRootProps, getInputProps, open } = useDropzone({
     noClick: true,
@@ -78,7 +80,7 @@ const AFileUpload = ({
     onDrop: ([file]) => {
       const url = URL.createObjectURL(file);
       setPreview(url);
-      fileChange(file);
+      setShowCropper(true);
     }
   });
 
@@ -96,57 +98,69 @@ const AFileUpload = ({
   };
 
   return (
-    <UploadWrapper
-      onMouseEnter={() => toggleActions(true)}
-      onMouseLeave={() => toggleActions(false)}
-      onClick={handleActionClick}
-      color={color}
-    >
-      <div {...getRootProps({ className: "dropzone" })}>
-        <input {...getInputProps()} />
-      </div>
-      <div
-        style={{
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          alignItems: "center"
+    <>
+      <AutCropper
+        src={preview}
+        open={showCropper}
+        onClose={() => setShowCropper(false)}
+        getCroppedFile={(file) => {
+          fileChange(file);
+          setPreview(URL.createObjectURL(file));
+          setShowCropper(false);
         }}
+      />
+      <UploadWrapper
+        onMouseEnter={() => toggleActions(true)}
+        onMouseLeave={() => toggleActions(false)}
+        onClick={handleActionClick}
+        color={color}
       >
-        <Avatar
-          alt="Avatar"
-          variant="square"
-          src={preview}
-          sx={{
-            cursor: "pointer",
-            background: "transparent",
+        <div {...getRootProps({ className: "dropzone" })}>
+          <input {...getInputProps()} />
+        </div>
+        <div
+          style={{
             height: "100%",
             width: "100%",
-            "&.MuiAvatar-root": {
-              justifyContent: "center"
-            }
-          }}
-          imgProps={{
-            style: {
-              maxHeight: "100%",
-              maxWidth: "100%",
-              objectFit: "cover"
-            }
+            display: "flex",
+            alignItems: "center"
           }}
         >
-          <SvgIcon
+          <Avatar
+            alt="Avatar"
+            variant="square"
+            src={preview}
             sx={{
-              fill: theme.palette[color].dark
+              cursor: "pointer",
+              background: "transparent",
+              height: "100%",
+              width: "100%",
+              "&.MuiAvatar-root": {
+                justifyContent: "center"
+              }
             }}
-            component={UploadIcon}
-            inheritViewBox
-          />
-        </Avatar>
-        <Action color={color} className={`${showAction ? "show" : ""}`}>
-          {preview ? <HighlightOffIcon className="remove" /> : null}
-        </Action>
-      </div>
-    </UploadWrapper>
+            imgProps={{
+              style: {
+                maxHeight: "100%",
+                maxWidth: "100%",
+                objectFit: "cover"
+              }
+            }}
+          >
+            <SvgIcon
+              sx={{
+                fill: theme.palette[color].dark
+              }}
+              component={UploadIcon}
+              inheritViewBox
+            />
+          </Avatar>
+          <Action color={color} className={`${showAction ? "show" : ""}`}>
+            {preview ? <HighlightOffIcon className="remove" /> : null}
+          </Action>
+        </div>
+      </UploadWrapper>
+    </>
   );
 };
 

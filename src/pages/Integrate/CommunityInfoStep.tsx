@@ -90,7 +90,7 @@ const CommunityInfoStep = (props: StepperChildProps) => {
                 <AFileUpload
                   color="offWhite"
                   initialPreviewUrl={image}
-                  fileChange={async (file) => {
+                  fileChange={async (file: File) => {
                     if (file) {
                       onChange(await toBase64(file));
                     } else {
