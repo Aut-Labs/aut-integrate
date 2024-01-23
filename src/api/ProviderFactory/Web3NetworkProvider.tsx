@@ -11,7 +11,6 @@ import AppTitle from "@components/AppTitle";
 import AutLoading from "@components/AutLoading";
 import { ethers } from "ethers";
 import AutSDK from "@aut-labs/sdk";
-import { SDKBiconomyWrapper } from "@aut-labs/sdk-biconomy";
 import { useEffect, useState } from "react";
 import { NetworkConfig } from "./network.config";
 import { useEthersSigner } from "./ethers";
@@ -66,16 +65,6 @@ function Web3DautConnect() {
     multiSigner: MultiSigner
   ) => {
     const sdk = AutSDK.getInstance();
-    const biconomy =
-      network.biconomyApiKey &&
-      new SDKBiconomyWrapper({
-        enableDebugMode: true,
-        apiKey: network.biconomyApiKey,
-        contractAddresses: [
-          network.contracts.daoExpanderRegistryAddress,
-          network.contracts.novaRegistryAddress
-        ]
-      });
     await sdk.init(
       multiSigner,
       {

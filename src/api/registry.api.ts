@@ -36,12 +36,12 @@ export const createCommunity = createAsyncThunk(
     const sdk = AutSDK.getInstance();
     let response: SDKContractGenericResponse<string>;
 
-    sdk.novaRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
+    sdk.novaRegistry.contract.skipBiconomy = true;
 
     debugger;
 
     if (requestBody.daoAddr) {
-      sdk.daoExpanderRegistry.contract.skipBiconomy = requestBody.skipBiconomy;
+      sdk.daoExpanderRegistry.contract.skipBiconomy = true;
       response = await sdk.daoExpanderRegistry.deployDAOExpander(
         requestBody.contractType,
         requestBody.daoAddr,
