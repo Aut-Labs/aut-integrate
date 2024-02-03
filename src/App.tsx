@@ -18,8 +18,6 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { useSelector } from "react-redux";
 import "./App.scss";
 import { ScrollRestorationState, updateScrollState } from "@store/ui-reducer";
-import { WagmiConfig } from "wagmi";
-import { generateNetworkConfig } from "@api/ProviderFactory/setup.config";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) =>
@@ -51,7 +49,7 @@ const Integrate = lazy(() => import("./pages/Integrate"));
 function App() {
   const dispatch = useAppDispatch();
   const isAuthorised = useSelector(IsAuthorised);
-  const [config, setConfig] = useState(null);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const ps = useRef<HTMLElement>();
   const scrollRestorationState = useSelector(ScrollRestorationState);
@@ -59,8 +57,8 @@ function App() {
   useEffect(() => {
     getAppConfig().then(async (res) => {
       dispatch(setNetworks(res));
+      setLoading(false);
       const [network] = res.filter((d) => !d.disabled);
-      setConfig(generateNetworkConfig(network));
       const sdk = new AutSDK({
         ipfs: {
           apiKey: environment.ipfsApiKey,
@@ -100,10 +98,10 @@ function App() {
         height: "100vh"
       }}
     >
-      {!config ? (
+      {loading ? (
         <AutLoading width="130px" height="130px" />
       ) : (
-        <WagmiConfig config={config}>
+        <>
           <Web3DautConnect />
           <SWSnackbar />
           <Box
@@ -156,7 +154,7 @@ function App() {
               </Routes>
             </Suspense>
           </Box>
-        </WagmiConfig>
+        </>
       )}
     </PerfectScrollbar>
   );

@@ -8,7 +8,7 @@ export enum ConnectorTypes {
 }
 
 export interface WalletProviderState {
-  signer: ethers.providers.JsonRpcSigner;
+  signer: ethers.JsonRpcSigner;
   selectedWalletType: "injected" | "walletConnect";
   selectedNetwork: string;
   networksConfig: NetworkConfig[];
@@ -77,7 +77,7 @@ export const NetworkSelectorIsOpen = (state: any) =>
 export const SelectedWalletType = (state: any) =>
   state.walletProvider.selectedWalletType as string;
 export const NetworkSigner = (state: any) =>
-  state.walletProvider.signer as ethers.providers.JsonRpcSigner;
+  state.walletProvider.signer as ethers.JsonRpcSigner;
 export const NetworksConfig = (state: any) =>
   state.walletProvider.networksConfig as NetworkConfig[];
 export const NetworkWalletConnectors = (state: any) =>

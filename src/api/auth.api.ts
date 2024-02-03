@@ -6,7 +6,7 @@ import { Web3AllowlistProvider } from "@aut-labs/abi-types";
 export const AUTH_TOKEN_KEY = "user-access-token";
 
 export const authoriseWithWeb3 = async (
-  signer: ethers.providers.JsonRpcSigner
+  signer: ethers.JsonRpcSigner
 ): Promise<boolean | any> => {
   const account = await signer.getAddress();
 
@@ -31,10 +31,11 @@ export const authoriseWithWeb3 = async (
 };
 
 export const isAllowListed = async (
-  signer: ethers.providers.JsonRpcSigner,
+  signer: ethers.JsonRpcSigner,
   contractAddress: string
 ) => {
   try {
+    debugger;
     const account = await signer.getAddress();
     const contract = Web3AllowlistProvider(contractAddress, {
       signer: () => signer

@@ -18,7 +18,7 @@ import { AutSelectField } from "@theme/field-select-styles";
 import { AutTextField } from "@theme/field-text-styles";
 import { ContractTypes } from "@utils/misc";
 import { pxToRem } from "@utils/text-size";
-import { isAddress } from "ethers/lib/utils";
+import { isAddress } from "viem";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 

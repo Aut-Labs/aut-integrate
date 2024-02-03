@@ -9,9 +9,9 @@ import { Box, Button, Typography, styled } from "@mui/material";
 import DialogWrapper from "@components/Dialog/DialogWrapper";
 import AppTitle from "@components/AppTitle";
 import AutLoading from "@components/AutLoading";
-import { ethers } from "ethers";
+import { JsonRpcSigner } from "ethers";
 import AutSDK from "@aut-labs/sdk";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NetworkConfig } from "./network.config";
 import { useEthersSigner } from "./ethers";
 import { useAccount, useChainId, useConnect } from "wagmi";
@@ -56,9 +56,15 @@ function Web3DautConnect() {
   const networks = useSelector(NetworksConfig);
   const [errorMsg, setError] = useState<string>("");
   const { connector, isReconnecting, isConnecting, isConnected } = useAccount();
-  const { connectAsync, connectors, error, isLoading } = useConnect();
-  const chainId = useChainId();
-  const multiSigner = useEthersSigner({ chainId: chainId });
+  const { connectAsync, connectors, error, isPending } = useConnect();
+  const multiSigner = useEthersSigner();
+
+  const filteredConnectors = useMemo(() => {
+    if (connectors?.length) {
+      return connectors.filter((c) => !!btnConfig[c.id]);
+    }
+    return [];
+  }, [connectors]);
 
   const initialiseSDK = async (
     network: NetworkConfig,
@@ -87,17 +93,21 @@ function Web3DautConnect() {
   };
 
   useEffect(() => {
-    if (connector?.ready && isConnected && multiSigner) {
+    if (isConnected && multiSigner) {
       const start = async () => {
         setError("");
         const [network] = networks.filter((d) => !d.disabled);
+        const multiSignerRes = await multiSigner;
         let isAllowed = false;
         try {
           isAllowed = await isAllowListed(
-            multiSigner.readOnlySigner as ethers.providers.JsonRpcSigner,
+            multiSignerRes.readOnlySigner as JsonRpcSigner,
             network.contracts.allowListAddress
           );
+
+          debugger;
         } catch (error) {
+          debugger;
           setError(error?.message);
         }
         const itemsToUpdate = {
@@ -108,11 +118,11 @@ function Web3DautConnect() {
           isAllowed
         };
         await dispatch(updateWalletProviderState(itemsToUpdate));
-        await initialiseSDK(network, multiSigner);
+        await initialiseSDK(network, multiSignerRes);
       };
       start();
     }
-  }, [isConnected, connector?.ready, multiSigner]);
+  }, [isConnected, multiSigner]);
 
   return (
     <DialogWrapper open={isOpen} onClose={closeAndDisconnect}>
@@ -125,27 +135,23 @@ function Web3DautConnect() {
           }}
           variant="h2"
         />
-        {(isLoading || isConnecting) && (
+        {(isPending || isConnecting) && (
           <div style={{ position: "relative", flex: 1 }}>
             <AutLoading width="130px" height="130px" />
           </div>
         )}
 
-        {!isLoading && (
+        {!isPending && (
           <>
             <Typography color="white" variant="subtitle1">
               Connect your wallet
             </Typography>
             <DialogInnerContent>
-              {connectors.map((c) => (
+              {filteredConnectors.map((c) => (
                 <Button
-                  disabled={
-                    !c.ready || isReconnecting || c.id === connector?.id
-                  }
+                  disabled={isReconnecting || c.id === connector?.id}
                   key={c.id}
-                  onClick={() =>
-                    connectAsync({ connector: c, chainId: c.chains[0].id })
-                  }
+                  onClick={() => connectAsync({ connector: c })}
                   startIcon={btnConfig[c.id]?.icon}
                   variant="outlined"
                   size="normal"
