@@ -9,9 +9,9 @@ import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import SwTheme from "./theme/theme";
 import CssBaseline from "@mui/material/CssBaseline";
-import { config } from "@api/ProviderFactory/setup.config";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WalletConnectorProvider, wagmiConfig } from "@aut-labs/connector";
 
 // markerSDK.loadWidget({
 //   project: `${process.env.REACT_APP_MARKER}`,
@@ -31,18 +31,20 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
-  <WagmiProvider config={config}>
+  <WagmiProvider config={wagmiConfig}>
     <QueryClientProvider client={queryClient}>
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={SwTheme}>
-          <CssBaseline />
-          <Provider store={store}>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </Provider>
-        </ThemeProvider>
-      </StyledEngineProvider>
+      <WalletConnectorProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={SwTheme}>
+            <CssBaseline />
+            <Provider store={store}>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </Provider>
+          </ThemeProvider>
+        </StyledEngineProvider>
+      </WalletConnectorProvider>
     </QueryClientProvider>
   </WagmiProvider>
 );

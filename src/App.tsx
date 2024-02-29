@@ -6,10 +6,6 @@ import { environment } from "@api/environment";
 import AutSDK from "@aut-labs/sdk";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "@store/store.model";
-import {
-  IsAuthorised,
-  setNetworks
-} from "@store/WalletProvider/WalletProvider";
 import AutLoading from "@components/AutLoading";
 import SWSnackbar from "./components/snackbar";
 import GetStarted from "./pages/GetStarted/GetStarted";
@@ -17,7 +13,12 @@ import { getAppConfig } from "@api/aut.api";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { useSelector } from "react-redux";
 import "./App.scss";
-import { ScrollRestorationState, updateScrollState } from "@store/ui-reducer";
+import {
+  IsAllowListed,
+  ScrollRestorationState,
+  updateScrollState
+} from "@store/ui-reducer";
+import { updateWalletProviderState } from "@store/WalletProvider/WalletProvider";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) =>
@@ -48,25 +49,29 @@ const Integrate = lazy(() => import("./pages/Integrate"));
 
 function App() {
   const dispatch = useAppDispatch();
-  const isAuthorised = useSelector(IsAuthorised);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const ps = useRef<HTMLElement>();
   const scrollRestorationState = useSelector(ScrollRestorationState);
+  const isAllowListed = useSelector(IsAllowListed);
 
   useEffect(() => {
-    getAppConfig().then(async (res) => {
-      dispatch(setNetworks(res));
-      setLoading(false);
-      const [network] = res.filter((d) => !d.disabled);
-      const sdk = new AutSDK({
-        ipfs: {
-          apiKey: environment.ipfsApiKey,
-          secretApiKey: environment.ipfsApiSecret,
-          gatewayUrl: environment.ipfsGatewayUrl
-        }
-      });
-    });
+    getAppConfig()
+      .then(async (networks) => {
+        dispatch(
+          updateWalletProviderState({
+            networksConfig: networks
+          })
+        );
+        const sdk = new AutSDK({
+          ipfs: {
+            apiKey: environment.ipfsApiKey,
+            secretApiKey: environment.ipfsApiSecret,
+            gatewayUrl: environment.ipfsGatewayUrl
+          }
+        });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -132,24 +137,14 @@ function App() {
             <Suspense fallback={<AutLoading width="130px" height="130px" />}>
               <Routes>
                 <Route path="/" element={<GetStarted />} />
-                {!isAuthorised && (
-                  <>
-                    {/* <Route path="/" element={<GetStarted />} /> */}
-                    <Route
-                      path="*"
-                      element={<Navigate to="/" state={{ from: location }} />}
-                    />
-                  </>
+                {!isAllowListed && (
+                  <Route
+                    path="*"
+                    element={<Navigate to="/" state={{ from: location }} />}
+                  />
                 )}
-                {isAuthorised && (
-                  <>
-                    {/* <Route path="/" element={<GetStarted />} /> */}
-                    <Route path="/integrate/*" element={<Integrate />} />
-                    {/* <Route
-                      path="*"
-                      element={<Navigate to="/integrate" replace />}
-                    /> */}
-                  </>
+                {isAllowListed && (
+                  <Route path="/integrate/*" element={<Integrate />} />
                 )}
               </Routes>
             </Suspense>

@@ -1,16 +1,18 @@
 import { Box, Button, Container, styled, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@store/store.model";
-import {
-  IsAuthorised,
-  updateWalletProviderState
-} from "@store/WalletProvider/WalletProvider";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import AppTitle from "@components/AppTitle";
 import BubbleBottomLeft from "@assets/bubble2.svg";
 import BubbleTopRight from "@assets/bubble.svg";
 import GenesisImage from "@assets/genesis.png";
+import { useAutConnector, useWalletConnector } from "@aut-labs/connector";
+import { useAccount } from "wagmi";
+import ErrorDialog from "@components/Dialog/ErrorPopup";
+import { setAllowListed } from "@store/ui-reducer";
+import { NetworksConfig } from "@store/WalletProvider/WalletProvider";
+import { isAllowListed } from "@api/auth.api";
 
 const BottomLeftBubble = styled("img")(({ theme }) => ({
   zIndex: -1,
@@ -75,37 +77,51 @@ const GenesisImageWrapper = styled("img")(({ theme }) => ({
 
 const GetStarted = () => {
   const dispatch = useAppDispatch();
-  const [connectInitiated, setConnectInitiated] = useState(false);
-  const isAuthorised = useSelector(IsAuthorised);
+  const [errorMsg, setErrorMessage] = useState(false);
   const navigate = useNavigate();
+  const { open } = useWalletConnector();
+  const { address } = useAccount();
+  const state = useAutConnector();
+  const networks = useSelector(NetworksConfig);
 
-  useEffect(() => {
-    if (!connectInitiated) {
+  const goToIntegrate = async (startFromScratch = false) => {
+    let addressToVerify = address as string;
+    let newState = state;
+    if (!addressToVerify) {
+      newState = await open();
+      addressToVerify = newState?.address;
+    }
+
+    let isAllowed = false;
+    try {
+      let network = networks.find((d) => d.chainId === newState.chainId);
+      if (!network) {
+        network = networks.filter((d) => !d.disabled)[0];
+      }
+      isAllowed = await isAllowListed(
+        newState.multiSigner.signer,
+        network.contracts.allowListAddress
+      );
+    } catch (error) {
+      setErrorMessage(error?.message);
       return;
     }
 
-    if (isAuthorised) {
-      navigate("/integrate");
-    }
-  }, [isAuthorised]);
+    await dispatch(setAllowListed(isAllowed));
+    navigate("/integrate");
+  };
 
-  const goToIntegrate = (startFromScratch = false) => {
-    setConnectInitiated(true);
-
-    const itemsToUpdate = {
-      startFromScratch,
-      isOpen: !isAuthorised
-    };
-
-    dispatch(updateWalletProviderState(itemsToUpdate));
-
-    if (isAuthorised) {
-      navigate("/integrate");
-    }
+  const handleDialogClose = () => {
+    setErrorMessage(null);
   };
 
   return (
     <Wrapper>
+      <ErrorDialog
+        handleClose={handleDialogClose}
+        open={!!errorMsg}
+        message={errorMsg}
+      />
       <BottomLeftBubble loading="lazy" src={BubbleBottomLeft} />
       <TopRightBubble loading="lazy" src={BubbleTopRight} />
       <GenesisImageWrapper loading="lazy" src={GenesisImage} />

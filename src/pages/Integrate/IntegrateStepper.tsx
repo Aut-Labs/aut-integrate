@@ -8,8 +8,7 @@ import SelectMarketStep from "./SelectMarketStep";
 import RoleStep from "./RoleStep";
 import CommitmentStep from "./CommitmentStep";
 import ConfirmStep from "./ConfirmStep";
-import { StartFromScratch } from "@store/WalletProvider/WalletProvider";
-import { useSelector } from "react-redux";
+// import { StartFromScratch } from "@store/WalletProvider/WalletProvider";
 
 const defaultSteps: Step[] = [
   {
@@ -78,8 +77,10 @@ const defaultSteps: Step[] = [
   }
 ];
 
+const startFromScratch = true;
+
 const IntegrateStepper = (props) => {
-  const startFromScratch = useSelector(StartFromScratch);
+  // const startFromScratch = useSelector(StartFromScratch);
   const [instance, setInstance] = useState<StepWizardChildProps & any>();
   const [steps, setSteps] = useState([]);
 

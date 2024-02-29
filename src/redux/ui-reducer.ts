@@ -10,7 +10,8 @@ const initialState = {
   logs: [],
   restoreScrollState: "initial",
   previousRoute: "/",
-  transactionState: null
+  transactionState: null,
+  isAllowListed: false
 };
 
 export const uiSlice = createSlice({
@@ -45,6 +46,9 @@ export const uiSlice = createSlice({
     setPreviusRoute(state, action) {
       state.previousRoute = action.payload;
     },
+    setAllowListed(state, action) {
+      state.isAllowListed = action.payload;
+    },
     resetUIState: () => initialState
   }
 });
@@ -55,7 +59,8 @@ export const {
   addLog,
   setPreviusRoute,
   updateScrollState,
-  updateTransactionState
+  updateTransactionState,
+  setAllowListed
 } = uiSlice.actions;
 
 export const scrollRestorationState = (state: any) =>
@@ -65,5 +70,8 @@ export const ScrollRestorationState = createSelector(
   scrollRestorationState,
   (x1) => x1
 );
+
+export const isAllowListed = (state: any) => state.ui.isAllowListed as boolean;
+export const IsAllowListed = createSelector([isAllowListed], (a) => a);
 
 export default uiSlice.reducer;

@@ -35,8 +35,7 @@ export const isAllowListed = async (
   contractAddress: string
 ) => {
   try {
-    debugger;
-    const account = await signer.getAddress();
+    const account = signer.address;
     const contract = Web3AllowlistProvider(contractAddress, {
       signer: () => signer
     });

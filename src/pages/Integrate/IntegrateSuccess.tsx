@@ -22,7 +22,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import {
   BlockExplorerUrl,
-  SelectedNetworkConfig
+  SelectedNetwork
 } from "@store/WalletProvider/WalletProvider";
 import { autUrls } from "@api/environment";
 
@@ -75,7 +75,7 @@ const IntegrateSuccess = () => {
   const community = useSelector(IntegrateCommunity);
   const params = useParams<{ address: string }>();
   const theme = useTheme();
-  const selectedNetworkConfig = useSelector(SelectedNetworkConfig);
+  const selectedNetworkConfig = useSelector(SelectedNetwork);
   const blockExplorer = useSelector(BlockExplorerUrl);
   const shareMessage = `Hey there! We've just deployed ${community?.name} on Āut @opt_aut - choose your Role in our Community, and let's build something great together! #YoC23`;
   const urls = autUrls();
