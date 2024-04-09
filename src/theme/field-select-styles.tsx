@@ -25,9 +25,9 @@ const SelectWrapper = styled("div")({
   }
 });
 
-interface AutSelectProps extends Partial<SelectProps> {
+type AutSelectProps = Partial<SelectProps> & {
   helperText?: JSX.Element;
-}
+};
 
 const fontSize = {
   xs: "16px",
