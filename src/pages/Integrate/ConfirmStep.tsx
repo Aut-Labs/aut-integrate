@@ -107,7 +107,7 @@ const ConfirmStep = () => {
         }
       />
       <Typography color="white" variant="h3">
-        Confirm your information
+        Review your Project Info
       </Typography>
       <div
         style={{
@@ -226,7 +226,7 @@ const ConfirmStep = () => {
               variant="body"
               color="white"
             >
-              Pledged Commitment
+              Min. Commitment
             </Typography>
             <Typography fontSize={pxToRem(20)} color="white">
               {data.commitment} ( {CommitmentMessages(data.commitment)} )
@@ -247,7 +247,7 @@ const ConfirmStep = () => {
                 variant="body"
                 color="white"
               >
-                DAO Address
+                Contract address
               </Typography>
 
               <CopyAddress address={data.daoAddr} />

@@ -34,32 +34,55 @@ export const MarketTemplates = [
   {
     title: (
       <>
-        Infra, Defi &<br /> DAO Tooling
+        Open-Source <br />& Infra
       </>
     ),
     description:
-      "For researchers & web3, open-source teams, that innovate in a liberal fashion - creating the tools and technology to power a more collaborative world.",
+      "For researchers & open-source teams, that innovate in a liberal fashion - building the tools to power a more collaborative world.",
     market: 1
   },
   {
     title: (
       <>
-        Art, Events <br />& NFTs
+        DeFi & <br />
+        Payments
       </>
     ),
     description:
-      "Art movements, writers & creative collectives of all kind - who use Art & provable ownership for purer, more disruptive forms of human interaction.",
+      "Whether you’re building a new financial primitive, or educating the world about P2P money - the DeFi market never stops innovating.",
     market: 2
   },
   {
     title: (
       <>
-        Governance <br /> & Public Goods
+        ReFi & <br />
+        Governance
       </>
     ),
     description:
-      "From support for people in need, to innovative local hubs - to get together & create something greater than oneself, to build a fairer & more meritocratic world.",
+      "From supporting a group in need, to building regenerative local hubs - let’s get together to build a fairer & more meritocratic world.",
     market: 3
+  },
+  {
+    title: (
+      <>
+        Social, Art <br />& Gaming
+      </>
+    ),
+    description:
+      "SocialFi, Artists, writers collectives & gamers - using provable ownership for purer, more disruptive forms of human interaction.",
+    market: 4
+  },
+  {
+    title: (
+      <>
+        Identity & <br />
+        Reputation
+      </>
+    ),
+    description:
+      "From new ID protocols to provable, privacy-preserving trust - these are the pillars to build a (trustless) decentralized world.",
+    market: 5
   }
 ];
 

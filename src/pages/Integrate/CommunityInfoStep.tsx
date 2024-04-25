@@ -122,7 +122,7 @@ const CommunityInfoStep = (props: StepperChildProps) => {
                 name={name}
                 value={value || ""}
                 onChange={onChange}
-                placeholder="Community Name"
+                placeholder="Project Name"
                 sx={{
                   flex: 1
                 }}
@@ -164,7 +164,7 @@ const CommunityInfoStep = (props: StepperChildProps) => {
                   xxl: "800px"
                 }
               }}
-              placeholder="Introduce your community to the world. It can be a one-liner, common values, goals, or even the story behind it!"
+              placeholder="Description"
               helperText={
                 <FormHelperText
                   errorTypes={errorTypes}

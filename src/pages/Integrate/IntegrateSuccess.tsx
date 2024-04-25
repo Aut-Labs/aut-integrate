@@ -92,7 +92,7 @@ const IntegrateSuccess = () => {
         open={open}
         onClose={() => setOpen(false)}
         url={`${urls?.showcase}?daoAddress=${params?.address}`}
-        title="Celebrate the new era of your DAO 🎉"
+        title="Celebrate the new era of your Nova 🎉"
         description={
           <>
             <Typography color="white" variant="body" mb="12px">
@@ -124,7 +124,7 @@ const IntegrateSuccess = () => {
         }
       />
       <Typography marginTop="50px" color="white" variant="subtitle1">
-        You’ve now launched your Nova 🎉
+        You’ve now deployed your Nova 🎉
       </Typography>
 
       <AddressWrapper>
@@ -176,12 +176,9 @@ const IntegrateSuccess = () => {
         Community Members.
         <br />
         <br />
-        Whether it’s a new Community, or you’re expanding an existing one -
-        today is the day you joined the Coordination Renaissance!
-        <br />
-        <br />
-        Tweet to let everybody know about it, or just get back to Try Āut & get
-        things started!
+        Today begins the 2nd life of your Project. Tweet to let everybody know
+        about it, or head over to verify it straight away, so that others can
+        join you!
       </Typography>
 
       <Box
@@ -197,16 +194,6 @@ const IntegrateSuccess = () => {
         }}
         className="right-box"
       >
-        <ButtonWithPulse
-          variant="outlined"
-          size="large"
-          color="offWhite"
-          component={Link}
-          to={urls.tryAut}
-          target="_blank"
-        >
-          Back to Try Āut
-        </ButtonWithPulse>
         <Button
           variant="outlined"
           size="large"
@@ -216,6 +203,16 @@ const IntegrateSuccess = () => {
         >
           Share
         </Button>
+        <ButtonWithPulse
+          variant="outlined"
+          size="large"
+          color="offWhite"
+          component={Link}
+          to={urls.showcase}
+          target="_blank"
+        >
+          VERIFY YOUR PROJECT
+        </ButtonWithPulse>
 
         {/* <Button
           variant="outlined"

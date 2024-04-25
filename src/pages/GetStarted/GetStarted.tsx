@@ -1,4 +1,11 @@
-import { Box, Button, Container, styled, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  styled,
+  Typography,
+  useTheme
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@store/store.model";
 import { useState } from "react";
@@ -83,6 +90,7 @@ const GetStarted = () => {
   const { address } = useAccount();
   const state = useAutConnector();
   const networks = useSelector(NetworksConfig);
+  const theme = useTheme();
 
   const goToIntegrate = async (startFromScratch = false) => {
     let addressToVerify = address as string;
@@ -136,65 +144,79 @@ const GetStarted = () => {
       >
         <AppTitle
           mb={{
-            xs: "32px",
-            md: "46px",
-            xxl: "100px"
+            xs: "24px",
+            md: "36px",
+            xxl: "56px"
           }}
         />
         <Typography
           component="p"
           variant="subtitle1"
-          fontFamily="FractulAltBold"
+          sx={{
+            color: theme.palette.offWhite.main
+          }}
           mb={{
             xs: "16px",
             md: "24px",
             xxl: "35px"
           }}
-          color="white"
         >
-          Do more with your DAO.
+          Launch a new decentralized project or community in seconds.
         </Typography>
         <Typography
           component="p"
-          variant="subtitle2"
+          variant="subtitle1"
           mb={{
             xs: "16px",
             md: "24px",
             xxl: "35px"
           }}
-          color="white"
+          sx={{
+            color: theme.palette.offWhite.main
+          }}
         >
-          The Expander is an expandable Community protocol, powering Novas: the
-          next level of collective coordination.
+          <strong
+            style={{
+              fontFamily: "FractulAltBold",
+              textDecoration: "underline"
+            }}
+          >
+            Nova
+          </strong>{" "}
+          is more than just a DAO.
         </Typography>
         <Typography
           component="p"
-          variant="subtitle2"
+          variant="subtitle1"
+          sx={{
+            color: theme.palette.offWhite.main
+          }}
           mb={{
             xs: "16px",
             md: "24px",
             xxl: "35px"
           }}
-          color="white"
         >
-          By deploying your Nova, you can expand your DAO contract - adding the
-          concepts of Members Roles & Interactions directly on-chain.
+          It lets you create Tasks, set KPIs, add members’ Roles & Reputation
+          on-chain, and automatically assign on-chain Contribution Points to
+          your top value-contributors.
         </Typography>
         <Typography
-          component="p"
-          variant="subtitle2"
-          mb={{
-            xs: "16px",
-            md: "24px",
-            xxl: "35px"
+          sx={{
+            color: theme.palette.offWhite.main
           }}
-          color="white"
+          component="p"
+          variant="subtitle1"
         >
-          Assign Roles to your Community - and kick off role-based working
-          routines and role-weighted governance in seconds.
-        </Typography>
-        <Typography component="p" variant="subtitle2" color="white">
-          There is no community like yours - create your own Standards. Opt Āut.
+          Make your project trackable,{" "}
+          <strong
+            style={{
+              fontFamily: "FractulAltBold"
+            }}
+          >
+            investable
+          </strong>{" "}
+          , and learn in the process
         </Typography>
 
         <Box
@@ -207,7 +229,7 @@ const GetStarted = () => {
             },
             justifyContent: {
               xs: "flex-start",
-              sm: "space-between"
+              sm: "center"
             },
             mt: {
               xs: "20px",
@@ -221,19 +243,34 @@ const GetStarted = () => {
             variant="outlined"
             size="normal"
             color="offWhite"
+            sx={{
+              width: "260px",
+              height: "55px",
+              lineHeight: 1
+            }}
             disabled
             onClick={() => goToIntegrate()}
           >
-            Expand
+            <span>
+              IMPORT
+              <br />
+              <small>(Coming Soon)</small>
+            </span>
           </Button>
           <Button
             type="submit"
             variant="outlined"
             size="normal"
             color="offWhite"
+            sx={{
+              width: "260px",
+              height: "55px",
+              whiteSpace: "nowrap",
+              lineHeight: 1
+            }}
             onClick={() => goToIntegrate(true)}
           >
-            Start from scratch
+            LAUNCH NEW PROJECT
           </Button>
         </Box>
       </Box>

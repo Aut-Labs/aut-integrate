@@ -54,10 +54,10 @@
   resolved "https://registry.yarnpkg.com/@aut-labs/abi-types/-/abi-types-0.0.74-dev.tgz#6a6911318c3e165fbed766491c8fca7185e6ff7f"
   integrity sha512-LZFQQSKvgfGQR66ln60eDMxAnYwcGOSsadQN0RwllbrD0i4kpescSXobZMjP+VkDzXz+1fuDb9q+EkEYl/0p4A==
 
-"@aut-labs/connector@^0.0.59":
-  version "0.0.59"
-  resolved "https://registry.yarnpkg.com/@aut-labs/connector/-/connector-0.0.59.tgz#6a5fff8ac4d4bb1629a1350272573e6606bdf8d4"
-  integrity sha512-7bSwnfbyBqmtSt8wMTLAO1x2cBtlp0p3AS551K++duob6agsiWOPQXX6Km0k/CyYEiWh1ISvjlEZP0yVsxk4Lw==
+"@aut-labs/connector@^0.0.66":
+  version "0.0.66"
+  resolved "https://registry.yarnpkg.com/@aut-labs/connector/-/connector-0.0.66.tgz#301ec2147b3530e4b9e847316d65203f8cf61cdf"
+  integrity sha512-BlEtMbz+cnWGN/a0M/pQiiViN80Ck7mEUVwSflLfLdgVTltmaNPImSOpHm5VjMuJaEEF8RF/F0TDvsUxa6eFog==
   dependencies:
     "@web3auth/base" "^8.0.0"
     "@web3auth/ethereum-provider" "^8.0.1"

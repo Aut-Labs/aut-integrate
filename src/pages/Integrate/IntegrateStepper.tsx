@@ -27,9 +27,9 @@ const defaultSteps: Step[] = [
     title: "Community Details",
     description: (
       <>
-        Time to customize your Nova. <br />
-        Add some details, its name, its logo, its story. Tell your community
-        members why it exists, and why it matters.
+        Time to customize your Project. Add some details, its name, its logo,{" "}
+        <br />
+        its story. Tell your Contributors why it exists, and why it matters.
       </>
     )
   },
@@ -38,9 +38,11 @@ const defaultSteps: Step[] = [
     title: "Select Market",
     description: (
       <>
-        Markets can be as niche-y as you need them to be. These are our 3
-        default Markets, choose the one that best represents your Community -
-        and partner with other Novas in the same field!
+        Markets can be as niche-y as you need them to be. These are our 5
+        <br />
+        default Markets, choose the one that best represents your project -{" "}
+        <br />
+        and partner with others in the same field!
       </>
     )
   },
@@ -49,9 +51,11 @@ const defaultSteps: Step[] = [
     title: "Roles",
     description: (
       <>
-        Roles always come in sets of 3 (i.e.: dev, curator, DAO operator, …) to
-        keep balance between members. Choose the ones that you envision for your
-        community, and let your Members grow with you.
+        These are Roles you envision in your Project (i.e.: creator, builder,
+        operator, …) <br /> They always come in sets of 3 to keep balance
+        between members. <br /> Use Roles to create new sub- [Guilds, Projects,
+        operational groups]
+        <br /> let your Community grow with you
       </>
     )
   },
@@ -60,13 +64,12 @@ const defaultSteps: Step[] = [
     title: "Commitment",
     description: (
       <>
-        The minimum level of Commitment you expect from Members who want to join
-        your Nova.
+        The minimum level of Commitment you expect from new members willing to
         <br />
-        <br />
-        You can see Commitment as the amount of “time/effort” that Members
-        pledge to your Nova. Based on their Commitment, they will receive more
-        or less tasks - and grow or lose their Reputation.
+        contribute to your Community. You can see Commitment as the amount of
+        “time/dedication” that Members pledge to the Project. Based on their
+        Commitment, they will receive more or less Tasks - and grow or lose
+        their Reputation.
       </>
     )
   },

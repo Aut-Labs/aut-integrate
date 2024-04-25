@@ -7,7 +7,9 @@ const AppTitle = (props: TypographyProps) => {
       fontFamily="FractulAltLight"
       component="h1"
       variant="h1"
-      color="white"
+      sx={{
+        color: "white"
+      }}
       {...(props as any)}
     >
       <strong
@@ -15,9 +17,9 @@ const AppTitle = (props: TypographyProps) => {
           fontFamily: "FractulAltBold"
         }}
       >
-        Āut
+        Nova
       </strong>{" "}
-      Expander
+      LaunchPad
     </Typography>
   );
 };
