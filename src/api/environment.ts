@@ -27,8 +27,8 @@ export const autUrls = () => {
     return {
       tryAut: "https://try-internal.aut.id/",
       novaDashboard: "https://nova-internal.aut.id/",
-      myAut: "https://my-internal.aut.id/",
-      showcase: "https://showcase-internal.aut.id/",
+      myAut: "https://os-internal.aut.id/",
+      showcase: "https://hub.nova.sbs/",
       leaderboard: "https://leaderboard-internal.aut.id/",
       expander: "https://expander-internal.aut.id/"
     };
@@ -38,7 +38,7 @@ export const autUrls = () => {
     tryAut: "https://try.aut.id/",
     novaDashboard: "https://nova.aut.id/",
     myAut: "https://my.aut.id/",
-    showcase: "https://showcase.aut.id/",
+    showcase: "https://hub.nova.sbs/",
     leaderboard: "https://leaderboard.aut.id/",
     expander: "https://expander.aut.id/"
   };

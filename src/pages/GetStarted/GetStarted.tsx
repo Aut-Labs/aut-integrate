@@ -151,7 +151,7 @@ const GetStarted = () => {
         />
         <Typography
           component="p"
-          variant="subtitle1"
+          variant="subtitle2"
           sx={{
             color: theme.palette.offWhite.main
           }}
@@ -165,7 +165,7 @@ const GetStarted = () => {
         </Typography>
         <Typography
           component="p"
-          variant="subtitle1"
+          variant="subtitle2"
           mb={{
             xs: "16px",
             md: "24px",
@@ -187,7 +187,7 @@ const GetStarted = () => {
         </Typography>
         <Typography
           component="p"
-          variant="subtitle1"
+          variant="subtitle2"
           sx={{
             color: theme.palette.offWhite.main
           }}
@@ -206,7 +206,7 @@ const GetStarted = () => {
             color: theme.palette.offWhite.main
           }}
           component="p"
-          variant="subtitle1"
+          variant="subtitle2"
         >
           Make your project trackable,{" "}
           <strong

@@ -9,7 +9,8 @@ import {
   styled,
   Tooltip,
   Typography,
-  useTheme
+  useTheme,
+  Link as BtnLink
 } from "@mui/material";
 import { pxToRem } from "@utils/text-size";
 import { Link, useParams } from "react-router-dom";
@@ -77,7 +78,7 @@ const IntegrateSuccess = () => {
   const theme = useTheme();
   const selectedNetworkConfig = useSelector(SelectedNetwork);
   const blockExplorer = useSelector(BlockExplorerUrl);
-  const shareMessage = `Hey there! We've just deployed ${community?.name} on Āut @opt_aut - choose your Role in our Community, and let's build something great together! #YoC23`;
+  const shareMessage = `${community?.name} is now live on @opt_aut - with on-chain Roles & Interactions for all our Members. Have a look and join us! ${autUrls().showcase}${community?.name} Let’s coordinate, change things - break things. Together 🫂`;
   const urls = autUrls();
   return (
     <StepWrapper
@@ -91,25 +92,35 @@ const IntegrateSuccess = () => {
       <AutShareDialog
         open={open}
         onClose={() => setOpen(false)}
-        url={`${urls?.showcase}?daoAddress=${params?.address}`}
+        url={`${urls?.showcase}${community?.name}`}
         title="Celebrate the new era of your Nova 🎉"
         description={
           <>
             <Typography color="white" variant="body" mb="12px">
-              Hey there! We've just deployed {community?.name} on Āut @opt_aut -
-              choose your Role in our Community, and let's build something great
-              together!
+              {community?.name} is now live on @opt_aut - with on-chain Roles &
+              Interactions for all our Members
               <br />
             </Typography>
-
-            {/* <Typography color="white" variant="body" mb="12px">
+            <Typography color="white" variant="body" mb="12px">
+              🙌 Have a look and join us {"—> "} <br />
+              <BtnLink
+                href={`${urls.showcase}
+              ${community?.name}`}
+              >
+                {urls.showcase}
+                {community?.name}
+              </BtnLink>
+              <br />
+            </Typography>
+            <Typography color="white" variant="body" mb="12px">
               Let’s coordinate, change things - break things. Together 🫂
-            </Typography> */}
+              <br />
+            </Typography>
           </>
         }
         twitterProps={{
           title: shareMessage,
-          hashtags: ["YoC23"]
+          hashtags: []
         }}
         hideCloseBtn
         rightSide={
