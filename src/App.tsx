@@ -53,7 +53,7 @@ function App() {
   const location = useLocation();
   const ps = useRef<HTMLElement>();
   const scrollRestorationState = useSelector(ScrollRestorationState);
-  const isAllowListed = useSelector(IsAllowListed);
+  // const isAllowListed = useSelector(IsAllowListed);
 
   useEffect(() => {
     getAppConfig()
@@ -137,7 +137,7 @@ function App() {
             <Suspense fallback={<AutLoading width="130px" height="130px" />}>
               <Routes>
                 <Route path="/" element={<GetStarted />} />
-                {!isAllowListed && (
+                {/* {!isAllowListed && (
                   <Route
                     path="*"
                     element={<Navigate to="/" state={{ from: location }} />}
@@ -145,7 +145,8 @@ function App() {
                 )}
                 {isAllowListed && (
                   <Route path="/integrate/*" element={<Integrate />} />
-                )}
+                )} */}
+                <Route path="/integrate/*" element={<Integrate />} />
               </Routes>
             </Suspense>
           </Box>

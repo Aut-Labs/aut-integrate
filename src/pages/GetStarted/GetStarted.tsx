@@ -17,9 +17,7 @@ import GenesisImage from "@assets/genesis.png";
 import { useAutConnector, useWalletConnector } from "@aut-labs/connector";
 import { useAccount } from "wagmi";
 import ErrorDialog from "@components/Dialog/ErrorPopup";
-import { setAllowListed } from "@store/ui-reducer";
 import { NetworksConfig } from "@store/WalletProvider/WalletProvider";
-import { isAllowListed } from "@api/auth.api";
 
 const BottomLeftBubble = styled("img")(({ theme }) => ({
   zIndex: -1,
@@ -100,22 +98,22 @@ const GetStarted = () => {
       addressToVerify = newState?.address;
     }
 
-    let isAllowed = false;
-    try {
-      let network = networks.find((d) => d.chainId === newState.chainId);
-      if (!network) {
-        network = networks.filter((d) => !d.disabled)[0];
-      }
-      isAllowed = await isAllowListed(
-        newState.multiSigner.signer,
-        network.contracts.allowListAddress
-      );
-    } catch (error) {
-      setErrorMessage(error?.message);
-      return;
-    }
+    // let isAllowed = false;
+    // try {
+    //   let network = networks.find((d) => d.chainId === newState.chainId);
+    //   if (!network) {
+    //     network = networks.filter((d) => !d.disabled)[0];
+    //   }
+    //   isAllowed = await isAllowListed(
+    //     newState.multiSigner.signer,
+    //     network.contracts.allowListAddress
+    //   );
+    // } catch (error) {
+    //   setErrorMessage(error?.message);
+    //   return;
+    // }
 
-    await dispatch(setAllowListed(isAllowed));
+    // await dispatch(setAllowListed(isAllowed));
     navigate("/integrate");
   };
 
