@@ -17,7 +17,7 @@ import { WalletConnectorProvider, wagmiConfig } from "@aut-labs/connector";
 //   project: `${process.env.REACT_APP_MARKER}`,
 //   reporter: {
 //     email: "frontend@aut.id",
-//     fullName: "Āut Expander"
+//     fullName: "The Āut Pad"
 //   }
 // });
 

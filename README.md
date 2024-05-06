@@ -1,6 +1,6 @@
-# Āut Expander
+# The Āut Pad
 
-Āut Expander is the main product of our product suite.
+The Āut Pad is the main product of our product suite.
 
 By integrating it, you can expand your DAO contract - adding the concepts of Members Roles & Interactions directly on-chain, at contract level.
 Assign Roles to your Community - and kick off role-based working routines and role-weighted governance in seconds.

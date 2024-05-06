@@ -1,6 +1,6 @@
-# Contributing to Āut Expander
+# Contributing to The Āut Pad
 
-We would love for you to contribute to Āut Expander and help make it ever better!
+We would love for you to contribute to The Āut Pad and help make it ever better!
 As a contributor, here are the guidelines we would like you to follow:
 
 - [Code of Conduct](#coc)

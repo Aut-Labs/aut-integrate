@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@aut-labs/abi-types": "^0.0.73-dev",
-    "@aut-labs/connector": "^0.0.66",
+    "@aut-labs/connector": "^0.0.70",
     "@aut-labs/sdk": "^0.0.147-dev",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
