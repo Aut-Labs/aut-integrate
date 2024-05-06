@@ -9,7 +9,7 @@ export const isMemberOfDao = createAsyncThunk(
     requestBody: { daoAddr: string; daoType: number },
     { rejectWithValue }
   ) => {
-    const sdk = AutSDK.getInstance();
+    const sdk = await AutSDK.getInstance();
     const response = await sdk.daoTypes.isMember(
       requestBody.daoAddr,
       requestBody.daoType
@@ -33,12 +33,10 @@ export const createCommunity = createAsyncThunk(
     },
     { rejectWithValue }
   ) => {
-    const sdk = AutSDK.getInstance();
+    const sdk = await AutSDK.getInstance();
     let response: SDKContractGenericResponse<string>;
 
     sdk.novaRegistry.contract.skipBiconomy = true;
-
-    debugger;
 
     if (requestBody.daoAddr) {
       sdk.daoExpanderRegistry.contract.skipBiconomy = true;

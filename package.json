@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "@aut-labs/abi-types": "^0.0.73-dev",
-    "@aut-labs/connector": "^0.0.70",
-    "@aut-labs/sdk": "^0.0.147-dev",
+    "@aut-labs/connector": "^0.0.71",
+    "@aut-labs/sdk": "^0.0.158-dev",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@lottiefiles/lottie-player": "^2.0.3",

@@ -54,10 +54,10 @@
   resolved "https://registry.yarnpkg.com/@aut-labs/abi-types/-/abi-types-0.0.74-dev.tgz#6a6911318c3e165fbed766491c8fca7185e6ff7f"
   integrity sha512-LZFQQSKvgfGQR66ln60eDMxAnYwcGOSsadQN0RwllbrD0i4kpescSXobZMjP+VkDzXz+1fuDb9q+EkEYl/0p4A==
 
-"@aut-labs/connector@^0.0.70":
-  version "0.0.70"
-  resolved "https://registry.yarnpkg.com/@aut-labs/connector/-/connector-0.0.70.tgz#a65a0d939a9d6bfae0fa01241c02486957ca8985"
-  integrity sha512-KhiyhrEe9Rrgey3q/ckwV8lfjWMNQJQ0OCbEDeYdXKFERBEMOM7gFAD7De9zYSxmi9GxGVcVSmNlvnsKajSHbg==
+"@aut-labs/connector@^0.0.71":
+  version "0.0.71"
+  resolved "https://registry.yarnpkg.com/@aut-labs/connector/-/connector-0.0.71.tgz#eeed2f95a67adbd8b798b4ec2d657e4260f1fe88"
+  integrity sha512-/KyP14ZRL/8QPyymTBr13MMLDhLeBoS3ItdnAqdpFncuVgnPd9+agKZpX03yyfgR9lz1VlwyGvgc/UZyv7zxUg==
   dependencies:
     "@web3auth/base" "^8.0.0"
     "@web3auth/ethereum-provider" "^8.0.1"
@@ -66,10 +66,10 @@
     "@web3auth/wallet-services-plugin" "^8.0.1"
     "@web3auth/web3auth-wagmi-connector" "^6.0.0"
 
-"@aut-labs/sdk@^0.0.147-dev":
-  version "0.0.147-dev"
-  resolved "https://registry.yarnpkg.com/@aut-labs/sdk/-/sdk-0.0.147-dev.tgz#2f669b7151aae9426fbbeebcc200a2e38aabaf02"
-  integrity sha512-pztIlEKy0zOLzk0WkFSylYyP/qC90+IzfEk87epPqZra7pxM3y3Uu/614fOr1AG2awGpVc7ymF4vQNMWSoLPUQ==
+"@aut-labs/sdk@^0.0.158-dev":
+  version "0.0.158-dev"
+  resolved "https://registry.yarnpkg.com/@aut-labs/sdk/-/sdk-0.0.158-dev.tgz#c166fc1f6906989feb23c4ec0ea0184023096d56"
+  integrity sha512-lOma34NEZHnzX2OUxVs/GP2qky548qL1wfVkaDA21nsQwwymKYEVssc11qU552EYlbTXqGhjDKTm1EQrSf/98Q==
   dependencies:
     "@aut-labs/abi-types" "^0.0.74-dev"
     date-fns "^2.29.3"
