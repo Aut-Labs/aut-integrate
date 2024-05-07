@@ -114,7 +114,10 @@ const GetStarted = () => {
     // }
 
     // await dispatch(setAllowListed(isAllowed));
-    navigate("/integrate");
+
+    if (addressToVerify) {
+      navigate("/integrate");
+    }
   };
 
   const handleDialogClose = () => {
