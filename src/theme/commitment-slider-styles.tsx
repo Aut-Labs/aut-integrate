@@ -21,9 +21,14 @@ export function CommitmentMessage({ value, children = null }) {
       color="white"
       whiteSpace="nowrap"
       align="left"
-      variant="caption"
+      variant="body"
       component="span"
-      sx={{ display: "flex", mb: "4px", height: "20px" }}
+      sx={{
+        display: "flex",
+        mb: "4px",
+        height: "24px",
+        fontSize: "18px !important"
+      }}
     >
       {message}
     </Typography>
@@ -74,7 +79,7 @@ export const AutCommitmentSlider = ({
           errors={errors}
         >
           <Typography className="text-secondary" variant="caption">
-            No worries, you’ll be able to change this later.
+            {!!value ? `${value}/10` : "Slide to select commitment level."}
           </Typography>
         </FormHelperText>
       </div>
