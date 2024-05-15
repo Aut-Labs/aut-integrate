@@ -9,5 +9,7 @@ services:
     volumes:
       - ".:/app"
       - "/app/node_modules"
+    environment:
+      - REACT_APP_NETWORK_ENV=mainnet
     ports:
-      - "4001:80"
+      - "5001:80"

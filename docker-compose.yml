@@ -9,5 +9,7 @@ services:
     volumes:
       - ".:/app"
       - "/app/node_modules"
+    environment:
+      - REACT_APP_NETWORK_ENV=testnet
     ports:
       - "5002:80"
