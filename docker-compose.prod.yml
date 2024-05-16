@@ -1,8 +1,0 @@
-version: "3.7"
-
-services:
-  aut_expander_prod:
-    container_name: aut_expander_dev
-    image: ghcr.io/${GITHUB_USERNAME}/launchpad:main
-    ports:
-      - "5001:80"

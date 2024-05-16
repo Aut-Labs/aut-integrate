@@ -59,9 +59,15 @@ jobs:
             sudo git checkout main;
             sudo git pull origin main;
 
-            sudo docker-compose -f docker-compose.yml down
-            sudo docker rmi $(docker images -f "dangling=true" -q)
-            sudo docker-compose -f docker-compose.yml pull
-            sudo docker-compose up -d --build
+            echo "Stopping and removing specific service: aut_expander_main"
+            sudo docker-compose stop aut_expander_main
+            sudo docker-compose rm -f aut_expander_main
+
+            echo "Removing dangling images"
+            sudo docker rmi $(sudo docker images -f "dangling=true" -q) || true
+
+            echo "Pulling the new image"
+            sudo docker-compose pull aut_expander_main
+            docker-compose up -d --build aut_expander_main
 
             exit 0;
