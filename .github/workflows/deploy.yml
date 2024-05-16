@@ -46,8 +46,6 @@ jobs:
           host: ${{ secrets.SSH_SERVER_IP }}
           username: ${{ secrets.SSH_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          env:
-            GITHUB_USERNAME: ${{ github.actor }}
           script: |
             # Stop and remove existing containers
             docker-compose -f docker-compose.yml down
