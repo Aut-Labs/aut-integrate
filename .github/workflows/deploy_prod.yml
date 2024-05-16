@@ -47,7 +47,10 @@ jobs:
           username: ${{ secrets.SSH_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            #!/usr/bin/env bash
+
             # Stop and remove existing containers
+            cd aut-integrate
             docker-compose -f docker-compose.prod.yml down
 
             # Remove dangling images
