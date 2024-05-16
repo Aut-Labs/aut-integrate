@@ -37,7 +37,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.actor }}/launchpad:main
           build-args:
-            ENV_FILE: ${{ github.event.inputs.env_file }}
+            ENV_FILE=${{ github.event.inputs.env_file }}
 
       # Deploy to Server
       - name: SSH & Deploy
