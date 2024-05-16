@@ -62,6 +62,6 @@ jobs:
             sudo docker-compose -f docker-compose.yml down
             sudo docker rmi $(docker images -f "dangling=true" -q)
             sudo docker-compose -f docker-compose.yml pull
-            sudo docker-compose up -d
+            sudo docker-compose up -d --build
 
             exit 0;
