@@ -184,7 +184,7 @@ const GetStarted = () => {
           >
             Nova
           </strong>{" "}
-          is more than just a DAO.
+          is more than just a TAO.
         </Typography>
         <Typography
           component="p"
