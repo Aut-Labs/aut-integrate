@@ -49,6 +49,7 @@ jobs:
           host: ${{ secrets.SSH_SERVER_IP }}
           username: ${{ secrets.SSH_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 5002
           script: |
             # Stop and remove existing containers
             sudo docker-compose -f docker-compose.yml down
