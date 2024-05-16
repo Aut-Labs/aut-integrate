@@ -3,13 +3,6 @@ version: "3.7"
 services:
   aut_expander_dev:
     container_name: aut_expander_dev
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ".:/app"
-      - "/app/node_modules"
-    environment:
-      - REACT_APP_NETWORK_ENV=testnet
+    image: ghcr.io/${GITHUB_USERNAME}/launchpad:main
     ports:
       - "5002:80"

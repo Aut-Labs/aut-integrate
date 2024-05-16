@@ -4,14 +4,21 @@ ENV PATH /app/node_modules/.bin:$PATH
 ENV GENERATE_SOURCEMAP=false
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
+ARG ENV_FILE
+ENV ENV_FILE=${ENV_FILE}
+
 COPY .npmrc ./
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm install --legacy-peer-dep
+
+RUN npm install --legacy-peer-deps
+
+COPY ${ENV_FILE} .env
+
 COPY . ./
+
 RUN npm run build
 
-# production environment
 FROM nginx:stable-alpine
 COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
