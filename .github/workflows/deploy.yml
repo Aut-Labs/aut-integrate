@@ -58,7 +58,9 @@ jobs:
             sudo docker rmi $(docker images -f "dangling=true" -q)
 
             # Pull and run the new image
+            sudo docker ps
             sudo docker-compose -f docker-compose.yml pull
             sudo docker-compose up -d
+            sudo docker ps
 
             exit 0;
