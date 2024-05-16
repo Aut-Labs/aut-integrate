@@ -3,6 +3,6 @@ version: "3.7"
 services:
   aut_expander_dev:
     container_name: aut_expander_dev
-    image: ghcr.io/${GITHUB_USERNAME}/launchpad:main
+    image: autlabs/launchpad:main
     ports:
       - "5002:80"

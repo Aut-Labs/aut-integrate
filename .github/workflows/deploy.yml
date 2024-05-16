@@ -51,13 +51,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # Stop and remove existing containers
-            docker-compose -f docker-compose.yml down
+            sudo docker-compose -f docker-compose.yml down
 
             # Remove dangling images
-            docker rmi $(docker images -f "dangling=true" -q)
+            sudo docker rmi $(docker images -f "dangling=true" -q)
 
             # Pull and run the new image
-            docker-compose -f docker-compose.yml pull
-            GITHUB_USERNAME=autlabs docker-compose up -d --build
+            sudo docker-compose -f docker-compose.yml pull
+            sudo docker-compose up -d --build
 
             exit 0;
