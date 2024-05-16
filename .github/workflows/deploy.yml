@@ -48,7 +48,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_SERVER_IP }}
           username: ${{ secrets.SSH_SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.FRONTEND_SSH_KEY }}
           script: |
             #!/usr/bin/env bash
 
@@ -56,10 +56,12 @@ jobs:
             ls -l
 
             cd aut-integrate
+            sudo git checkout main;
+            sudo git pull origin main;
 
             sudo docker-compose -f docker-compose.yml down
             sudo docker rmi $(docker images -f "dangling=true" -q)
             sudo docker-compose -f docker-compose.yml pull
-            sudo docker-compose up -d --build
+            sudo docker-compose up -d
 
             exit 0;
