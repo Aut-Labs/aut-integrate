@@ -13,9 +13,8 @@ COPY package-lock.json ./
 
 RUN npm install --legacy-peer-deps
 
-COPY ${ENV_FILE} .env
-
 COPY . ./
+COPY ${ENV_FILE} .env
 
 RUN npm run build
 
