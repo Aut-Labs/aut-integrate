@@ -9,10 +9,8 @@ import {
   styled,
   Tooltip,
   Typography,
-  useTheme,
   Link as BtnLink
 } from "@mui/material";
-import { pxToRem } from "@utils/text-size";
 import { Link, useParams } from "react-router-dom";
 import CopyAddress from "@components/CopyAddress";
 import { AutShareDialog } from "@components/Share";
@@ -75,10 +73,9 @@ const IntegrateSuccess = () => {
   const [open, setOpen] = useState(false);
   const community = useSelector(IntegrateCommunity);
   const params = useParams<{ address: string }>();
-  const theme = useTheme();
   const selectedNetworkConfig = useSelector(SelectedNetwork);
   const blockExplorer = useSelector(BlockExplorerUrl);
-  const shareMessage = `${community?.name} is now live on @opt_aut - with on-chain Roles & Interactions for all our Members. Have a look and join us! ${autUrls().showcase}${community?.name} Let’s coordinate, change things - break things. Together 🫂`;
+  const shareMessage = `${community?.name} is now live on @opt_aut - with on-chain Roles & Interactions for all our Members. Have a look and join us! ${autUrls().hub}${community?.name} Let’s coordinate, change things - break things. Together 🫂`;
   const urls = autUrls();
   return (
     <StepWrapper
@@ -92,7 +89,7 @@ const IntegrateSuccess = () => {
       <AutShareDialog
         open={open}
         onClose={() => setOpen(false)}
-        url={`${urls?.showcase}${community?.name}`}
+        url={`${urls?.hub}${community?.name}`}
         title="Celebrate the new era of your Nova 🎉"
         description={
           <>
@@ -104,10 +101,10 @@ const IntegrateSuccess = () => {
             <Typography color="white" variant="body" mb="12px">
               🙌 Have a look and join us {"—> "} <br />
               <BtnLink
-                href={`${urls.showcase}
+                href={`${urls.hub}
               ${community?.name}`}
               >
-                {urls.showcase}
+                {urls.hub}
                 {community?.name}
               </BtnLink>
               <br />
@@ -219,7 +216,7 @@ const IntegrateSuccess = () => {
           size="large"
           color="offWhite"
           component={Link}
-          to={urls.showcase}
+          to={urls.hub}
           target="_blank"
         >
           VERIFY YOUR PROJECT

@@ -28,9 +28,9 @@ export const autUrls = () => {
       tryAut: "https://try-internal.aut.id/",
       novaDashboard: "https://nova-internal.aut.id/",
       myAut: "https://os-internal.aut.id/",
-      showcase: "https://hub.nova.sbs/",
+      hub: "https://hub.sbs/",
       leaderboard: "https://leaderboard-internal.aut.id/",
-      expander: "https://expander-internal.aut.id/"
+      launchpad: "http://launch.hub.sbs/"
     };
   }
 
@@ -38,8 +38,8 @@ export const autUrls = () => {
     tryAut: "https://try.aut.id/",
     novaDashboard: "https://nova.aut.id/",
     myAut: "https://my.aut.id/",
-    showcase: "https://hub.nova.sbs/",
+    hub: "https://hub.sbs/",
     leaderboard: "https://leaderboard.aut.id/",
-    expander: "https://expander.aut.id/"
+    launchpad: "http://launch.hub.sbs/"
   };
 };

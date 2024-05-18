@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      env_file:
-        description: 'Environment file to use (e.g., .env, .env_prod)'
-        required: true
-        default: '.env'
 
 jobs:
   build-and-deploy:
@@ -20,28 +14,6 @@ jobs:
       contents: read
       attestations: write
     steps:
-      # - name: Checkout Code
-      #   uses: actions/checkout@v2
-
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v3
-
-      # - name: Log in to GitHub Container Registry
-      #   uses: docker/login-action@v3
-      #   with:
-      #     username: autlabs
-      #     password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-
-      # - name: Build and Push Docker Image
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: .
-      #     file: Dockerfile
-      #     push: true
-      #     tags: autlabs/launchpad:main
-      #     build-args:
-      #       ENV_FILE=${{ github.event.inputs.env_file }}
-
       # Deploy to Server
       - name: SSH & Deploy
         uses: appleboy/ssh-action@master
@@ -59,15 +31,15 @@ jobs:
             sudo docker build -t autlabs/launchpad:main . --build-arg ENV_FILE=.env
             # sudo docker push autlabs/launchpad:main
 
-            echo "Stopping and removing specific service: aut_expander_main"
-            sudo docker-compose stop aut_expander_main
-            sudo docker-compose rm -f aut_expander_main
+            echo "Stopping and removing specific service: launchpad_main"
+            sudo docker-compose stop launchpad_main
+            sudo docker-compose rm -f launchpad_main
 
             echo "Removing dangling images"
             sudo docker rmi $(sudo docker images -f "dangling=true" -q) || true
 
             echo "Pulling the new image"
-            # sudo docker-compose pull aut_expander_main
-            docker-compose up -d --build aut_expander_main
+            # sudo docker-compose pull launchpad_main
+            docker-compose up -d --build launchpad_main --remove-orphans
 
             exit 0;
