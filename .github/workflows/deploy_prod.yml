@@ -40,6 +40,6 @@ jobs:
 
             echo "Pulling the new image"
             # sudo docker-compose pull launchpad_mainnet
-            docker-compose up -d --build launchpad_mainnet --remove-orphans
+            docker-compose up -d --build launchpad_mainnet
 
             exit 0;

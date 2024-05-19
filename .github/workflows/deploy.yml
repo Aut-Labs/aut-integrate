@@ -40,6 +40,6 @@ jobs:
 
             echo "Pulling the new image"
             # sudo docker-compose pull launchpad_main
-            docker-compose up -d --build launchpad_main --remove-orphans
+            docker-compose up -d --build launchpad_main
 
             exit 0;
