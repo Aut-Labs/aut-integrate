@@ -17,7 +17,7 @@ const AppTitle = (props: TypographyProps) => {
           fontFamily: "FractulAltBold"
         }}
       >
-        Nova
+        Hub
       </strong>{" "}
       LaunchPad
     </Typography>

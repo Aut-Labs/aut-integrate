@@ -90,7 +90,7 @@ const IntegrateSuccess = () => {
         open={open}
         onClose={() => setOpen(false)}
         url={`${urls?.hub}${community?.name}`}
-        title="Celebrate the new era of your Nova 🎉"
+        title="Celebrate the new era of your Hub 🎉"
         description={
           <>
             <Typography color="white" variant="body" mb="12px">
@@ -132,7 +132,7 @@ const IntegrateSuccess = () => {
         }
       />
       <Typography marginTop="50px" color="white" variant="subtitle1">
-        You’ve now deployed your Nova 🎉
+        You’ve now deployed your Hub 🎉
       </Typography>
 
       <AddressWrapper>
@@ -146,7 +146,7 @@ const IntegrateSuccess = () => {
           color="white"
           variant="body"
         >
-          Your Nova Contract {"—> "}
+          Your Hub Contract {"—> "}
         </Typography>
 
         <Box

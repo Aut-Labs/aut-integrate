@@ -185,7 +185,7 @@ const GetStarted = () => {
               textDecoration: "underline"
             }}
           >
-            Nova
+            Hub
           </strong>{" "}
           is more than just a DAO.
         </Typography>
