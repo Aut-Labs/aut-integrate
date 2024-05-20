@@ -18,6 +18,7 @@ import { useAutConnector, useWalletConnector } from "@aut-labs/connector";
 import { useAccount } from "wagmi";
 import ErrorDialog from "@components/Dialog/ErrorPopup";
 import { NetworksConfig } from "@store/WalletProvider/WalletProvider";
+import { environment } from "@api/environment";
 
 const BottomLeftBubble = styled("img")(({ theme }) => ({
   zIndex: -1,
@@ -86,7 +87,9 @@ const GetStarted = () => {
   const navigate = useNavigate();
   const { open } = useWalletConnector();
   const { address } = useAccount();
-  const state = useAutConnector();
+  const state = useAutConnector({
+    defaultChainId: +environment.defaultChainId
+  });
   const networks = useSelector(NetworksConfig);
   const theme = useTheme();
 
