@@ -225,7 +225,10 @@ const GetStarted = () => {
 
         <Box
           sx={{
-            gridGap: "30px",
+            gridGap: {
+              xs: "20px",
+              sm: "30px"
+            },
             display: "flex",
             flexDirection: {
               xs: "column",
@@ -234,6 +237,9 @@ const GetStarted = () => {
             justifyContent: {
               xs: "flex-start",
               sm: "center"
+            },
+            alignItems: {
+              xs: "center"
             },
             mt: {
               xs: "20px",
